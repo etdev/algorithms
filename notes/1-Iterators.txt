@@ -1,0 +1,59 @@
+TEST: ITERATORS
+-There are a couple of thestions I had that I wanted to take some notes on before getting into iterators:
+
+-1) What's the difference between final, finally, and finalize?
+-final is used to mark a variable "unchangeable".
+
+  private final String name = "foo"; //This reference name can never change, and it will throw a compiler error if you try
+
+--It can also make a method non-overrideable
+
+  private final String toString() { return "NULL"; }
+
+--It can also make a class not "inheritable", i.e. the class cannot be subclassed.
+
+  public final class finalClass {...}
+  public class classNotAllowed extends finalClass {...} //Not allowed
+
+-finally is used in a try/catch statement to execute code "always"
+--You could use it e.g. to unlock a mutex or basically do something to clean up the resources you've been working with before moving on (although Java 7 has something called try with resources that also does this.)
+
+-finalize is called when an object is garbage collected.  You rarely need to override it.
+
+  public void finalize() {
+    //free resources (e.g. unallocate memory)
+    super.finalize();
+  }
+
+-2) How do Assertions work in Java?
+-Apparently an assertion is a boolean expression that you're affirming is true at a given point in your program.  If the expression is false, the program will terminate and treport an error message.  They're used to verify the correctness of an invariant in the code.  They should never be triggered in production code, and are indicative of a bug or misuse of a code path.  They can be activated at run-time by way of the -ea option of the java command, but are not turned on by default.
+--If you're tasked with writing a program to control a nuclear power plant, even a small mistake could have catastrophic results so your code has to be bug-free.  Java isn't a verifiable language; you can't calculate that the result of your operation will be perfect, and this is due to pointers: they can point anywhere or nowhere.
+
+  int sum(int a, int b){
+    return a + b;
+  }
+
+-Even this function can actually cause problems, so you can do something like this to ensure that it doesn't:
+
+  int sum(int a, int b){
+      assert (Integer.MAX - a >= b) : "Value of " + a + " + " + b + " is too large";
+    final int result = a + b;
+      assert (result - a == b) : " Sub of " + a + " + " + b + " returned wrong sum";
+    return result;
+  }
+
+-If one of these problems occurs, execution will stop right when it happens to prevent any further code from working with incorrect values and potentially causing damage to whatever it controls.
+-It's mainly used for should-never-fail pre-conditions and post conditions.  An assertion triggering should indicate that a bug has occurred.
+
+-So now, on to ITERATORS:
+-Basically, there are a lot of times when we will have a client that just wants to process through the elements in a collection and do something to each of them (i.e. iterate through the collection).  This is so common that Java has a native mechanism for this.  Imagine you had the following Queue that is tasked with maintaining a collection of transactions:
+
+  Queue<Transaction> collection = new Queue<Transaction>();
+
+-If this collection is iterable, you can do this:
+
+  for (Transaction t : collection)
+  { StdOut.println(t); }
+
+-As long as "collection" is of a type that is iterable, this will work.  It could be a Bag, a Stack, a Queue etc. and the same code would still work on it.
+-The specifics of how you iterate through a given data structure can have a significant effect on how the structure acts (e.g. stack vs. queue)
