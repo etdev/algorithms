@@ -58,4 +58,5 @@ TEST: ITERATORS
 -As long as "collection" is of a type that is iterable, this will work.  It could be a Bag, a Stack, a Queue etc. and the same code would still work on it.
 -The specifics of how you iterate through a given data structure can have a significant effect on how the structure acts (e.g. stack vs. queue)
 
+-When making the MyIterator class, the basic idea is that you want to be able to run it over and over, not just noce so it makes sense to have a private final instance of the variable and then an int "current" variable to keep track of where you are in it.
 
