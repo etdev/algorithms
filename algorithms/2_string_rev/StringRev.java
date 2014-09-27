@@ -4,7 +4,6 @@ public class StringRev {
         if (s.equals(" ") || s.equals("")){ return ""; }
         String orig= s;
         s = normalizeSpaces(s);
-        if (s.length() == 0 || s.length() == 1){ return s; }
         String[] words = s.split(" ");
         words = swap_words(words);
         return backToString(words);
