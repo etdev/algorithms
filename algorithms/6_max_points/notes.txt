@@ -1,0 +1,92 @@
+So this is the "Max Points on a Line" question from oj.leetcode.com.  Basically you're given n points on a 2D plane, and you have to find the maximun number of points that lie on the same straight line.
+I have no idea how to start attacking this, but here's the implementation for a "Point":
+  class Point {
+    int x;
+    int y;
+    Point() { x=0; y=0; }
+    Point(int a, int b) { x = a; y = b; }
+  }
+
+Random info as it comes to mind, which may or may not prove useful
+-A line can be unambiguously defined by any two points.
+--So any two points will make a straight line, so if there are at least two points given, the answer has to be at least 2.
+-You need at least two points to even define a line.  If you have points A and B, it makes sense to ask if C is on the same line as them, but if you only have point A, it doesn't make sense to ask if point B is on the same line as it.
+-The two points need to be unique.  If A and B are the same point, they are on the same line, but they don't define a unique line.
+-The naive solution forming in my head as I write this is probably not doable for performance reasons, but essentially:
+--For every point,
+--Define a line from that point to every other point given
+--For every line, count how many of the other points are on it and keep track of which one has the most
+-I know there's a better way of doing it, but I don't know what it is.
+-If given:
+  { [-5,-5], [-2,3], [3, 4], [0, 0], [2, -8] }
+-Basically you create the [-5,-5] --> [-2, 3] line
+-Point-slope form of a line: (y2-y1) = m(x2-x1), m = (x2-x1)/(y2-y1) so as long as this is equal
+-I'm pretty sure I'm going to need a Line class and a method that checks whether a point is on a line, so I'm going to create those.
+
+-Surprisingly, this approach actually yielded a working solution that was accepted on leetcode:
+import java.util.ArrayList;
+public class Solution {
+
+  Point[] points;
+  int length;
+  int max;
+
+  public int maxPoints(Point[] points) {
+    if (points.length <2 ){ return points.length; }
+    this.points = points;
+    int max = 2;
+    length = points.length;
+    //For each point except itself
+    for (int i=0; i<length; i++){
+      for (int j=i+1; j<length; j++){
+        ArrayList<Point> currentPoints = new ArrayList<Point>();
+        Line currentLine = new Line(points[i], points[j]);
+        for (int k=0; k<length; k++){
+          if (currentLine.isOnLine(points[k])){ currentPoints.add(points[k]); }
+        }
+        if (currentPoints.size() > max){ max = currentPoints.size(); }
+      }
+    }
+    return max;
+  }
+
+  public class Line {
+    Point a;
+    Point b;
+    double m;
+    public Line(Point a, Point b){ this.a = a; this.b = b; }
+    public boolean isOnLine(Point c){
+      //Check if it's identical to one of the original points
+      if (!isUnique(c)){ return true; }
+      //Check for vertical line
+      if (isVertical()){
+        return (c.x == a.x);
+      }
+      else { return (getSlope(a, b) == getSlope(a, c)); }
+    }
+
+    public boolean isUnique(Point c){
+      return !((c.x == a.x && c.y == a.y) || (c.x == b.x && c.y == b.y) );
+    }
+
+    public boolean isVertical(){
+      return (a.x == b.x);
+    }
+
+    public double getSlope(Point a, Point b){
+      double nume = (double)(a.y-b.y);
+      double denom = (double)(a.x-b.x);
+      return nume/denom;
+    }
+  }
+
+  public class Point {
+    int x;
+    int y;
+    Point() { x = 0; y = 0; }
+    Point(int a, int b) { x = a; y = b; }
+  }
+
+}
+
+However, I really want to try to come up with a better way of doing this, since it's current O(N^3) which becomes unacceptable very quickly.
