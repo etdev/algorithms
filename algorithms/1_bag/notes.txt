@@ -1,5 +1,5 @@
 TEST: ITERATORS
--There are a couple of thestions I had that I wanted to take some notes on before getting into iterators:
+-There are a couple of questions I had that I wanted to take some notes on before getting into iterators:
 
 -1) What's the difference between final, finally, and finalize?
 -final is used to mark a variable "unchangeable".
