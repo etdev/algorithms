@@ -4,7 +4,7 @@ public class Stack{
   public String[] elements;
 
   public Stack(){
-    this.elements = new String[1];
+    this.elements = new String[2];
     this.size = 0;
   }
 

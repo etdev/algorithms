@@ -1,41 +1,110 @@
 public class Solution {
+
+  Stack operands;
+  Stack operators;
+
   public int evalRPN(String[] tokens) {
-    //Example input: ["2", "1", "+", "3", "*"] --> ((2+1) * 3) -> 9
-    //Example input: ["4", "13", "5", "/", "+"] --> (4 + (13 / 5)) -> 6
-    //So basically, If you have xy*, it means multiply x and y.  But sometimes x or y will be a product of another multiplication, like 4,13,5,/,+ means (13/5) + 4
-    //What happens if you just go through and put the elements on their respective stacks?
-      //Operator stack: [2, 1, 3] --> 3, 1, 2 pop order
-      //Operand stack: [+, *] --> *, + pop order
-    //What if you go through backwards and do it?
-      //Operator stack: [3, 1, 2] --> 2, 1, 3 pop order
-      //Operand stack: [*, +] --> +, * pop order
-      //Ex.2: Operator [5, 13, 4] --> 4, 13, 5 pop order
-      //Ex.2: Operand [+, /] --> /, + pop order
-    //How about frontwards for operators and backwards for operands:
-      // 3, 1, 2 pop order
-      // +, * pop order
-      // 4, 13, 5 pop order
-      // /, + pop order
-    //I think you basically have to add an element, see if you're now able to do an operation, and if so do it.  i.e.
-    /*
-       [], [], 2.  Can't do anything, put on stack
-       [2], [], 1.  Can't do anything, put on stack.
-       [2,1], [], + CAN do something; do this operation on top 2 elements from operand stack and ?store answer on operand stack
-       [3], [], 3.  Can't do anything, put on stack
-       [3,3], [], * CAN do something, do the operation --> 9, put result on stack
-       -No more elements, so return contents of operand stack
-    */
+    operands = new Stack();
+    operators = new Stack();
 
-    /*
-       [], [], 4.  Can't do anything, put on stack
-       [4], [], 13. Can't do anything, put on stack
-       [4,13], [], 5.  Can't do anything, put on stack
-       [4,13,5], [], / CAN do operation, do it and put result on stack
-       [4,2], [], + CAN do operation, do it and put result on stack
-       [6], [] , END, return contents of operand stack
-    */
+    for(int i=0; i<tokens.length; i++){
+      if (isOperator(tokens[i])){
+        operators.push(tokens[i]);
+      }
+      else { operands.push(tokens[i]); }
 
-    //It looks like I'm on the right track, so I'm going to try and code this up.
+      if (canDoOp()){
+        doOp();
+      }
+    }
+    return Integer.parseInt(operands.pop());
+  }
+
+  public boolean isOperator(String s){
+   return (s.equals("+") || s.equals("-") || s.equals("*") || s.equals("/"));
+  }
+
+  public boolean canDoOp(){
+    return ( (operands.size() >= 2) && (operators.size() >= 1) );
+  }
+
+  public void doOp(){
+    int operandB = Integer.parseInt(operands.pop());
+    int operandA = Integer.parseInt(operands.pop());
+    int result;
+    String operator = operators.pop();
+    if (operator.equals("+")) { result = operandA + operandB; }
+    else if(operator.equals("-")) { result = operandA - operandB; }
+    else if(operator.equals("*")) { result = operandA * operandB; }
+    else { result = operandA / operandB; }
+    operands.push("" + result);
+  }
+
+  public class Stack{
+
+    public int size;
+    public String[] elements;
+
+    public Stack(){
+      this.elements = new String[2];
+      this.size = 0;
+    }
+
+    public void push(String item){
+
+      if (this.size > this.elements.length-1){
+        doubleArray();
+      }
+        this.elements[this.size] = item;
+        this.size++;
+    }
+
+    public String pop(){
+      if (size > 0){
+        String popped = this.elements[size-1];
+        this.size--;
+        if (size < this.elements.length/4){
+          halveArray();
+        }
+        return popped;
+      }
+      else { return "ERROR: no elements to pop"; }
+    }
+
+    public boolean isEmpty(){
+      return false;
+    }
+
+    public int size(){
+      return this.size;
+    }
+
+    public void doubleArray(){
+      String[] new_arr = new String[this.elements.length*2];
+      for(int i=0; i<this.size; i++){
+        new_arr[i] = this.elements[i];
+      }
+      this.elements = new_arr;
+    }
+
+    public void halveArray(){
+      String[] new_arr = new String[this.elements.length/2];
+      for(int i=0; i<this.size; i++){
+        new_arr[i] = this.elements[i];
+      }
+      this.elements = new_arr;
+    }
+
+    public String toString(){
+      if(size<1){ return "[]"; }
+      String out = "[";
+      for(int i=0; i<this.size; i++){
+        out += this.elements[i] + ",";
+      }
+      out = out.substring(0, out.length()-1);
+      out += "]";
+      return out;
+    }
 
   }
 }

@@ -41,3 +41,8 @@ I think you basically have to add an element, see if you're now able to do an op
 */
 
 It looks like I'm on the right track, so I'm going to try and code this up.
+
+#####This approach ended up working.  Please see the completed code in Solution.java (accepted on oj.leetcode.com)
+####Gotchas / things to keep in mind
+#####I got a division by 0 error at one point, so be careful.  The operands will get popped off the stack in reverse order; e.g. if you want to do A - B, you have to do B = stack.pop; A = stack.pop; result = A - b;
+
