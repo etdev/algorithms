@@ -1,0 +1,5 @@
+####Basic description:
+#####This program takes an array of integers/operators in Reverse Polish notation and evaluates them, returning the answer.  For example, ["2", "1", "+", "3", "*"] -> ((2+1) * 3) -> 9.
+
+####Procedure
+#####My first thought was that this was begging to use a stack, so I started out by just implementing one of those in its own file, Stack.java.
