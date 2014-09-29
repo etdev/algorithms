@@ -1,4 +1,4 @@
-import java.util.Iterator;
+import java.util.*;
 public class Bag<Item> implements Iterable<Item>{
 
   private Item[] items = (Item[]) new Object[1];
@@ -38,5 +38,13 @@ public class Bag<Item> implements Iterable<Item>{
       tempItems[i] = items[i];
     }
     items = tempItems;
+  }
+
+  public String toString(){
+    String result = "";
+    for(int i=0; i<size; i++){
+     result += items[i] + ", ";
+    }
+    return result;
   }
 }
