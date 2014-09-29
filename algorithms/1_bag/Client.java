@@ -3,9 +3,9 @@ public class Client
    public static void main(String[] args)
    {
       Bag<Double> numbers = new Bag<Double>();
-      for (int i=0; i<args.length; i++){
-        numbers.add(args[i]);
-      }
+      numbers.add(50.0);
+      numbers.add(12.0);
+      numbers.add(-6.0);
       int N = numbers.size();
       double sum = 0.0;
       for (double x : numbers)
