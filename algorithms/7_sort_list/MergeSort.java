@@ -7,19 +7,16 @@ public class MergeSort{
 
 
   public static ListNode sortList(ListNode head) {
-    if ( head == null || getSize(head) == 0){ return head; }
     //Base case: If it's only one element, just return that element
-    if (head.next == null){ return head; }
+    if ( head == null || head.next == null ){ return head; }
     //Otherwise, cut it in half, sort the first half, sort the second half, and then merge them
     else{
-      int size = getSize(head);
       //Cut it in half and sort the halves
-      ListNode right = sortList(splitNode(head));
-      ListNode left = sortList(head);
       //Merge them
-      head = merge(left, right);
+      ListNode rightHalf = sortList(splitNode(head));
+      ListNode leftHalf = sortList(head);
+      return merge(leftHalf, rightHalf);
     }
-    return head;
   }
 
   public static int getSize(ListNode head) {
@@ -28,22 +25,6 @@ public class MergeSort{
     return i;
   }
 
-  //Returns head of right half
-  /*
-     Let's pretend we have 5 items: 3->4->1->2->5
-     Basically we want middlenode = 1, middleNodePre = 4.  halfSize = 5/2=2 so
-     //middleNode = 3, i=0: middleNode=4, middleNodePre = 4
-     //middleNode = 4, i=1: middleNode =1, middleNodePre = 4
-     //middleNode = 1, i=2:
-
-     //2 items: 3->4.  halfSize = 1.  middleNode=3, middleNodePre=3.
-     //middleNode=3, i=0: middleNode=4, middleNodePre still=3
-
-     4 items: 1->2->3->4, halfsize = 2
-     middleNode = 1, middleNodePre = 1
-     i=0, middleNode = 2.  middleNodePre = 2
-     i=1, middleNode = 3.  middleNodePre = 2.
-  */
   public static ListNode splitNode(ListNode head){
     int halfSize = getSize(head)/2;
     ListNode middleNode = head;
@@ -57,25 +38,19 @@ public class MergeSort{
   }
 
   public static ListNode merge(ListNode a, ListNode b){
-    //So we have a=[1, 3, 5] and b=[-2, -1, 7] and we want to merge them:
-    ListNode result;
-    if (a == null && b == null){ return null; }
-    else if (a == null) { result = new ListNode(b.val); b=b.next; }
-    else if (b == null) { result = new ListNode(a.val); a=a.next; }
+    /*I need to rethink how I'm merging my lists since I think this is the problem.
+      -First we're given two sorted lists, e.g. a = [-5, 0, 2] and b = [-3, -2, 1, 8]
+      -At any point in the merge process, the next element to be added can only be either the next active element from a, or the next active element from b.
+      -So we need a way to keep track of this "active" element for each list.  I was trying to do this by maintaining a counter but I think it's better to use the attributes of the LinkedList data type for this.
+      -We don't need to make a new result list; we can use the existing lists
+    */
+    int totalSize = getSize(a) + getSize(b);
+    if (totalSize == 0) { return null; }
+    else if (a == null){ return b; }
+    else if (b == null){ return a; }
     else{
-      if (a.val < b.val){ result = new ListNode(a.val); a=a.next; }
-      else{ result = new ListNode(b.val); b=b.next; }
+      ListNode result;
     }
-
-    while(!(a == null && b == null)){
-      if (a == null) { add(result, b.val); b = b.next; }
-      else if (b == null) { add(result, a.val); a = a.next; }
-      else{
-        if (a.val < b.val){ add(result, a.val); a= a.next; }
-        else{ add(result, b.val); b = b.next; }
-      }
-    }
-    return result;
   }
 
   public static void add(ListNode a, int val){
@@ -87,3 +62,4 @@ public class MergeSort{
   }
 
 }
+

@@ -36,6 +36,7 @@ public class Client{
     ListNode sortResult = MergeSort.sortList(node1);
     long endTime = System.nanoTime();
     long duration = (endTime - startTime)/1000000;
+    System.out.println("Result: " + printList(sortResult));
     System.out.println("Time: " + duration + " miliseconds");
 /*
     System.out.println("TESTING SIMPLE SORT: [1, 3, 2, -5, 10]");
