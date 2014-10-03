@@ -28,13 +28,12 @@ public class MergeSort{
   public static ListNode splitNode(ListNode head){
     int halfSize = getSize(head)/2;
     ListNode middleNode = head;
-    ListNode middleNodePre = head;
-    for(int i=0; i<halfSize; i++){
+    for(int i=0; i<halfSize-1; i++){
       middleNode = middleNode.next;
-      if(i < halfSize-1){ middleNodePre = middleNode; }
     }
-    middleNodePre.next = null;
-    return middleNode;
+    ListNode result = middleNode.next;
+    middleNode.next = null;
+    return result;
   }
 
   public static ListNode merge(ListNode a, ListNode b){
@@ -44,12 +43,20 @@ public class MergeSort{
       -So we need a way to keep track of this "active" element for each list.  I was trying to do this by maintaining a counter but I think it's better to use the attributes of the LinkedList data type for this.
       -We don't need to make a new result list; we can use the existing lists
     */
-    int totalSize = getSize(a) + getSize(b);
-    if (totalSize == 0) { return null; }
+    if (a == null && b == null){ return null; }
     else if (a == null){ return b; }
     else if (b == null){ return a; }
     else{
-      ListNode result;
+      ListNode result = new ListNode(500);
+      int totalSize = getSize(a) + getSize(b);
+      for(int i=0; i<totalSize; i++){
+        System.out.println("AAA");
+        add(result, getSmaller(a, b).val);
+        System.out.println
+        if (a.val < b.val){ a = a.next; }
+        else { b = b.next; }
+      }
+      return result.next;
     }
   }
 
@@ -61,5 +68,21 @@ public class MergeSort{
     currentNode.next = new ListNode(val);
   }
 
+  public static ListNode getSmaller(ListNode a, ListNode b){
+    ListNode result = null;
+    if (a.val < b.val) { result = a; }
+    else { result = b; }
+    return result;
+  }
+
+  public static String printList(ListNode head){
+    int size = MergeSort.getSize(head);
+    String result = "[";
+    for(int i=0; i<size; i++){
+      result += head.val + ", ";
+      head = head.next;
+    }
+    return result += "]";
+  }
 }
 
