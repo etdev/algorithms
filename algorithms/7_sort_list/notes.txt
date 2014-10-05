@@ -90,3 +90,5 @@ class MergeSort
   merge(Node left, Node right)
     count = left.size + right.size
 
+---------------------
+-So at this point I did some googling and I discovered a new method of finding the middle element of a Linked List.  Namely, go through the list once and keep a slow

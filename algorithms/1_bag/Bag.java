@@ -1,4 +1,5 @@
 import java.util.*;
+
 public class Bag<Item> implements Iterable<Item>{
 
   private Item[] items = (Item[]) new Object[1];
