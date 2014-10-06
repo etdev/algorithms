@@ -1,67 +1,58 @@
 public class MergeSort{
 
-  public static ListNode sortList(ListNode head){
-    /*Basic idea: Take list, break it in half, sort the halves, and merge back*/
-    return null;
+  public static ListNode sortList(ListNode head) {
+    if ( head == null || head.next == null ){ return head; }
+    else{
+      head = merge(sortList(splitNode(head)), sortList(head));
+    }
+    return head;
   }
 
-  public ListNode merge(ListNode a, ListNode b){
-    ListNode result;
-    if (a == null && b == null) { return null; }
-    else if (a == null) { result = b; }
-    else if (b == null) { result = a;}
-    else{
-      if (a.val <= b.val) { result = a; }
-      else{ result = b; }
+  public static int getSize(ListNode head) {
+    int i=1;
+    while (head.next != null){ i++; head = head.next;}
+    return i;
+  }
+
+  public static ListNode splitNode(ListNode head){
+    int halfSize = getSize(head)/2;
+    ListNode middleNode = head;
+    ListNode middleNodePre = head;
+    for(int i=0; i<halfSize; i++){
+      middleNode = middleNode.next;
+      if(i < halfSize-1){ middleNodePre = middleNode; }
     }
-    while ( !(a == null && b == null) ){
-      if (a == null ) { add(result, b); return result; }
-      else if (b == null) { add(result, a); return result; }
+    middleNodePre.next = null;
+    return middleNode;
+  }
+
+  public static ListNode merge(ListNode a, ListNode b){
+    ListNode result;
+    if (a == null && b == null){ return null; }
+    else if (a == null) { result = new ListNode(b.val); b=b.next; }
+    else if (b == null) { result = new ListNode(a.val); a=a.next; }
+    else{
+      if (a.val < b.val){ result = new ListNode(a.val); a=a.next; }
+      else{ result = new ListNode(b.val); b=b.next; }
+    }
+
+    while(!(a == null && b == null)){
+      if (a == null) { add(result, b.val); b = b.next; }
+      else if (b == null) { add(result, a.val); a = a.next; }
       else{
-        if (a.val <= b.val) { add(result, a); a = a.next; }
-        else{ add(result, b); b = b.next; }
+        if (a.val < b.val){ add(result, a.val); a= a.next; }
+        else{ add(result, b.val); b = b.next; }
       }
     }
     return result;
   }
 
-  public static void add(ListNode a, ListNode b){
-    while (a.next != null) { a = a.next; }
-    a.next = b;
-    a.next.next = null;
-  }
-
-  public static ListNode split(ListNode head){
-    ListNode slow, moreSlow, fast; slow = head; moreSlow = head; fast = head;
-    if ( fast.next != null && fast.next.next != null){
-      slow = slow.next;
-      fast = fast.next.next;
+  public static void add(ListNode a, int val){
+    ListNode currentNode = a;
+    while (currentNode.next != null){
+      currentNode = currentNode.next;
     }
-    while( fast.next != null && fast.next.next != null ){
-      slow = slow.next;
-      moreSlow = moreSlow.next;
-      fast = fast.next.next;
-    }
-    moreSlow.next = null;
-    return slow;
-  }
-
-  public class ListNode{
-    public int val;
-    public ListNode next;
-    public ListNode(int x){
-      val = x;
-      next = null;
-    }
-  }
-
-  public static String printList(ListNode a){
-    String result = "";
-    while (a.next != null){
-      result += a.val + ", ";
-    }
-    return result;
+    currentNode.next = new ListNode(val);
   }
 
 }
-
