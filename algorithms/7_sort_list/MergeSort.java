@@ -54,5 +54,4 @@ public class MergeSort{
     }
     currentNode.next = new ListNode(val);
   }
-
 }
