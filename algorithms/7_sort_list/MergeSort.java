@@ -16,14 +16,14 @@ public class MergeSort{
 
   public static ListNode splitNode(ListNode head){
     int halfSize = getSize(head)/2;
-    ListNode middleNode = head;
-    ListNode middleNodePre = head;
+    ListNode mid = head;
+    ListNode midPre = head;
     for(int i=0; i<halfSize; i++){
-      middleNode = middleNode.next;
-      if(i < halfSize-1){ middleNodePre = middleNode; }
+      mid = mid.next;
+      if(i < halfSize-1){ midPre = mid; }
     }
-    middleNodePre.next = null;
-    return middleNode;
+    midPre.next = null;
+    return mid;
   }
 
   public static ListNode merge(ListNode a, ListNode b){
@@ -35,23 +35,16 @@ public class MergeSort{
       if (a.val < b.val){ result = new ListNode(a.val); a=a.next; }
       else{ result = new ListNode(b.val); b=b.next; }
     }
+    ListNode current = result;
 
     while(!(a == null && b == null)){
-      if (a == null) { add(result, b.val); b = b.next; }
-      else if (b == null) { add(result, a.val); a = a.next; }
+      if (a == null) { current.next = new ListNode(b.val); b = b.next; current = current.next; }
+      else if (b == null) { current.next = new ListNode(a.val); a = a.next; current = current.next; }
       else{
-        if (a.val < b.val){ add(result, a.val); a= a.next; }
-        else{ add(result, b.val); b = b.next; }
+        if (a.val < b.val){ current.next = new ListNode(a.val); a= a.next; current = current.next; }
+        else{ current.next = new ListNode(b.val); b = b.next; current = current.next; }
       }
     }
     return result;
-  }
-
-  public static void add(ListNode a, int val){
-    ListNode currentNode = a;
-    while (currentNode.next != null){
-      currentNode = currentNode.next;
-    }
-    currentNode.next = new ListNode(val);
   }
 }
