@@ -6,7 +6,7 @@ public class LRUCache {
   int capacity;
 
   public LRUCache(int capacity) {
-    elements = new HashMap<Coord>();
+    elements = new HashMap<Integer, Coord>();
     capacity = capacity;
   }
 
@@ -18,7 +18,7 @@ public class LRUCache {
   /* Set or insert the value if the key is not already present; when the cache reaches its capacity, it should invalidate the LRU item before inserting a new item */
   public void set(int key, int value) {
     Coord cVal = new Coord(value, 0);
-    if contains(key){
+    if (contains(key)){
       //Update the key and set its count to 0, increment others
       elements.get(key) = cVal;
       incrementAll();
