@@ -7,34 +7,39 @@ public class LRUCache {
 
   public LRUCache(int capacity) {
     elements = new HashMap<Integer, Coord>();
-    capacity = capacity;
+    this.capacity = capacity;
   }
 
   /* Get the value (always positive) of the key if it exists, otherwise return -1*/
   public int get(int key) {
-
+    if (elements.containsKey(key)){
+      elements.get(key).count = 0;
+      return elements.get(key).val;
+    }
+    else{ return -1; }
   }
 
   /* Set or insert the value if the key is not already present; when the cache reaches its capacity, it should invalidate the LRU item before inserting a new item */
   public void set(int key, int value) {
-    Coord cVal = new Coord(value, 0);
     if (contains(key)){
       //Update the key and set its count to 0, increment others
-      elements.get(key) = cVal;
+      elements.get(key).val = value;
       incrementAll();
+      elements.get(key).count = 0;
     }
     else{
       if (isFull()) {
         //Delete the key with the highest count, and replace it with the new element, count 0 and increment the others)
-        Integer max = elements.get(maxKey());
-        elements.remove(max);
-        elements.put(key, cVal);
+        Integer max = maxKey();
+        elements.get(max).val = value;
         incrementAll();
+        elements.get(max).count = 0;
       }
       else{
+        Coord cVal = new Coord(value);
          //Add the key with count 0 and increment all other counts
-        elements.put(key, cVal);
         incrementAll();
+        elements.put(key, cVal);
       }
     }
   }
@@ -44,43 +49,43 @@ public class LRUCache {
     int count;
 
     public Coord(int val){
-      val = val;
-      count = 0;
+      this.val = val;
+      this.count = 0;
     }
 
     public void increment(){
-      count++;
+      this.count++;
     }
   }
 
   public boolean isFull(){
-    return (elements.size() == 0);
+    return (elements.size() == capacity);
   }
 
   public boolean contains(int key){
-    return elements.containsKey(key);
+    return ( elements.containsKey(key) && elements.get(key).count < this.capacity) ;
   }
 
   public String toString(){
     String result = "[";
     for (Integer i: elements.keySet()){
       Coord current = elements.get(i);
-      String += (i.toString + "/" + current.val+ "(" + current.count + ")");
+      result += (i.toString() + "/" + current.val + "(" + current.count + ")   ");
     }
-    return result += "]";
+    return result.trim() + "]";
   }
 
   public void incrementAll(){
     for (Integer i: elements.keySet()){
       Coord current = elements.get(i);
-      if (current.count != 0){ current.increment(); }
+      current.increment();
     }
   }
 
-  public int maxKey(){
+  public Integer maxKey(){
+      Integer max = new Integer(-1);
+      Integer maxKey = new Integer(-1);
     for (Integer i: elements.keySet()){
-      int max = -1;
-      int maxKey = -1;
       Coord current = elements.get(i);
       if (current.count > max){ max = current.count; maxKey = i; }
     }
@@ -88,24 +93,4 @@ public class LRUCache {
   }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
