@@ -28,5 +28,13 @@ public class Client{
     System.out.println("test2:" + test2.toString());
     System.out.println("get(2): " + test2.get(2));
 
+    //For large number of inputs
+    LRUCache test3 = new LRUCache(10000);
+    for(int i=0; i<15000; i++){
+      test3.set(i, i);
+      if (i%2 == 0){ test3.get(i/2); }
+    }
+    System.out.println("Test3: " +test3.toString());
+
   }
 }

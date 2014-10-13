@@ -27,6 +27,7 @@ Approach:
 ---If there's still space left, add the key with count 0 and increment all the other counts
 
 -The get method, void get(int key):
+--
 
 -Helper methods:
 --isFull

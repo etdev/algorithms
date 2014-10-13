@@ -12,9 +12,10 @@ public class LRUCache {
 
   /* Get the value (always positive) of the key if it exists, otherwise return -1*/
   public int get(int key) {
-    if (elements.containsKey(key)){
-      elements.get(key).count = 0;
-      return elements.get(key).val;
+    if (contains(key)){
+      Coord current = elements.get(key);
+      current.count = 0;
+      return current.val;
     }
     else{ return -1; }
   }
@@ -72,7 +73,7 @@ public class LRUCache {
       Coord current = elements.get(i);
       result += (i.toString() + "/" + current.val + "(" + current.count + ")   ");
     }
-    return result.trim() + "]";
+    return result.trim() + "]" + "{" + elements.size() + "}";
   }
 
   public void incrementAll(){
