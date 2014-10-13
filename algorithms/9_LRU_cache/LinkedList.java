@@ -45,12 +45,13 @@ public class LinkedList {
 
   public class Node{
 
-    public Node(int v){
-      this.val = v;
-    }
     public int val;
     public Node next;
     public Node prev;
+
+    public Node(int v){
+      this.val = v;
+    }
 
     public String toString(){
       if (this.next == null){ return "| TAIL |"; }
