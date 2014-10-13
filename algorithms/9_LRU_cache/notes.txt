@@ -34,4 +34,5 @@ Approach:
 --toString
 --contains
 
+-At this point, I seemed to have a working LRU Cache but Leetcode wasn't accepting my solution (saying it took too much time), so I gave up on doing it this way.  Apparently all the operations are supposed to be O(n), so I basically have to use a Linked List (or LinkedHashMap, but I feel like that's cheating) to implement this.  So I saved this as LRUCache-failure.java and started over with a new LRUCache.java that's based on a doubly linked list, which I will also now implement.
 

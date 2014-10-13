@@ -24,17 +24,19 @@ public class LRUCache {
   public void set(int key, int value) {
     if (contains(key)){
       //Update the key and set its count to 0, increment others
-      elements.get(key).val = value;
+      Coord current = elements.get(key);
+      current.val = value;
       incrementAll();
-      elements.get(key).count = 0;
+      current.count = 0;
     }
     else{
       if (isFull()) {
         //Delete the key with the highest count, and replace it with the new element, count 0 and increment the others)
         Integer max = maxKey();
-        elements.get(max).val = value;
+        Coord current = elements.get(max);
+        current.val = value;
         incrementAll();
-        elements.get(max).count = 0;
+        current.count = 0;
       }
       else{
         Coord cVal = new Coord(value);
@@ -77,19 +79,25 @@ public class LRUCache {
   }
 
   public void incrementAll(){
+    long startTime = System.nanoTime();
     for (Integer i: elements.keySet()){
       Coord current = elements.get(i);
       current.increment();
     }
+    long endTime = System.nanoTime();
+    //System.out.println("\n----incrementAll: " + (endTime-startTime)/1000 + " nanoseconds.");
   }
 
   public Integer maxKey(){
-      Integer max = new Integer(-1);
-      Integer maxKey = new Integer(-1);
+    long startTime = System.nanoTime();
+    Integer max = new Integer(-1);
+    Integer maxKey = new Integer(-1);
     for (Integer i: elements.keySet()){
       Coord current = elements.get(i);
       if (current.count > max){ max = current.count; maxKey = i; }
     }
+    long endTime = System.nanoTime();
+    //System.out.println("\n---maxKey: " + (endTime-startTime)/1000 + " nanoseconds.");
     return maxKey;
   }
 
