@@ -9,6 +9,7 @@ public class Client{
     System.out.println("Test: " + test.toString());
     test.set(4, 4);
     System.out.println("Now going above capacity (should replace 1 with 4): " + test.toString());
+    /*
     test.set(4, 70);
     System.out.println("Test that changing val only works as expected: " + test.toString());
     test.set(5, 5);
@@ -16,6 +17,7 @@ public class Client{
     System.out.println("Test that refreshing works (1): " + test.toString());
     test.set(4, 71);
     System.out.println("Test that refreshing works (2): " + test.toString());
+    /*
     //Get
     System.out.println("get(4): " + test.get(4));
     System.out.println("Test: " + test.toString());

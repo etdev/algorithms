@@ -37,13 +37,14 @@ public class LinkedList {
     Node n = this.head;
     String result = "\n";
     for(int i=0; i<size+2; i++){
+      System.out.println("n: " + n.toString());
       result += n.toString() + "-->";
       n = n.next;
     }
     return result+"\n";
   }
 
-  public class Node{
+  public static class Node{
 
     public int val;
     public Node next;
