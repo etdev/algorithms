@@ -112,6 +112,7 @@ used item before inserting a new item.
         }
     }
 ###Gotchas / Problems
+* I forgot to set the not-found values to -1.
 ###Things I learned
 ###Random notes
 

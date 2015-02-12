@@ -4,7 +4,7 @@ public class LRUCache {
       int filled;
 
     public LRUCache(int capacity) {
-      head = new Node(null);
+      head = new Node(new Triple(-1, -1));
       this.capacity = capacity;
       this.filled = 0;
     }
@@ -31,6 +31,7 @@ public class LRUCache {
         Node newNode = new Node(newTriple);
 
         if (filled < capacity) {
+          increment();
           add(newNode);
         }
         else {
@@ -43,7 +44,7 @@ public class LRUCache {
     public Node findNodeByKey(int key) {
       Node currentNode = this.head;
       int i=0;
-      while (currentNode != null && i < filled) {
+      while (currentNode.content != null && i < filled) {
         if (currentNode.content.key == key){
           return currentNode;
         }
@@ -55,30 +56,44 @@ public class LRUCache {
     public void increment() {
       int i=0;
       Node currentNode = head;
-      while (currentNode != null && i < filled) {
+      while (currentNode.content.val != -1  && i < filled) {
         currentNode.content.incrementCount();
+        currentNode = currentNode.next;
         i++;
       }
     }
 
     public void add(Node n) {
       int i=0;
+      if (head.content.val == -1) { 
+        filled++;
+        head.content = n.content;
+        head.next = new Node(new Triple(-1, -1));
+        return;
+      }
       Node currentNode = head;
-      while (currentNode.next != null && i < filled) {
+      while ( currentNode.next.content.val != -1) {
         currentNode = currentNode.next;
       }
+      filled++;
       currentNode.next = n;
+      currentNode = currentNode.next;
+      currentNode.next = new Node(new Triple(-1, -1));
     }
 
     public Node removeOldest() {
       if (head.content.val == 4) { head = head.next; }
       Node currentNode = head;
       Node nextNode = head.next;
-      while (nextNode.content.val != 4) {
+      int i = 0;
+      while (nextNode.content.val < 4 && i <= filled) {
         currentNode = nextNode;
         nextNode = nextNode.next;
+        i++;
       }
       currentNode.next = nextNode.next;
+      nextNode.next = null;
+      filled--;
       return nextNode;
     }
 
@@ -111,5 +126,22 @@ public class LRUCache {
         public void incrementCount() {
           this.count++;
         }
+
+        public String toString() {
+          return "(" + key + "/" + val + "/" + count + ")";
+        }
+    }
+
+    public String toString() {
+      Node currentNode = head;
+      String returnStr = "[";
+      int i=0;
+      while( i < filled ) {
+        returnStr += currentNode.content + ", ";
+        currentNode = currentNode.next;
+        i++;
+      }
+      returnStr += "]";
+      return returnStr;
     }
 }
