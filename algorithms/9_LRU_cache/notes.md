@@ -41,11 +41,10 @@ used item before inserting a new item.
   * e.g. [0/0(0), */*, */*, */*, */*] -> [1/1(0), 0/0(1), */* ...] -> [2/2(0),
     1/1(1), 0/0(2), ...] etc.
 * I think a linked list would be a good fit for this problem.
-* I could define a "pair" data type (since I need to store a recent usage
-  counter value and an actual value for each key)
+* I could define a "triple" data type (since I need to store a key, a recent usage counter value and an actual value for each key)
 
-###Basic code
-
+###Code Skeleton
+``rev.1``
     public class LRUCache {
         
         public LRUCache(int capacity) {
@@ -69,4 +68,96 @@ used item before inserting a new item.
             int val;
         }
     }
+
+---
+``rev.2``
+    public class LRUCache {
+
+        public LRUCache(int capacity) {
+
+        }
+
+        public int get(int key) {
+          return 0;
+        }
+
+        public void set(int key, int value) {
+
+        }
+
+        public class Node {
+              Node next;
+              Triple content;
+            public Node(Triple _content) {
+              this.content = _content;
+              this.next = null;
+            }
+        }
+
+        public class Triple {
+            int key;
+            int val;
+            int count;
+
+            public Triple(int _key, int _val) {
+              this.key = _key;
+              this.val = _val;
+              this.count = 0;
+            }
+
+            public void updateVal(int _val) {
+              this.val = _val;
+              this.count++;
+            }
+        }
+    }
+###Gotchas / Problems
+###Things I learned
+###Random notes
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
