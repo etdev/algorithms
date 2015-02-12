@@ -14,8 +14,9 @@ public class LRUCache {
       if (found != null) {
         increment();
         found.content.count = 0;
+        return found.content.val;
       }
-      return found.content.val;
+      return -1;
     }
 
     public void set(int key, int val) {
