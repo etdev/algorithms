@@ -14,6 +14,8 @@ public class LRUCacheDriver {
     System.out.println(lru);
     lru.set(6, 6);
     System.out.println(lru);
+    lru.get(1);
+    System.out.println(lru);
   }
 }
 

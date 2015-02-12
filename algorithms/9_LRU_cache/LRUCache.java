@@ -44,11 +44,14 @@ public class LRUCache {
     public Node findNodeByKey(int key) {
       Node currentNode = this.head;
       int i=0;
-      while (currentNode.content != null && i < filled) {
+      while (i < filled) {
+          System.out.println(" currentNode.content.key: " + currentNode.content.key + ", key: " + key);
         if (currentNode.content.key == key){
+          System.out.println(" currentNode.content.key: " + currentNode.content.key + ", key: " + key);
           return currentNode;
         }
         i++;
+        currentNode = currentNode.next;
       }
       return null;
     }
@@ -57,9 +60,11 @@ public class LRUCache {
       int i=0;
       Node currentNode = head;
       while (currentNode.content.val != -1  && i < filled) {
-        currentNode.content.incrementCount();
-        currentNode = currentNode.next;
-        i++;
+        if (currentNode.content.count != 4) {
+          currentNode.content.incrementCount();
+          currentNode = currentNode.next;
+        }
+          i++;
       }
     }
 
