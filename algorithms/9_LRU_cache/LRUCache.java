@@ -18,6 +18,7 @@ public class LRUCache {
     // If map contains that key, refresh that node and return its value
     if (map.containsKey(key)) {
       Node n = map.get(key);
+      System.out.println(" In get; key = " + key + ", n.val = " + n.val);
       dll.refresh(n);
       return n.val;
     }
@@ -80,12 +81,13 @@ public class LRUCache {
       newNode.next = tail;
     }
 
-    public int remove(Node oldNode) {
+    public void remove(Node oldNode) {
+      System.out.println("In remove; oldNode.val: " + oldNode.val + ", oldNode.prev.val: " + oldNode.prev.val + ", oldNode.next.val: " + oldNode.next.val);
       oldNode.prev.next = oldNode.next;
       oldNode.next.prev = oldNode.prev;
-      oldNode.prev = null;
-      oldNode.next = null;
-      return oldNode.val;
+      //oldNode.prev = null;
+      //oldNode.next = null;
+      //return oldNode.val;
     }
 
     public void refresh(Node n) {
