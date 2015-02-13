@@ -63,14 +63,14 @@ public class LRUCache {
         if (currentNode.content.count != 4) {
           currentNode.content.incrementCount();
           currentNode = currentNode.next;
-        }
           i++;
+        }
       }
     }
 
     public void add(Node n) {
       int i=0;
-      if (head.content.val == -1) { 
+      if (head.content.val == -1) {
         filled++;
         head.content = n.content;
         head.next = new Node(new Triple(-1, -1));
