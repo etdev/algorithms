@@ -84,6 +84,7 @@ DoublyLinkedList
       }
     }
 
-###Things I want to improve upon
-* Incrementing filled in the constructor then setting it back to 0
-
+###Thoughts/Possible improvements
+* Should I use the integer value or the Node object itself in add(), remove()
+  etc. in the DoublyLinkedList class?
+  * Right now I'm using node for remove but val for add, which seems ugly.

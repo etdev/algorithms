@@ -6,7 +6,7 @@ public class LRUCacheDriver {
     dll.add(1);
     dll.add(2);
     System.out.println(dll);
-    dll.removeFirst();
+    dll.remove(dll.head.next);
     System.out.println(dll);
   }
 }

@@ -24,15 +24,16 @@ public class DoublyLinkedList {
     newNode.next = tail;
   }
 
-  public int removeFirst() {
-    // Head -> 1 -> 2 -> Tail
-    //   Head -> 2 -> Tail
-    // So, oldNode.prev.next = oldNode.next and oldNode.next.null and oldNode.prev = null
-    Node oldNode = head.next;
+  public int remove(Node oldNode) {
     oldNode.prev.next = oldNode.next;
-    oldNode.next = null;
     oldNode.prev = null;
+    oldNode.next = null;
     return oldNode.val;
+  }
+
+  public void refresh(Node n) {
+    remove(n);
+    add(n.val);
   }
 
   public String toString() {
