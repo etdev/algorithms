@@ -59,4 +59,31 @@ LRUCache
         }
     }
 
+DoublyLinkedList
+
+    public class DoublyLinkedList {
+
+      Node head;
+      Node tail;
+      int capacity;
+      int filled;
+
+      public DoublyLinkedList(int _capacity) {
+      }
+
+      public void add(Node n) {
+      }
+
+      public class Node {
+        int val;
+        Node prev;
+        Node next;
+
+        public Node(int _val, Node _prev, Node _next) {
+        }
+      }
+    }
+
+###Things I want to improve upon
+* Incrementing filled in the constructor then setting it back to 0
 
