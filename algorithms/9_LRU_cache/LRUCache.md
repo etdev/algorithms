@@ -92,3 +92,5 @@ DoublyLinkedList
   it with DoublyLinkedList.
   null)
 * Do something about the ``dll.remove(dll.head.next)`` line
+* I'm not sure what happened in the remove method (why oldNode.prev = null; and
+  oldNode.next = null; caused problems)
