@@ -5,8 +5,10 @@ public class LRUCacheDriver {
     dll.add(0);
     dll.add(1);
     dll.add(2);
+    dll.add(3);
+    dll.add(4);
     System.out.println(dll);
-    dll.remove(dll.head.next);
+    dll.refresh(dll.head.next);
     System.out.println(dll);
   }
 }

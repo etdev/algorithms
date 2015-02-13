@@ -88,3 +88,7 @@ DoublyLinkedList
 * Should I use the integer value or the Node object itself in add(), remove()
   etc. in the DoublyLinkedList class?
   * Right now I'm using node for remove but val for add, which seems ugly.
+* I should put the Node class in its own file so I don't need to keep prefacing
+  it with DoublyLinkedList.
+  null)
+* Do something about the ``dll.remove(dll.head.next)`` line
