@@ -28,3 +28,4 @@ The next thing I did was read up on preorder, inorder, and postorder traversal o
 
 ### Recursive solution
 Apparently this is trivial so I'm going to try it first and make sure I can do it.
+
