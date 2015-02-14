@@ -27,5 +27,96 @@ The next thing I did was read up on preorder, inorder, and postorder traversal o
     }
 
 ### Recursive solution
-Apparently this is trivial so I'm going to try it first and make sure I can do it.
+Apparently this is trivial so I'm going to try it first and make sure I can do it.  It didn't take me too long to come up with this:
+
+    import java.util.*;
+
+    public class Solution {
+        ArrayList<Integer> list = new ArrayList<Integer>();
+
+        public List<Integer> postorderTraversal(TreeNode root) {
+          if (root == null) { return list; }
+              postorderTraversal(root.left);
+              postorderTraversal(root.right);
+              list.add(root.val);
+          return list;
+        }
+    }
+The only thing I had to be careful of was how to deal with root being null.  First you check and see if it is, and if so you return list.  Then you recurse left and right, and then add the value and return list.  This code is stored in ``Solution-recursive.java``
+
+### Iterative solution
+The basic idea is that we want to print a node's left tree, then that node's right tree, then the node itself.
+![](http://i.imgur.com/9hOSs1b.png)
+When I do this manually myself, I: 
+* Look at the root node, and see if it has a left child node.
+  * If it does, I move down to that left child node and start the process again.
+  * If it doesn't, I check to see if it has a right child node.
+    * If it does, I move down to that child node and start the process again.
+    * If it doesn't, I add the value of the current node to the list and move up
+      to the parent
+  * I stop when I hit the root node.
+
+The first problem that occurs to me is that this approach requires me to be able
+to get back to the parent node from a child.  I'm wondering if I can use the
+list for this purpose.  I don't think I can though, which means I'd need another
+list.  I tried running through my thought process for my example image:
+
+    15:
+    -VISITED[15]
+    -has unvisited left -> visit left
+    5:
+    -VISITED[15,5]
+    -has unvisited left -> visit left
+    3: 
+    -VISITED[15,5,3]
+    -Doesn't have left
+    -Doesn't have right
+    -Add node to POST
+    -Move up to element visited before current
+    VISITED [15,5,3] POST [3]
+    5:
+    -VISITED [15,5,3]
+    -Has left but visited
+    -Has unvisited right -> visit right
+    12: 
+    -VISITED [15,5,3,12]
+    -Has unvisited left -> visit left
+    10:
+    -VISITED [15,5,3,12,10]
+    -Has unvisited left -> visit left
+    6: 
+    -VISITED [15,5,3,12,10,6]
+    -No left
+    -Has unvisited right -> Visit right
+    7:
+    -VISITED [15,5,3,12,10,6,7]
+    -No left
+    -No right
+    -Add node, POST [3,7]
+    6:
+    -No left
+    -Right, but visited
+    -Add node to POST [3,7,6]
+    10:
+    -Left, but visited
+    -No right
+    -Add node to POST [3,7,6,10]
+    12:
+    -Left, but visited
+    -Has unvisited right -> Visit right
+    13: 
+    -VISITED [15,5,3,12,13]
+    -No left
+    -No right
+    -Add node to POST [3,7,6,10,13]
+    ...
+
+    So basically:
+    -If there's a left child:
+    --If it's not in POST, move down to it.
+    -If there's a right child:
+    --If it's not in POST, move down to it.
+    -Else (i.e. no non-null un-added children), move up to parent.
+
+I'm going to implement a stack since I'm pretty sure it will be helpful.  Even if not, it'll be good practice.
 
