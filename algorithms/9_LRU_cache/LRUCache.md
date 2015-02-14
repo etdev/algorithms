@@ -84,6 +84,11 @@ DoublyLinkedList
       }
     }
 
+###Gotchas
+* In the get method, I was just checking if map.containKey(key), but you need to
+  also make sure its value isn't -1 (or you could also remove the key from the
+hasmap but I don't see how to do this in O(1) time).
+
 ###Thoughts/Possible improvements
 * Should I use the integer value or the Node object itself in add(), remove()
   etc. in the DoublyLinkedList class?

@@ -15,7 +15,7 @@ public class LRUCache {
   }
 
   public int get(int key) {
-    // If map contains that key, refresh that node and return its value
+    // If map contains that key and the key points to an active node, refresh that node and return its value
     if (map.containsKey(key) && map.get(key).val != -1) {
       Node n = map.get(key);
       dll.refresh(n);
@@ -23,11 +23,12 @@ public class LRUCache {
     }
     // Else, return -1
     else {
-      return -1; }
+      return -1; 
+    }
   }
 
   public void set(int key, int value) {
-    // If map contains that key, refresh the corresponding node and set its value to the provided value
+    // If map contains that key and the corresponding node is active, refresh the corresponding node and set its value to the provided value
     if (map.containsKey(key) && map.get(key).val != -1) {
       Node n = map.get(key);
       n.val = value;
@@ -37,17 +38,15 @@ public class LRUCache {
     else {
       // If map isn't full
       if (filled < capacity) {
-        //System.out.println("  Map isn't full");
         // Add the new value
-        dll.add(new Node(value, null, null));
-        map.put(key, dll.tail.prev);
+        Node n = new Node(value, null, null);
+        dll.add(n);
+        map.put(key, n);
         filled++;
       }
       // If map is full
       else {
-        //System.out.println("  Map is full");
         //   Delete the oldest entry and add the new value
-        //System.out.println(" Removing " + dll.head.next);
         dll.head.next.val = -1;
         dll.remove(dll.head.next);
         Node n = new Node(value, null, null);
@@ -58,10 +57,6 @@ public class LRUCache {
     }
   }
 
-  public String toString() {
-    return dll.toString();
-  }
-
   public void printMap() {
     System.out.print("\n[");
     for (Map.Entry<Integer, Node> entry : map.entrySet()) {
@@ -69,6 +64,7 @@ public class LRUCache {
     }
     System.out.print("]");
   }
+  
   public class DoublyLinkedList {
 
     Node head;
@@ -82,14 +78,10 @@ public class LRUCache {
     }
 
     public void add(Node newNode) {
-      // Head -> 1 -> 2 -> Tail
-      // Head -> 1 -> 2 -> 3 -> Tail
-      //   So basically, get the second to last node, currentNode
+      // Get the node that was last, and replace it with the new node
       Node oldPreTail = tail.prev;
-      //   Then set current.next = n and Tail.prev = n
       oldPreTail.next = newNode;
       tail.prev = newNode;
-      //   Then set n.prev = current and n.next = tail
       newNode.prev = oldPreTail;
       newNode.next = tail;
     }
@@ -97,9 +89,6 @@ public class LRUCache {
     public void remove(Node oldNode) {
       oldNode.prev.next = oldNode.next;
       oldNode.next.prev = oldNode.prev;
-      //oldNode.prev = null;
-      //oldNode.next = null;
-      //return oldNode.val;
     }
 
     public void refresh(Node n) {
