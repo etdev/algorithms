@@ -85,6 +85,8 @@ DoublyLinkedList
     }
 
 ###Gotchas
+* Knowing to use a Doubly-linked list
+* Knowing that you can achieve O(1) sets/gets and that you can accomplish that with a HashMap
 * In the get method, I was just checking if map.containKey(key), but you need to
   also make sure its value isn't -1 (or you could also remove the key from the
 hasmap but I don't see how to do this in O(1) time).
@@ -97,5 +99,5 @@ hasmap but I don't see how to do this in O(1) time).
   it with DoublyLinkedList.
   null)
 * Do something about the ``dll.remove(dll.head.next)`` line
-* I'm not sure what happened in the remove method (why oldNode.prev = null; and
+* I'm not 100% sure what happened in the remove method (why oldNode.prev = null; and
   oldNode.next = null; caused problems)
