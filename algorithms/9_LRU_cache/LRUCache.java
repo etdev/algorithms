@@ -19,45 +19,40 @@ public class LRUCache {
     if (map.containsKey(key) && map.get(key).val != -1) {
       Node n = map.get(key);
       dll.refresh(n);
-      //System.out.println("  dll: " + dll);
       return n.val;
     }
     // Else, return -1
     else {
-      //System.out.println("  dll: " + dll);
       return -1; }
   }
 
   public void set(int key, int value) {
     // If map contains that key, refresh the corresponding node and set its value to the provided value
-    if (map.containsKey(key)) {
-      //System.out.println("    Map contains key");
+    if (map.containsKey(key) && map.get(key).val != -1) {
       Node n = map.get(key);
       n.val = value;
       dll.refresh(n);
-      //System.out.println("  dll: " + dll);
     }
     // Else
     else {
       // If map isn't full
-      if (filled != capacity) {
-      //System.out.println("    Map doesn't contain the key and is not full");
+      if (filled < capacity) {
+        //System.out.println("  Map isn't full");
         // Add the new value
         dll.add(new Node(value, null, null));
         map.put(key, dll.tail.prev);
-        //System.out.println("  dll: " + dll);
         filled++;
       }
       // If map is full
       else {
-        //System.out.println("    Map doesn't contain the key and is full");
+        //System.out.println("  Map is full");
         //   Delete the oldest entry and add the new value
-        //Set the old
-        //System.out.println("    map.remove(" + key + ")");
+        //System.out.println(" Removing " + dll.head.next);
         dll.head.next.val = -1;
         dll.remove(dll.head.next);
-        dll.add(new Node(value, null, null));
-        //System.out.println("  dll: " + dll);
+        Node n = new Node(value, null, null);
+        dll.add(n);
+        //System.out.println(" Adding " + n);
         map.put(key, dll.tail.prev);
       }
     }
@@ -68,9 +63,11 @@ public class LRUCache {
   }
 
   public void printMap() {
+    System.out.print("\n[");
     for (Map.Entry<Integer, Node> entry : map.entrySet()) {
-      System.out.println("  key: " + entry.getKey() + ", node: " + entry.getValue());
+      System.out.print("(key:" + entry.getKey() + ", val:" + entry.getValue() + "), ");
     }
+    System.out.print("]");
   }
   public class DoublyLinkedList {
 
