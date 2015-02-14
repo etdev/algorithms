@@ -18,7 +18,6 @@ public class LRUCache {
     // If map contains that key, refresh that node and return its value
     if (map.containsKey(key)) {
       Node n = map.get(key);
-      System.out.println(" In get; key = " + key + ", n.val = " + n.val);
       dll.refresh(n);
       return n.val;
     }
@@ -29,6 +28,7 @@ public class LRUCache {
   public void set(int key, int value) {
     // If map contains that key, refresh the corresponding node and set its value to the provided value
     if (map.containsKey(key)) {
+      //System.out.println("CONTAINS KEY");
       Node n = map.get(key);
       n.val = value;
       dll.refresh(n);
@@ -37,6 +37,7 @@ public class LRUCache {
     else {
       // If map isn't full
       if (filled != capacity) {
+      //System.out.println("    Map doesn't contain the key and is not full");
         // Add the new value
         dll.add(new Node(value, null, null));
         map.put(key, dll.tail.prev);
@@ -44,7 +45,11 @@ public class LRUCache {
       }
       // If map is full
       else {
+        //System.out.println("    Map doesn't contain the key and is full");
         //   Delete the oldest entry and add the new value
+        //Set the old 
+        //System.out.println("    map.remove(" + key + ")");
+        dll.head.next.val = -1;
         dll.remove(dll.head.next);
         dll.add(new Node(value, null, null));
         map.put(key, dll.tail.prev);
@@ -56,6 +61,11 @@ public class LRUCache {
     return dll.toString();
   }
 
+  public void printMap() {
+    for (Map.Entry<Integer, Node> entry : map.entrySet()) {
+      //System.out.println("  key: " + entry.getKey() + ", node: " + entry.getValue());
+    }
+  }
   public class DoublyLinkedList {
 
     Node head;
@@ -82,7 +92,6 @@ public class LRUCache {
     }
 
     public void remove(Node oldNode) {
-      System.out.println("In remove; oldNode.val: " + oldNode.val + ", oldNode.prev.val: " + oldNode.prev.val + ", oldNode.next.val: " + oldNode.next.val);
       oldNode.prev.next = oldNode.next;
       oldNode.next.prev = oldNode.prev;
       //oldNode.prev = null;
