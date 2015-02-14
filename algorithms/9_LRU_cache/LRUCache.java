@@ -16,22 +16,26 @@ public class LRUCache {
 
   public int get(int key) {
     // If map contains that key, refresh that node and return its value
-    if (map.containsKey(key)) {
+    if (map.containsKey(key) && map.get(key).val != -1) {
       Node n = map.get(key);
       dll.refresh(n);
+      //System.out.println("  dll: " + dll);
       return n.val;
     }
     // Else, return -1
-    else { return -1; }
+    else {
+      //System.out.println("  dll: " + dll);
+      return -1; }
   }
 
   public void set(int key, int value) {
     // If map contains that key, refresh the corresponding node and set its value to the provided value
     if (map.containsKey(key)) {
-      //System.out.println("CONTAINS KEY");
+      //System.out.println("    Map contains key");
       Node n = map.get(key);
       n.val = value;
       dll.refresh(n);
+      //System.out.println("  dll: " + dll);
     }
     // Else
     else {
@@ -41,17 +45,19 @@ public class LRUCache {
         // Add the new value
         dll.add(new Node(value, null, null));
         map.put(key, dll.tail.prev);
+        //System.out.println("  dll: " + dll);
         filled++;
       }
       // If map is full
       else {
         //System.out.println("    Map doesn't contain the key and is full");
         //   Delete the oldest entry and add the new value
-        //Set the old 
+        //Set the old
         //System.out.println("    map.remove(" + key + ")");
         dll.head.next.val = -1;
         dll.remove(dll.head.next);
         dll.add(new Node(value, null, null));
+        //System.out.println("  dll: " + dll);
         map.put(key, dll.tail.prev);
       }
     }
@@ -63,7 +69,7 @@ public class LRUCache {
 
   public void printMap() {
     for (Map.Entry<Integer, Node> entry : map.entrySet()) {
-      //System.out.println("  key: " + entry.getKey() + ", node: " + entry.getValue());
+      System.out.println("  key: " + entry.getKey() + ", node: " + entry.getValue());
     }
   }
   public class DoublyLinkedList {
