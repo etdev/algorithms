@@ -2,7 +2,7 @@
 The first thing I did was read up a little bit on binary trees in general.
 * Binary trees are made up of nodes, where each node contains a data element, and pointers to a left node and a right node (in this case our data will be in the form of an int).
 * A Binary tree can either be a null pointer, or a single node, which points to two more (left and right) binary trees (which can of course themselves also be null)
-The next thing I did was read up on preorder, inorder, and postorder traversal of BTs.
+The next thing I did was read up on preorder, inorder, and postorder traversal of BTs.   
 ![Example Binary Tree](http://upload.wikimedia.org/wikipedia/commons/d/d4/Sorted_binary_tree_preorder.svg)
 * PreOrder traversal: Guess=FBADCEGIH, Actual=FBADCEGIH => I was right!
 * InOrder traversal: Guess=FBGADICEH, Actual=ABCDEFGHI => I was completely wrong! (apparently this is level-order traversal)
@@ -27,7 +27,8 @@ The next thing I did was read up on preorder, inorder, and postorder traversal o
     }
 
 ### Recursive solution
-Apparently this is trivial so I'm going to try it first and make sure I can do it.  It didn't take me too long to come up with this:
+Apparently this is trivial so I'm going to try it first and make sure I can do it.   
+-->  It didn't take me too long to come up with this:   
 
     import java.util.*;
 
@@ -45,8 +46,8 @@ Apparently this is trivial so I'm going to try it first and make sure I can do i
 The only thing I had to be careful of was how to deal with root being null.  First you check and see if it is, and if so you return list.  Then you recurse left and right, and then add the value and return list.  This code is stored in ``Solution-recursive.java``
 
 ### Iterative solution
-The basic idea is that we want to print a node's left tree, then that node's right tree, then the node itself.
-![](http://i.imgur.com/9hOSs1b.png)
+The basic idea is that we want to print a node's left tree, then that node's right tree, then the node itself.   
+![Example BT 2](http://i.imgur.com/9hOSs1b.png)   
 When I do this manually myself, I:
 * Look at the root node, and see if it has a left child node.
   * If it does, I move down to that left child node and start the process again.
@@ -175,7 +176,7 @@ import java.util.*;
 
 As you can see, it's not perfect.  I don't think this would fly in an interview.
 I'm pretty sure my Stack implementation works properly however, so I'm not sure
-why I had to reverse the list to make it work.
+I fully understand why I had to reverse the list to make it work.
 
 Running through my test BT:
 [15]
