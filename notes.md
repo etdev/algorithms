@@ -50,3 +50,15 @@ See this in action in 0_codewars > 6_find_the_divisors.rb
 
 ### Use a.concat(b) instead of `a << b; a.flatten`
 
+### Finding the sum of 1 + 2 + 3 ... + n
+It's just `(n*(n+1))/2`
+```ruby
+n = 10
+
+(n*(n*1))/2
+# => 55
+
+(1..n).reduce(&:+) == (n*(n+1))/2
+# => true
+```
+
