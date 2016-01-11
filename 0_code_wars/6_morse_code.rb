@@ -17,3 +17,4 @@ end
   end
 =end
 # but it loses the locations of the original spaces.
+# I think the key is realizing 
