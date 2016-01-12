@@ -62,3 +62,59 @@ n = 10
 # => true
 ```
 
+### You can't use `each_with_object` with immutable objects like Fixnums
+I expected this to sum the multiples of 3 and 5 up to n:
+```ruby
+def solution(n)
+  (1...n).each_with_object(0) do |el, m|
+    (el % 3 == 0 || el % 5 == 0) ? m + el : m
+  end
+end
+
+solution(10)
+# => 0
+```
+That `0` never gets updated since it's immutable.
+
+### Negative numbers can't be prime, because `-1` isn't 1 or itself.
+
+### String#`delete` instead of `gsub` for stripping certain characters
+Instead of this:
+```ruby
+str = "ab123cd"
+str.gsub(/[^a-zA-Z]/, "")
+```
+
+do this:
+```ruby
+str = "ab123cd"
+str.delete("^a-zA-Z")
+# => "abcd"
+```
+### Remember to use `grep`
+e.g you want to find all words in an array starting with some string:
+```ruby
+input = "start_str"
+dictionary = ["start_strA", "non_start_strA", "start_strB"]
+dictionary.grep(/\A#{input}/i)
+# => ["start_strA", "start_strB"
+```
+
+### `first` works with lazy, but `take` doesn't
+Also just remember to use `lazy` in general
+
+### String#`split` splits on 1 or more spaces by default
+```ruby
+"abc   def    ".split
+# => ["abc", "def"]
+"abc   def    ".split(" ")
+# => ["abc", "def"]
+```
+This destroys the knowledge that there was more than one space at those points.
+
+```ruby
+"abc   def    ".split(/\s/)
+# =>"abc", "", "", "def"]
+```
+
+
