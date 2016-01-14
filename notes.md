@@ -117,4 +117,4 @@ This destroys the knowledge that there was more than one space at those points.
 # =>"abc", "", "", "def"]
 ```
 
-
+### Use `x.fdiv(y)` instead of `x.to_f / y`
