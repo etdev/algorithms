@@ -132,3 +132,55 @@ add.(1, 2)
 # => 3
 # works for Procs too
 ```
+
+### `|`, `&` for arrays and sets
+Use `|` and `&` to get the union and intersection of two arrays (or sets), respectively.
+```ruby
+# good
+[1, 2, 3] | [2, 3, 4]
+# => [1, 2, 3, 4]
+[1, 2, 3] & [2, 3, 4]
+# => [2, 3]
+[1, 2, 3] - [2, 3, 4]
+# => [1]
+```
+
+### (1..100) vs 1.upto(100)
+I'm not sure which I prefer; `upto` is arguably more descriptive, and `1..100`
+requires parentheses, but `1..100` is shorter.
+
+### my_proc.call(1, 2) vs. my_proc.(1, 2)
+Not sure which is better stylistically but they do both work
+```ruby
+my_proc = proc { |a, b| a + b }
+my_proc.call(1, 2)
+# => 3
+my_proc.(1, 2)
+# => 3
+```
+```ruby
+my_proc = proc { |*args| 5 + (args.reduce(&:+) || 0) }
+my_proc.call(1, 2, 3)
+# => 11
+my_proc.(1, 2, 3)
+# => 11
+my_proc.call
+# => 5
+my_proc.()
+# => 5
+```
+
+### Use Hash#to_proc in Ruby 2.3
+
+### Use `grep` to filter array elements by type
+```ruby
+items = [1, 1.0, '1', nil]
+nums = items.grep(Numeric)
+# => [1, 1.0]
+```
+
+### Use `take_while` to get values of an array until a condition becomes untrue
+```ruby
+[1, 2, 3, 4, 5, 6].take_while{ |x| x < 4 }
+# => [1, 2, 3]
+```
