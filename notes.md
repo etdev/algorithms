@@ -118,3 +118,17 @@ This destroys the knowledge that there was more than one space at those points.
 ```
 
 ### Use `x.fdiv(y)` instead of `x.to_f / y`
+
+### `[nil, false].any?` gives `false`
+I use `.any?` to check whether an array is empty or not sometimes, but maybe
+I shouldn't be. `empty?` is still `false`
+
+### You don't need the `call` with lambdas / procs
+```ruby
+add = ->(a, b) { a + b }
+add.call(1, 2)
+# => 3
+add.(1, 2)
+# => 3
+# works for Procs too
+```
