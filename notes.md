@@ -184,3 +184,25 @@ nums = items.grep(Numeric)
 [1, 2, 3, 4, 5, 6].take_while{ |x| x < 4 }
 # => [1, 2, 3]
 ```
+
+### `a === b` asks "If there's a drawer labeled a, does it make sense to put b in it?"
+```ruby
+num = 5.0
+Numeric === num
+# => true
+Integer === num
+# => false
+
+str = "abc"
+Module === String
+# => true
+Module === str
+# => false
+String === str
+# => true
+
+/\d/ === "5"
+# => true
+/\d/ === "a"
+# => false
+```
