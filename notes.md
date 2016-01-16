@@ -232,3 +232,9 @@ li.delete_at(li.index(n) || li.length)
 
 ### Use `to_s(n)` to get a number in base `n`
 
+### The craziness of Ruby's `String#tr`
+`String#tr` is surprisingly powerful in Ruby.
+```ruby
+str = "the quick brown fox jumped over the lazy dog"
+str.tr("eol", "301")
+```
