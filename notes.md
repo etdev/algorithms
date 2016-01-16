@@ -206,3 +206,29 @@ String === str
 /\d/ === "a"
 # => false
 ```
+
+### User `delete_at` or `slice` to delete only the first instance of an element from an array
+```ruby
+nums = [1, 2, 3, 1, 2, 3]
+
+# bad
+nums.delete(2)
+nums
+# => [1, 3, 1, 3]
+
+# good
+nums.delete_at(arr.index(2))
+nums
+# => [1, 3, 1, 2, 3]
+
+# also good
+nums.slice!(arr.idx(2))
+nums
+# => [1, 3, 1, 2, 3]
+
+# guard against errors
+li.delete_at(li.index(n) || li.length)
+```
+
+### Use `to_s(n)` to get a number in base `n`
+
