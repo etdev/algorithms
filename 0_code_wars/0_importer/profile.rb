@@ -2,16 +2,18 @@ class Profile
   CW_BASE_URL = "http://www.codewars.com"
   BASE_PROFILE_URL = "http://www.codewars.com/users/"
   CHALLENGE_ITEM_CSS = ".item-title > a"
+  USERNAME = ENV["GITHUB_USERNAME"]
 
   attr_accessor :url, :page
 
-  def initialize(username)
-    @url = BASE_PROFILE_URL << username
-    fetch_profile_page
+  def initialize(username, mech)
+    @url = "#{BASE_PROFILE_URL}/#{USERNAME}"
+    @mech = mech
+    @page ||= fetch_profile_page(@mech)
   end
 
-  def fetch_profile_page
-    @page ||= Nokogiri::HTML(open(BASE_PROFILE_URL))
+  def fetch_profile_page(mech)
+    mech.get(BASE_PROFILE_URL + USERNAME)
   rescue StandardError => e
     puts "Failed to fetch profile page\n#{e.inspect}"
   end
