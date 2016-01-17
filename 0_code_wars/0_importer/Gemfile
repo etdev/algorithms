@@ -1,8 +1,8 @@
 source "https://rubygems.org"
 ruby "2.2.2"
 
-gem "nokogiri"
 gem "mechanize"
+gem "nokogiri"
 gem "pry"
 gem "pry-byebug"
 gem "byebug"
