@@ -7,10 +7,10 @@ class Profile
 
   def initialize(username)
     @url = BASE_PROFILE_URL << username
-    fetch_page
+    fetch_profile_page
   end
 
-  def fetch_page
+  def fetch_profile_page
     @page ||= Nokogiri::HTML(open(BASE_PROFILE_URL))
   rescue StandardError => e
     puts "Failed to fetch profile page\n#{e.inspect}"

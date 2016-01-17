@@ -1,9 +1,15 @@
 class Challenge
-  BASE_CHALLENGE_URL = "http://www.codewars.com/kata/"
-  attr_accessor :url
+  attr_accessor :url, :name, :page
 
-  def initialize(kata_code)
-    @url = BASE_CHALLENGE_URL << kata_code
+  def initialize(challenge_link)
+    @name, @url = challenge_link.name, challenge_link.url
+    fetch_challenge_page
   end
-  
+
+  def fetch_challenge_page(challenge_link)
+    @page ||= Nokogiri::HTML(open(challenge_link.url))
+  end
+
+  def solutions
+  end
 end

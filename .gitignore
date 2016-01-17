@@ -3,3 +3,4 @@
 *.swp
 .ruby-version
 vendor/
+.rbenv-vars
