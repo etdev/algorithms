@@ -238,3 +238,26 @@ li.delete_at(li.index(n) || li.length)
 str = "the quick brown fox jumped over the lazy dog"
 str.tr("eol", "301")
 ```
+
+### Ruby's `String#count` method requires an argument
+```ruby
+str = "hello world"
+str.count
+# => error
+str.count("aeiou")
+# => 3
+str.count("he^l")
+# => 5
+```
+
+### `String#scan` to get the instances of a regex match
+```ruby
+str = "hello world"
+str.scan(/[aeiou]/)
+# => ["e", "o", "o"]
+
+str = "HellO wOrld"
+str.scan(/[aeiou]/i).size
+# => 3
+```
+
