@@ -261,3 +261,10 @@ str.scan(/[aeiou]/i).size
 # => 3
 ```
 
+### The `minmax` function exists (for some reason)
+```ruby
+[5, 1, 4, 3].minmax
+# => [1, 5]
+```
+
+
