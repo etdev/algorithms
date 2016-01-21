@@ -267,4 +267,9 @@ str.scan(/[aeiou]/i).size
 # => [1, 5]
 ```
 
+### Use the `Math.hypot` function to get the hypotenuse of a triangle
+```ruby
+Math.hypot(3, 4)
+# => 5.0
+```
 
