@@ -273,3 +273,22 @@ Math.hypot(3, 4)
 # => 5.0
 ```
 
+
+# Rails notes
+When to add an index
+* Add one when the column will appear in `WHERE` and `ORDER BY` (sorting) expressions a lot
+* Don't add one when the values in the column change a lot, because having an index
+SLOWS DOWN INSERTS AND UPDATES
+
+Add if:
+* Employee table, users search for employees by name (so they don't have to
+remember an ID)
+```sql
+SELECT * FROM employees WHERE name = 'smith';
+```
+But you wouldn't expect to be changing employees' names frequently, so the
+inserts and updates being slowed down doesn't really matter.
+
+* Indexes are also only useful for tables with many rows; if it's a really small
+table there's no point, and it could actually be a net detriment.
+* If a column is a variable length, indexes perform much less efficiently.
