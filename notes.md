@@ -309,6 +309,38 @@ hitting either of those values.  So if you have a probability value for
 something, like p = 0.5, you can compare it directly against the
 output of `rand`.
 
+### String#`to_i` will stop checking after the chars stop being convertible to ints
+```ruby
+"5 monkeys 12".to_i
+# => 5
+"monkeys 12".to_i
+# => 0
+```
+
+### Regex lookahead, lookbehind
+```ruby
+"abc".sub(/ab(?=c)/, "AB")
+# => "ABc"
+
+"abc".sub(/(?<=ab)c/, "C")
+# => "abC"
+```
+
+```ruby
+"abc".sub(/(?<!ab)c/, "C")
+# => "abc"
+
+"xxc".sub(/(?<!ab)c/, "C")
+# => "xxC"
+
+
+"abc".sub(/ab(?!c)/, "AB")
+# => "abc"
+
+"abx".sub(/ab(?!c)/, "AB")
+# => "ABx"
+```
+
 # Rails notes
 When to add an index
 * Add one when the column will appear in `WHERE` and `ORDER BY` (sorting) expressions a lot
