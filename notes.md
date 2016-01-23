@@ -303,7 +303,11 @@ raise ArgumentError, "Invalid arguments"
 There's another optional third parameter, which is used to give information
 about the caller etc.
 
-
+### Ruby `rand` function
+The `rand` function generates a decimal from (0.0, 1.0), never actually
+hitting either of those values.  So if you have a probability value for
+something, like p = 0.5, you can compare it directly against the
+output of `rand`.
 
 # Rails notes
 When to add an index
