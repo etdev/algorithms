@@ -273,6 +273,17 @@ Math.hypot(3, 4)
 # => 5.0
 ```
 
+### The `method` method
+```ruby
+def add(a, b)
+  a + b
+end
+method(:add).(2, 3)
+# => 5
+```
+Basically you can use this in place of `send` when you don't have a specific object
+in your domain that you want to send the method to.  It allows you to dynamically
+specify a method and pass it around as a closure (Method object)
 
 # Rails notes
 When to add an index
