@@ -285,6 +285,26 @@ Basically you can use this in place of `send` when you don't have a specific obj
 in your domain that you want to send the method to.  It allows you to dynamically
 specify a method and pass it around as a closure (Method object)
 
+### The Ruby `raise` method
+* You can run `raise` with just a string; this will raise a `RuntimeError`:
+```ruby
+raise "Something's gone wrong."
+# => RuntimeError: Something's gone wrong.
+```
+* You can also specify the error type and/or add a message as the second arg:
+```ruby
+raise ArgumentError
+# => ArgumentError: ArgumentError
+
+raise ArgumentError, "Invalid arguments"
+# => ArgumentError: Invalid arguments
+```
+
+There's another optional third parameter, which is used to give information
+about the caller etc.
+
+
+
 # Rails notes
 When to add an index
 * Add one when the column will appear in `WHERE` and `ORDER BY` (sorting) expressions a lot
