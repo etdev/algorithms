@@ -341,6 +341,38 @@ output of `rand`.
 # => "ABx"
 ```
 
+### String#`to_i` can also take an argument for the base
+```ruby
+"10".to_i(2)
+# => 2
+
+2.to_s(2)
+# => "10"
+```
+
+### Regex brace-group laziness
+```ruby
+"12345".scan(/(\d{1,3})/)
+# => [["123"], ["45"]]
+```
+
+### Check if `n` is a power of 2 using bit operations:
+```ruby
+def is_pow_of_two?(n)
+  n & n - 1 == 0
+end
+is_pow_of_two?(2)
+# => 10 & 01 => 00 => true
+is_pow_of_two?(3)
+# => 11 & 10 => 10 => false
+```
+
+This fails for 0 though, so you can check to see if n is zero first if you care.
+
+```ruby
+n == 2 ? false : n & n - 1 == 0
+```
+
 # Rails notes
 When to add an index
 * Add one when the column will appear in `WHERE` and `ORDER BY` (sorting) expressions a lot
