@@ -40,5 +40,6 @@ class Profile
       .downcase
       .tr("^ a-z", "")[0..25]
       .gsub(/\s+/, "_")
+      .gsub(/\A_/, "")
   end
 end

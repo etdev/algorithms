@@ -9,8 +9,6 @@ require_relative "./challenge"
 GH_OAUTH_SIGNIN_URL = "https://www.codewars.com/users/preauth/github/signin"
 USERNAME = ENV["GITHUB_USERNAME"]
 
-LANG_FILE_TYPE_MAPPINGS = { "Ruby" => ".rb" }
-
 def get_gh_authenticated_connection(username, password)
   mech = Mechanize.new
   gh_signed_in_page = mech.get(GH_OAUTH_SIGNIN_URL).form_with(name: nil) do |form|
@@ -27,8 +25,7 @@ print "."
 profile = Profile.new(USERNAME, mech)
 print "."
 challenge_links = profile.challenge_links
-print "."
-print "\n"
+print ".\n"
 
 # fetch challenges
 print "Fetching challenges and solutions..."

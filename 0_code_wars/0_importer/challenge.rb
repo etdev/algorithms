@@ -1,6 +1,10 @@
 class Challenge
-  attr_accessor :url, :name, :page, :solutions
+
   TRAIN_PATH = "/train/ruby"
+  FILE_TYPES = { "Ruby" => ".rb" }
+
+  attr_accessor :url, :name, :page, :solutions
+
   def initialize(mech, challenge_link)
     @mech = mech
     @name, @url = challenge_link[:name], challenge_link[:url]
@@ -38,15 +42,28 @@ class Challenge
     lang_parsed_solution_lists.each do |soln|
       soln[:soln_list].each do |lang, lang_solns|
         file_name = "#{Dir.pwd}/output/#{soln[:name]}#{FILE_TYPES[lang]}"
-        File.open(file_name, File::WRONLY|File::CREAT|File::EXCL) do |soln_file|
+        File.open(file_name, File::WRONLY|File::CREAT) do |soln_file|
           soln_file.write("# #{@url}\n")
-          lang_solns.each.with_index do |lang_soln, i|
-            soln_file.write("# --- iteration #{i} --- ")
-            soln_file.write(lang_soln)
-            soln_file.write("\n\n")
+          lang_solns.each.with_index do |soln_code, i|
+            soln_file.write(solution_snippet(soln_code, i))
           end
         end
       end
     end
+  rescue => e
+    puts "Failed to generate output files\n#{e.backtrace}"
+  end
+
+
+  private
+  def solution_snippet(soln_code, i)
+    <<~EOF
+      # --- iteration #{i+1} ---
+      #{clean_up_solution_code(soln_code)}
+    EOF
+  end
+
+  def clean_up_solution_code(code)
+    code.gsub(/\t/, "  ").split("\n").map(&:rstrip).join("\n") + "\n"
   end
 end
