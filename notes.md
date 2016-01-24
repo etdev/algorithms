@@ -474,10 +474,10 @@ def count_combination_k_tuples(n, k)
   n.downto(1).lazy.first(k).reduce(:*) / (1..k).reduce(:*)
 end
 ```
-
 # Ruby things I want to study more
 * The Date, Time etc. classes
 * The dollar-sign regex matchers, other global state vars, constants etc.
+* instance_eval, scope gates, module_eval
 
 # Rails notes
 When to add an index
@@ -497,4 +497,3 @@ inserts and updates being slowed down doesn't really matter.
 * Indexes are also only useful for tables with many rows; if it's a really small
 table there's no point, and it could actually be a net detriment.
 * If a column is a variable length, indexes perform much less efficiently.
-
