@@ -373,6 +373,73 @@ This fails for 0 though, so you can check to see if n is zero first if you care.
 n == 2 ? false : n & n - 1 == 0
 ```
 
+### Get the unique elements of an array
+```ruby
+arr = [1, 2, 2, 2, 3, 3, 4, 5]
+arr & arr
+# => [1, 2, 3, 4, 5]
+```
+
+For the union of elements in two arrays:
+```ruby
+[1, 2, 3, 4] | [3, 4, 5, 6]
+# => [1, 2, 3, 4, 5, 6]
+```
+
+### `sprintf`
+`%[flags][width][.precision]type`
+```ruby
+# floats/ints
+"%.0f" % 456
+# => "456"
+"%.2f" % 456
+# => "456.00"
+
+"%20d" % 456
+# => "                 456"
+"%020d" % 456
+# => "00000000000000000456"
+"%020.2f" % 456
+# => "00000000000000456.00"
+
+# to binary
+"%b" % 456
+# => "111001000"
+"%#b" % 456
+# => "0b111001000"
+
+# to hexadecimal
+"%2x" % 255
+# => "ff"
+"%2x-%2x-%2x" % [255, 254, 253]
+# => "ff-fe-fd"
+"%x%X" % [255, 254, 253]
+# => "ffFE"
+"%10x%5X" % [255, 254, 253]
+# => "        ff   FE"
+
+# Kernel.format does the same thing:
+format("%+10X", -255, 254)
+# => "       -FF"
+```
+Using Kernel#`format` or Kernel#`sprintf` allows for an arbitrary number of args,
+whereas `%` takes an array.  They all ignore extra values though.
+
+### `Matrix` - Finding the sum of the main diagonal of a square matrix
+```ruby
+require "matrix"
+arr_of_arrs = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+Matrix[*arr_of_arrs].trace
+# => 15
+
+# another good way without using matrix lib:
+matrix.map.with_index { |a, i| a[i] }.reduce(:+)
+```
+
+# Ruby things I want to study more
+* The Date, Time etc. classes
+* The dollar-sign regex matchers, other global state vars, constants etc.
+
 # Rails notes
 When to add an index
 * Add one when the column will appear in `WHERE` and `ORDER BY` (sorting) expressions a lot
@@ -391,3 +458,4 @@ inserts and updates being slowed down doesn't really matter.
 * Indexes are also only useful for tables with many rows; if it's a really small
 table there's no point, and it could actually be a net detriment.
 * If a column is a variable length, indexes perform much less efficiently.
+
