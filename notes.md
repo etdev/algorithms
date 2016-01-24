@@ -475,6 +475,7 @@ def count_combination_k_tuples(n, k)
 end
 ```
 # Ruby things I want to study more
+* `tr_s`
 * The Date, Time etc. classes
 * The dollar-sign regex matchers, other global state vars, constants etc.
 * instance_eval, scope gates, module_eval
