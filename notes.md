@@ -1,7 +1,7 @@
 ## Ruby methods
 ### Enumerable#chunk
 ```ruby
-[1,3,5,2,4,6].chunk(&:even).to_a
+[1,3,5,2,4,6].chunk(&:even?).to_a
 # => [false, [1, 3, 5]], [true, [2, 4, 6]]]
 ```
 Chunks consecutive values together based on a block.  Returns an Enumerator.
@@ -34,7 +34,12 @@ Executes block on each element, returns [[block_was_true_elements], [block_was_n
 
 ### Check if num is a whole number (i.e. no decimal component):
 ```ruby
+num = 5
 num % 1 == 0
+# => true
+num = 2.3
+num % 1 == 0
+# => false
 ```
 
 ### Only check up to sqrt(n) when searching for factors of n:
@@ -434,6 +439,40 @@ Matrix[*arr_of_arrs].trace
 
 # another good way without using matrix lib:
 matrix.map.with_index { |a, i| a[i] }.reduce(:+)
+```
+
+### Permutations and Combinations
+Get list of permutations/combinations
+```ruby
+# permutations
+[1, 2, 3].permutation(2).to_a
+# => [[1, 2], [1, 3], [2, 1], [2, 3], [3, 1], [3, 2]]
+
+# combinations
+[1, 2, 3].combination(2).to_a
+# => [[1, 2], [1, 3], [2, 3]]
+```
+
+Count pairs of combinations
+```ruby
+def count_combination_pairs(n)
+  # when working with large numbers, it's inefficient or impossible to
+  # instantiate large lists of permutations; instead you can use the fact that
+  # k_tuples_combination_ count = (n!) / (((n-k)!)*k!)
+  # if k is 2, you get n! / ( 2(n-2)! )
+  # = (n)(n-1)(n-2)(n-3)...(1) / (((n-2)(n-3)...(1))*2)
+  # = (n)(n-1) / 2
+  # Basically the first k elements of the factorial divided by k.
+  (n * n - n) / 2
+end
+```
+
+This can be generalized to work for other tuples:
+
+```ruby
+def count_combination_k_tuples(n, k)
+  n.downto(1).lazy.first(k).reduce(:*) / (1..k).reduce(:*)
+end
 ```
 
 # Ruby things I want to study more
