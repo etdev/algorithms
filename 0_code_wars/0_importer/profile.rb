@@ -7,13 +7,13 @@ class Profile
   attr_accessor :url, :page
 
   def initialize(username, mech, page = 1)
-    @url = "#{BASE_PROFILE_URL}/#{USERNAME}"
+    @url = "#{BASE_PROFILE_URL}/#{USERNAME}?page=#{page}"
     @mech = mech
     @page ||= fetch_profile_page(@mech, page)
   end
 
   def fetch_profile_page(mech, page)
-    mech.get("#{BASE_PROFILE_URL}#{USERNAME}?page=#{page}")
+    @page = mech.get(@url)
   rescue StandardError => e
     puts "Failed to fetch profile page\n#{e.inspect}"
   end
@@ -39,7 +39,9 @@ class Profile
     challenge_name
       .downcase
       .tr("^ a-z", "")[0..25]
+      .strip
       .gsub(/\s+/, "_")
       .gsub(/\A_/, "")
+      .gsub(/_\z/, "")
   end
 end

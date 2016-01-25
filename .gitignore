@@ -5,3 +5,4 @@
 vendor/
 .rbenv-vars
 output/
+init_list.html
