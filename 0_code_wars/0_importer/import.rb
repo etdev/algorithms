@@ -22,7 +22,8 @@ end
 print "\nAuthenticating..."
 mech = get_gh_authenticated_connection(ENV["GITHUB_USERNAME"], ENV["GITHUB_PW"])
 print "."
-profile = Profile.new(USERNAME, mech)
+binding.pry
+profile = Profile.new(USERNAME, mech, 1)
 print "."
 challenge_links = profile.challenge_links
 print ".\n"

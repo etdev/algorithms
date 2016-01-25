@@ -6,14 +6,14 @@ class Profile
 
   attr_accessor :url, :page
 
-  def initialize(username, mech)
+  def initialize(username, mech, page = 1)
     @url = "#{BASE_PROFILE_URL}/#{USERNAME}"
     @mech = mech
-    @page ||= fetch_profile_page(@mech)
+    @page ||= fetch_profile_page(@mech, page)
   end
 
-  def fetch_profile_page(mech)
-    mech.get(BASE_PROFILE_URL + USERNAME)
+  def fetch_profile_page(mech, page)
+    mech.get("#{BASE_PROFILE_URL}#{USERNAME}?page=#{page}")
   rescue StandardError => e
     puts "Failed to fetch profile page\n#{e.inspect}"
   end

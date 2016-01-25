@@ -54,8 +54,8 @@ class Challenge
     puts "Failed to generate output files\n#{e.backtrace}"
   end
 
-
   private
+
   def solution_snippet(soln_code, i)
     <<~EOF
       # --- iteration #{i+1} ---
