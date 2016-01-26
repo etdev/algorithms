@@ -1,0 +1,11 @@
+# http://www.codewars.com/kata/50654ddff44f800200000001
+# --- iteration 1 ---
+function Person(name){
+  this.name = name;
+}
+
+Person.prototype.greet = function(otherName){
+  Person('Joe')
+  return "Hi " + otherName + ", my name is " + this.name;
+}
+
