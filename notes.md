@@ -512,6 +512,8 @@ x = 123.45678
 You need both the `.to_i` (or `.truncate`) and for the divisor 100 to be
 a float.  Or you could use `fdiv`.
 
+### Use Array#`reverse_each` instead of `.reverse.each`
+
 # Ruby things I want to study more
 * `tr_s`
 * The Date, Time etc. classes

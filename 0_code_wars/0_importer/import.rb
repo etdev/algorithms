@@ -25,7 +25,6 @@ print "."
 profile = Profile.new(USERNAME, mech, 1)
 print "."
 challenge_links = profile.challenge_links
-binding.pry
 print ".\n"
 
 # fetch challenges
@@ -40,5 +39,3 @@ print "\n"
 solns = challenges.map(&:lang_parsed_solution_lists)
 challenges.map(&:generate_output_files)
 
-binding.pry
-x = 5
