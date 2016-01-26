@@ -474,6 +474,26 @@ def count_combination_k_tuples(n, k)
   n.downto(1).lazy.first(k).reduce(:*) / (1..k).reduce(:*)
 end
 ```
+
+### Array union, intersection, exclusion
+```ruby
+a = [1, 2, 3, 4]
+b = [2, 4, 6]
+
+# exclusion - get the characters in a but not b
+a - b
+# => [1, 3]
+
+# union - merge them so any element in either one is in the result (once)
+a | b
+# => [1, 2, 3, 4, 6]
+
+# intersection - Get only the characters in both a and b
+a & b
+# => [2, 4]
+
+```
+
 # Ruby things I want to study more
 * `tr_s`
 * The Date, Time etc. classes
