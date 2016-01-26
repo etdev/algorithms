@@ -491,8 +491,17 @@ a | b
 # intersection - Get only the characters in both a and b
 a & b
 # => [2, 4]
-
 ```
+
+### Cut off all but first 2 decimal points, without rounding
+```ruby
+x = 123.45678
+(x * 100).to_i / 100.0
+# => 123.45
+```
+
+You need both the `.to_i` (or `.truncate`) and for the divisor 100 to be
+a float.  Or you could use `fdiv`.
 
 # Ruby things I want to study more
 * `tr_s`
