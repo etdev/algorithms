@@ -500,6 +500,15 @@ x = 123.45678
 # => 123.45
 ```
 
+### The `!~` operator
+```ruby
+"123" =~ /\d/
+# => 0
+
+"123" !~ /\d/
+# => false
+```
+
 You need both the `.to_i` (or `.truncate`) and for the divisor 100 to be
 a float.  Or you could use `fdiv`.
 
