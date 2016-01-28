@@ -533,15 +533,6 @@ my_str = "hello"
 * `size`         instead of `length`
 * `each_index`   instead of `each_with_index` and then only using the index
 
-# Ruby things I want to study more
-* `tr_s`
-* `autoload`
-* Threads
-* Fibers
-* The Date, Time etc. classes
-* The dollar-sign regex matchers, other global state vars, constants etc.
-* instance_eval, scope gates, module_eval
-
 # Rails notes
 When to add an index
 * Add one when the column will appear in `WHERE` and `ORDER BY` (sorting) expressions a lot
@@ -560,3 +551,61 @@ inserts and updates being slowed down doesn't really matter.
 * Indexes are also only useful for tables with many rows; if it's a really small
 table there's no point, and it could actually be a net detriment.
 * If a column is a variable length, indexes perform much less efficiently.
+
+# SQL notes
+Aggregate Functions
+* MIN
+```ruby
+SELECT MIN(salary) FROM employee;
+# => gives the value of the lowest salary for any employee
+# => 19,996
+```
+* MAX
+```ruby
+SELECT MAX(salary) FROM employee;
+# => same, but the highest salary instead of lowest
+# => 165,244
+```
+
+* SUM
+```ruby
+SELECT SUM(salary) FROM employee;
+# => Adds up the salaries for all employees and returns the result
+# => 12,445,442
+```
+
+* AVG
+```ruby
+SELECT AVG(salary) FROM employee;
+# => Gives the average of all employees' salaries
+# => 67,462
+```
+
+* COUNT
+```ruby
+SELECT COUNT(salary) FROM employee;
+# => Counts the non-null entries in a given column
+# => 200
+UPDATE employee SET salary = NULL WHERE id = 5;
+SELECT COUNT(salary) FROM employee;
+# => 199
+```
+
+* COUNT(\*)
+```ruby
+SELECT COUNT(*) FROM employee;
+# => Counts the total number of rows in the table
+# => 200
+```
+
+Aggregate functions always return a single value, calculated from the values
+in a column.
+
+# Ruby things I want to study more
+* ARGF
+* `autoload`
+* Threads
+* Fibers
+* The Date, Time etc. classes
+* The dollar-sign regex matchers, other global state vars, constants etc.
+* instance_eval, scope gates, module_eval
