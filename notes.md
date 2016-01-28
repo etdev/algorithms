@@ -500,6 +500,9 @@ x = 123.45678
 # => 123.45
 ```
 
+You need both the `.to_i` (or `.truncate`) and for the divisor 100 to be
+a float.  Or you could use `fdiv`.
+
 ### The `!~` operator
 ```ruby
 "123" =~ /\d/
@@ -509,13 +512,32 @@ x = 123.45678
 # => false
 ```
 
-You need both the `.to_i` (or `.truncate`) and for the divisor 100 to be
-a float.  Or you could use `fdiv`.
+### Percent operators
+`%w` creates an array of values as single-quote strings.
+`%W` does the same but the same but double-quote strings (e.g interpolation works)
+```ruby
+my_str = "hello"
+%w(foo bar baz #{my_str})
+# => ['foo', 'bar', 'baz', '\#{my_str}']
+%W(foo bar baz #{my_str})
+# => ["foo", "bar", "baz", "hello"]
+```
 
-### Use Array#`reverse_each` instead of `.reverse.each`
+### Use X instead of Y:
+* `reverse_each` instead of `.reverse.each`
+* `flat_map`     instead of `.flatten.map`
+* `each_key`     instead of `.keys.each`
+* `each_value`   instead of `.values.each`
+* `select`       instead of `find_all`
+* `reduce`       instead of `inject`
+* `size`         instead of `length`
+* `each_index`   instead of `each_with_index` and then only using the index
 
 # Ruby things I want to study more
 * `tr_s`
+* `autoload`
+* Threads
+* Fibers
 * The Date, Time etc. classes
 * The dollar-sign regex matchers, other global state vars, constants etc.
 * instance_eval, scope gates, module_eval
