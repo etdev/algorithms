@@ -533,6 +533,15 @@ my_str = "hello"
 * `size`         instead of `length`
 * `each_index`   instead of `each_with_index` and then only using the index
 
+### String#`tr_s` strips the overlapping characters.
+```ruby
+"abc".tr("ab", "a")
+# => "aac"
+
+"abc".tr_s("ab", "a")
+# => "ac"
+```
+
 # Rails notes
 When to add an index
 * Add one when the column will appear in `WHERE` and `ORDER BY` (sorting) expressions a lot
