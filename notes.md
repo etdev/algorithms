@@ -542,6 +542,15 @@ my_str = "hello"
 # => "ac"
 ```
 
+### Hash#`fetch` works with negative indices, and allows default values.
+```ruby
+["a", "b", "c"].fetch(-3)
+# => "a"
+
+["a", "b", "c"].fetch(-4, 5_000)
+# => 5000
+```
+
 # Rails notes
 When to add an index
 * Add one when the column will appear in `WHERE` and `ORDER BY` (sorting) expressions a lot
