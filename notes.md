@@ -551,6 +551,13 @@ my_str = "hello"
 # => 5000
 ```
 
+### Array conditional creation before use
+```ruby
+(x ||= []).include?(5)
+```
+
+Useful to make code more concise
+
 # Rails notes
 When to add an index
 * Add one when the column will appear in `WHERE` and `ORDER BY` (sorting) expressions a lot
