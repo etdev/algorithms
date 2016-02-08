@@ -558,6 +558,22 @@ my_str = "hello"
 
 Useful to make code more concise
 
+### Use Enumerable#`rotate` when rotating arrays
+```ruby
+[1, 2, 3, 4].rotate(1)
+# => [2, 3, 4, 1]
+[1, 2, 3, 4].rotate(2)
+# => [3, 4, 1, 2]
+[1, 2, 3, 4].rotate(400)
+# => [1, 2, 3, 4]
+```
+
+### Use `step(by: x)` for lazy stepping when you know how many elements instead of the max element
+```ruby
+5.step(by: 3).first(4)
+# => [5, 8, 11, 14]
+```
+
 # Rails notes
 When to add an index
 * Add one when the column will appear in `WHERE` and `ORDER BY` (sorting) expressions a lot
