@@ -574,6 +574,58 @@ Useful to make code more concise
 # => [5, 8, 11, 14]
 ```
 
+### Regex lookahead, lookbehind
+
+I feel like this is the second entry for this topic, but I still haven't
+committed it to memory so I'm going to go through it again.
+
+```ruby
+# positive lookbehind => (?<=)
+# negative lookbehind => (?<!)
+
+# positive lookahead => (?=)
+# negative lookahead => (?!)
+```
+
+```ruby
+# positive lookbehind
+str = "abc"
+
+/(?<=ab)c/ === str
+# => true
+/(?<=xx)c/ === str
+# => false
+```
+
+```ruby
+# negative lookbehind
+str = "abc"
+
+/(?<!xx)c/ === str
+# => true
+/(?<!ab)c/ === str
+# => false
+```
+
+```ruby
+# positive lookahead
+/ab(?=c)/ === str
+# => true
+/ab(?=x)/ === str
+# => false
+```
+
+```ruby
+# negative lookahead
+/ab(?!c)/ === str
+# => false
+/ab(?!x)/ === str
+# => true
+```
+
+Lookahead is just `?` plus either `=` for positive or `!` for negative.
+Lookbehind is the same but has `<` between them.
+
 # Rails notes
 When to add an index
 * Add one when the column will appear in `WHERE` and `ORDER BY` (sorting) expressions a lot
