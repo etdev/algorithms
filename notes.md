@@ -626,6 +626,15 @@ str = "abc"
 Lookahead is just `?` plus either `=` for positive or `!` for negative.
 Lookbehind is the same but has `<` between them.
 
+# Clever way to concatenate 2 chars and an incrementing number
+```ruby
+def char_concat(word)
+  (1..word.length/2).map {|i| word[i - 1] + word[-i] + i.to_s}.join
+end
+```
+
+I would have never thought to do this, but it's a good way of doing it.
+
 # Rails notes
 When to add an index
 * Add one when the column will appear in `WHERE` and `ORDER BY` (sorting) expressions a lot
