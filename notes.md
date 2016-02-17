@@ -635,6 +635,21 @@ end
 
 I would have never thought to do this, but it's a good way of doing it.
 
+# Ways to convert a character like "A" to an int representation
+```ruby
+"ABC".codepoints
+# => [65, 66, 67]
+
+"ABC".codepoints.map{ |cp| cp - 64 }
+# => [1, 2, 3] (for 1-26 rep.)
+
+"ABC".bytes
+# => [65, 66, 67]
+
+"ABC".chars.map(&:ord)
+# => [65, 66, 67]
+```
+
 # Rails notes
 When to add an index
 * Add one when the column will appear in `WHERE` and `ORDER BY` (sorting) expressions a lot
