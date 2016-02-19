@@ -729,7 +729,13 @@ in a column.
 * The dollar-sign regex matchers, other global state vars, constants etc.
 * instance_eval, scope gates, module_eval
 
+### Rails
+* Nested routes, shallow etc.
+* Activerecord `references`
+* `inverse_of`
+
 ### SQL
 * HAVING
 * When to use the different joins
 * EXTRACT
+
