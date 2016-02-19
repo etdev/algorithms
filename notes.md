@@ -718,11 +718,18 @@ SELECT COUNT(*) FROM employee;
 Aggregate functions always return a single value, calculated from the values
 in a column.
 
-# Ruby things I want to study more
+# Things I want to study more
+### Ruby
 * ARGF
 * `autoload`
 * Threads
 * Fibers
 * The Date, Time etc. classes
+* THe Directory, File classes
 * The dollar-sign regex matchers, other global state vars, constants etc.
 * instance_eval, scope gates, module_eval
+
+### SQL
+* HAVING
+* When to use the different joins
+* EXTRACT
