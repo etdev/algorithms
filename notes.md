@@ -650,6 +650,38 @@ I would have never thought to do this, but it's a good way of doing it.
 # => [65, 66, 67]
 ```
 
+### `sort_by` on a hash
+I foolishly kind of expected this to work:
+```ruby
+hsh_arr.sort_by{ |x| x.first == 5 }
+# => ArgumentError: comparison of TrueClass with false failed
+```
+
+But true and false don't have real "order" i.e. `true` isn't greater than `false`.
+
+You can do something like this though:
+```ruby
+hsh_arr.sort_by{ |x| x.first == 5 ? 0 : 1 }
+```
+
+### Use Enumerable#`grep` to check which strings in a list match some regex
+I thought to use this:
+```ruby
+str_arr = ["home", "yolo"]
+query = "me"
+str_arr.map{ |str| str if /#{query}/i === str }.compact
+# => ["home"]
+```
+
+But I could've just used this:
+```ruby
+str_arr.grep(/#{query}/i)
+# => ["home"]
+```
+
+Usually if you're running `compact` et al. on a result to get rid of unwanted elements,
+there's a better way.
+
 # Rails notes
 When to add an index
 * Add one when the column will appear in `WHERE` and `ORDER BY` (sorting) expressions a lot
