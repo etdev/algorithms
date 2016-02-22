@@ -682,6 +682,17 @@ str_arr.grep(/#{query}/i)
 Usually if you're running `compact` et al. on a result to get rid of unwanted elements,
 there's a better way.
 
+### To filter a collection by a function/proc/etc that returns true or false, use `select`
+```ruby
+# bad
+arr.map{ |x| func.call(x) ? x : nil }.compact
+
+# good
+arr.select{ |x| func.call(x) }
+```
+
+`func` returns either `true` or `false`.
+
 # Rails notes
 When to add an index
 * Add one when the column will appear in `WHERE` and `ORDER BY` (sorting) expressions a lot
