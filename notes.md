@@ -693,6 +693,30 @@ arr.select{ |x| func.call(x) }
 
 `func` returns either `true` or `false`.
 
+### Avoid converting a number to a string, editing it, and converting back when possible
+For example, to check whether an integer n has 2 or fewer digits, you should do this:
+```ruby
+n < 100
+```
+
+Not this:
+
+```ruby
+n.to_s.size <= 2
+```
+
+### Use the `divmod` method when you want both the floored result and the remainder
+of a division
+
+```ruby
+5.divmod(2)
+# => [2, 1]
+30.divmod(5)
+# => [6, 0]
+8.divmod(3)
+# => [2, 2)
+```
+
 # Rails notes
 When to add an index
 * Add one when the column will appear in `WHERE` and `ORDER BY` (sorting) expressions a lot
