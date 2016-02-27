@@ -741,7 +741,17 @@ next_multiple_of_5(3)
 
 You basically get the number after the result of (n / 5).floor.
 
-Yet another way is to do `n % 5 == 0 ? n : n.fdiv(m).ceil * n`
+Yet another way is to do `n.fdiv(m).ceil * n`, which removes the need for
+the conditional.
+
+### Use `max_by` instead of `sort_by` followed by `.max`
+```ruby
+# I did this:
+students.sort_by{ |st| st.total_money }.max.name
+
+# I should have done this:
+students.max_by(&:total_money).name
+```
 
 # Rails notes
 When to add an index
