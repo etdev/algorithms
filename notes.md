@@ -741,6 +741,8 @@ next_multiple_of_5(3)
 
 You basically get the number after the result of (n / 5).floor.
 
+Yet another way is to do `n % 5 == 0 ? n : n.fdiv(m).ceil * n`
+
 # Rails notes
 When to add an index
 * Add one when the column will appear in `WHERE` and `ORDER BY` (sorting) expressions a lot
