@@ -717,6 +717,30 @@ of a division
 # => [2, 2)
 ```
 
+### Clever way to get the next multiple of a number `m`, above a starting number `n`
+I originally did something like this:
+```ruby
+def next_multiple_of_5(n)
+  n += 1 until n % 5 == 0
+  n
+end
+
+next_multiple_of_5(3)
+# => 5
+```
+
+You could also do this though:
+```ruby
+def next_multiple_of_5(n)
+  n % 5 == 0 ? n : (n/5 + 1) * 5
+end
+
+next_multiple_of_5(3)
+# => 5
+```
+
+You basically get the number after the result of (n / 5).floor.
+
 # Rails notes
 When to add an index
 * Add one when the column will appear in `WHERE` and `ORDER BY` (sorting) expressions a lot
