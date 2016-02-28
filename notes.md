@@ -753,6 +753,19 @@ students.sort_by{ |st| st.total_money }.max.name
 students.max_by(&:total_money).name
 ```
 
+### `Hash#merge` with a block
+Supplying a block to `Hash#merge` allows you to define how to merge the values.
+
+```ruby
+hsh_one = { a: 1, b: 2, c: 3 }
+hsh_two = { a: 4, b: 5 }
+hsh_one.merge(hsh_two) do |_key, old_val, new_val|
+  old_val.to_i + new_val
+end
+
+# => {:a=>5, :b=>7, :c=>3}
+```
+
 # Rails notes
 When to add an index
 * Add one when the column will appear in `WHERE` and `ORDER BY` (sorting) expressions a lot
