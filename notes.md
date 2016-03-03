@@ -766,6 +766,17 @@ end
 # => {:a=>5, :b=>7, :c=>3}
 ```
 
+### Array#`uniq` takes a block:
+
+Useful when you have an array of hashes and want to get the unique vals by some
+key in the hash
+
+```ruby
+hsh_arr = [ { a: 1, b: 2 }, { a: 1, b: 3 }, { a: 2, b: 4 } ]
+hsh_arr.uniq { |hsh| hsh[:a] }
+# => [ { a: 1, b: 2}, { a: 2, b: 4 } ]
+```
+
 # Rails notes
 When to add an index
 * Add one when the column will appear in `WHERE` and `ORDER BY` (sorting) expressions a lot
