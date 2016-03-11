@@ -796,6 +796,8 @@ inserts and updates being slowed down doesn't really matter.
 table there's no point, and it could actually be a net detriment.
 * If a column is a variable length, indexes perform much less efficiently.
 
+### ActiveRecord methods I don't use enough
+
 # SQL notes
 Aggregate Functions
 * MIN
@@ -857,12 +859,12 @@ in a column.
 * instance_eval, scope gates, module_eval
 
 ### Rails
+* ActiveRecord query methods
+* `has_many through` form helpers.  Like `collection_check_boxes` etc.
 * Nested routes, shallow etc.
-* Activerecord `references`
 * `inverse_of`
 
 ### SQL
 * HAVING
 * When to use the different joins
 * EXTRACT
-
