@@ -777,6 +777,15 @@ hsh_arr.uniq { |hsh| hsh[:a] }
 # => [ { a: 1, b: 2}, { a: 2, b: 4 } ]
 ```
 
+### In `gsub` etc, `\0` returns the whole match
+```ruby
+str = "abc"
+str.gsub(/./, '\0\0')
+# => "aabbcc"
+```
+
+Remember to use single quotes when using `\0`, `\1` etc.
+
 # Rails notes
 When to add an index
 * Add one when the column will appear in `WHERE` and `ORDER BY` (sorting) expressions a lot
