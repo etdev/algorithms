@@ -3,7 +3,7 @@
 def generator(from, to, step)
   return [] if step < 1
   if to < from
-    from.downto(to).to_a.map.with_index.reduce([]) do |acc, (el, i)| 
+    from.downto(to).to_a.map.with_index.reduce([]) do |acc, (el, i)|
       acc << el if (el - from) % step == 0 && el >= to
       acc
     end
