@@ -786,6 +786,16 @@ str.gsub(/./, '\0\0')
 
 Remember to use single quotes when using `\0`, `\1` etc.
 
+### Negative `step`
+You can't have decreasing ranges in Ruby, but you can use the `step` method
+on `Numeric` to effectively iterate from a higher to lower value.
+
+```ruby
+10.step(1, -2).to_a
+# => 10, 8, 6, 4, 2
+```
+
+
 # Rails notes
 When to add an index
 * Add one when the column will appear in `WHERE` and `ORDER BY` (sorting) expressions a lot
