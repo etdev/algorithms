@@ -795,6 +795,15 @@ on `Numeric` to effectively iterate from a higher to lower value.
 # => 10, 8, 6, 4, 2
 ```
 
+### Hash#`invert`
+When you want to switch a hashe's keys and values
+
+```ruby
+hsh = { a: "123", b: "456" }
+hsh.invert
+# => { "123" => :a, "456" => :b }
+```
+
 
 # Rails notes
 When to add an index
