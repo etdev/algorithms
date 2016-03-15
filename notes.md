@@ -804,6 +804,15 @@ hsh.invert
 # => { "123" => :a, "456" => :b }
 ```
 
+### Chunk array by consecutive values (Array#`chunk`)
+```ruby
+# ruby <= 2.1
+[1, 2, 2, 3, 4, 4].chunk{ |num| num }.to_a
+# or ruby 2.2
+[1, 2, 2, 3, 4, 4].chunk(&:itself).to_a
+
+# => [[1, [1]], [2, [2, 2]], [3, [3]], [4, [4, 4]]]
+```
 
 # Rails notes
 When to add an index
