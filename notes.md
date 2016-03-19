@@ -950,6 +950,33 @@ the application's state.
 Gotchas coming from Flux:
 * There is no dispatcher or multiple stores.  There is just a *single store with a single root reducing function*.
 
+### Single source of truth
+The entire state of your application is stored in an object tree with a single store.
+
+```js
+console.log(store.getState())
+/* { counter: 2 } */
+```
+
+State is read-only.  The only way to mutate the state is to emit an `action`.,
+an `object describing what happened`.
+
+Actions are just plain objects; they can be logged, serialized, stored, and
+replayed for debugging/testing purposes.
+
+```js
+store.dispatch({
+  type: "COMPLETE_TODO",
+  index: 1
+})
+```
+
+To specify how the state tree is transformed by actions, you write pure `reducers`.
+
+These are just pure functions that take the previous state and an action, and return
+the next state.  That's it.  Always return a new state object, instead of mutating
+the previous state.
+
 # Things I want to study more
 ### Ruby
 * ARGF
