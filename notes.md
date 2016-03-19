@@ -884,6 +884,72 @@ SELECT COUNT(*) FROM employee;
 Aggregate functions always return a single value, calculated from the values
 in a column.
 
+# Redux Notes
+* The entire state of your app is stored in an object tree inside a single *store*.
+* The only way to change the state tree is to emit an *action*, which is an object
+that describes what happened.
+* To specify how the actions transform the state tre,, you write pure *reducers*.
+
+### Example Reducer
+It's a pure function with `(state, action) => state` signature.
+It describes how an action transforms the state into the next state.
+
+```js
+import { createStore } from "redux"
+
+function counter(state = 0, action) {
+  switch (action.type) {
+    case "INCREMENT":
+      return state + 1
+    case "DECREMENT":
+      return state - 1
+    default:
+      return state
+  }
+}
+```
+
+I guess you should always have a `default` option that returns the state unchanged.
+Also it's important that you never mutate the state; you return a new instance.
+
+### Example Redux Store
+Holds the state of your app.  Its API is `{ subscribe, dispatch, getState }`.
+
+```js
+import { createStore } from "redux"
+
+let store = createStore(counter)
+```
+
+You can subscribe to the updates manually, or use bindings to your view layer.
+
+```js
+store.subscribe(() =>
+  console.log(store.getState())
+)
+```
+
+The only way to mutate the internal state is to dispatch an action.
+
+```js
+store.dispatch({ type: "INCREMENT" })
+// 1
+store.dispatch({ type: "INCREMENT" })
+// 2
+store.dispatch({ type: "DECREMENT" })
+// 1
+store.dispatch({ type: "YOLO" })
+// 1
+```
+
+Instead of mutating the state directly, you:
+* Specify the mutations you want to happen with plain objects called `actions`.
+* Write a special function called a `reducer` to map actions to ways of changing
+the application's state.
+
+Gotchas coming from Flux:
+* There is no dispatcher or multiple stores.  There is just a *single store with a single root reducing function*.
+
 # Things I want to study more
 ### Ruby
 * ARGF
