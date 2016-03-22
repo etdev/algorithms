@@ -977,6 +977,23 @@ These are just pure functions that take the previous state and an action, and re
 the next state.  That's it.  Always return a new state object, instead of mutating
 the previous state.
 
+### File structure
+If you have an `index.js` file that requires react, redux etc. and you also have
+a file `reducers/index.js` that defines a function:
+```js
+export default function counter(state = 0, action) {
+  switch (action.type) {
+    case "INCREMENT":
+      return state + 1
+    case "DECREMENT":
+      return state - 1
+    default:
+      return state
+  }
+}
+```
+
+
 # Things I want to study more
 ### Ruby
 * ARGF
