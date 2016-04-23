@@ -1,5 +1,4 @@
 class Challenge
-
   TRAIN_PATH = "/train/ruby"
   FILE_TYPES = { "Ruby" => ".rb" }
 

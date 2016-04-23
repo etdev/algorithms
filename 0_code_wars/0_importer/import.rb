@@ -3,26 +3,56 @@ require "nokogiri"
 require "mechanize"
 require "pry"
 require "byebug"
+require "io/console"
 require_relative "./profile"
 require_relative "./challenge"
 
 GH_OAUTH_SIGNIN_URL = "https://www.codewars.com/users/preauth/github/signin"
-USERNAME = ENV["GITHUB_USERNAME"]
 
-def get_gh_authenticated_connection(username, password)
+def get_gh_authenticated_connection
   mech = Mechanize.new
-  gh_signed_in_page = mech.get(GH_OAUTH_SIGNIN_URL).form_with(name: nil) do |form|
-    form.login, form.password = [username, password]
-  end.submit
+  username = get_username
+  password = get_password
+  binding.pry
+  gh_signed_in_page = get_gh_signed_in_page(mech, username, password)
   mech.click(gh_signed_in_page.link_with(text: "click here"))
   mech
 end
 
+def get_username
+  print "\nEnter your Github username: "
+  username = gets.chomp
+end
+
+def get_password
+  print "Enter your Github password: "
+  password = STDIN.noecho(&:gets).chomp
+  puts "OK"
+  password
+end
+
+def get_gh_signed_in_page(mech, username, password)
+  mech.get(GH_OAUTH_SIGNIN_URL).form_with(name: nil) do |form|
+    form.login, form.password = [username, password]
+  end.submit
+  binding.pry
+  if mech.page.links.any?{ |link| link.text =~ /two-factor recovery/ }
+    gh_signed_in_page = mech.page.form_with(name: nil) do |form|
+      print "Enter your 2FA code: "
+      otp = gets.chomp
+      form.otp = otp
+    end.submit
+  else
+    gh_signed_in_page = mech.page
+  end
+  gh_signed_in_page
+end
+
 # authenticate
 print "\nAuthenticating..."
-mech = get_gh_authenticated_connection(ENV["GITHUB_USERNAME"], ENV["GITHUB_PW"])
+mech = get_gh_authenticated_connection
 print "."
-profile = Profile.new(USERNAME, mech, 1)
+profile = Profile.new(@username, mech, 1)
 print "."
 challenge_links = profile.challenge_links
 print ".\n"
