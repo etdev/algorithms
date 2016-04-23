@@ -13,7 +13,6 @@ def get_gh_authenticated_connection
   mech = Mechanize.new
   username = get_username
   password = get_password
-  binding.pry
   gh_signed_in_page = get_gh_signed_in_page(mech, username, password)
   mech.click(gh_signed_in_page.link_with(text: "click here"))
   mech
@@ -35,7 +34,6 @@ def get_gh_signed_in_page(mech, username, password)
   mech.get(GH_OAUTH_SIGNIN_URL).form_with(name: nil) do |form|
     form.login, form.password = [username, password]
   end.submit
-  binding.pry
   if mech.page.links.any?{ |link| link.text =~ /two-factor recovery/ }
     gh_signed_in_page = mech.page.form_with(name: nil) do |form|
       print "Enter your 2FA code: "
@@ -54,16 +52,24 @@ mech = get_gh_authenticated_connection
 print "."
 profile = Profile.new(@username, mech, 1)
 print "."
-challenge_links = profile.challenge_links
+katas = profile.katas
 print ".\n"
 
 # fetch challenges
 print "Fetching challenges and solutions..."
-challenges = challenge_links.lazy.reduce([]) do |acc, c_link|
-  print "."
-  acc << Challenge.new(mech, c_link)
+begin
+  challenges = katas.reduce([]) do |acc, kata|
+    print "."
+    sleep(2)
+    acc << Challenge.new(mech, kata)
+  end
+  print "\n"
+rescue StandardError => e
+  puts "Couldn't fetch all solutions"
+  puts e.stacktrace
 end
-print "\n"
+
+binding.pry
 
 # parse solutions
 solns = challenges.map(&:lang_parsed_solution_lists)

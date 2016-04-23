@@ -1,13 +1,15 @@
+require_relative "./kata"
+
 class Profile
   CW_BASE_URL = "http://www.codewars.com"
-  BASE_PROFILE_URL = "http://www.codewars.com/users/"
+  BASE_PROFILE_URL = "http://www.codewars.com/users"
   CHALLENGE_ITEM_CSS = ".item-title > a"
   USERNAME = ENV["GITHUB_USERNAME"]
 
   attr_accessor :url, :page
 
   def initialize(username, mech, page = 1)
-    @url = "#{BASE_PROFILE_URL}/#{USERNAME}?page=#{page}"
+    @url = "#{BASE_PROFILE_URL}/#{USERNAME}.json?page=#{page}"
     @mech = mech
     @page ||= fetch_profile_page(@mech, page)
   end
@@ -30,6 +32,16 @@ class Profile
       end
   rescue StandardError => e
     puts "Failed to parse challenge links on profile page\n#{e.inspect}"
+  end
+
+  def katas
+    page_hash = JSON.parse(@page.body)
+    katas = page_hash["completed"]
+              .map{ |obj| obj["kata"] }
+              .map{ |kata| Kata.new(*kata.values) }
+    katas
+  rescue StandardError => e
+    puts "Failed to parse katas on profile page\n#{e.inspect}"
   end
 
   private

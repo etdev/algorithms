@@ -4,11 +4,12 @@ class Challenge
 
   attr_accessor :url, :name, :page, :solutions
 
-  def initialize(mech, challenge_link)
+  def initialize(mech, kata)
     @mech = mech
-    @name, @url = challenge_link[:name], challenge_link[:url]
+    @name = kata.name
+    @url = kata.url
     @page = fetch_challenge_page
-    @solutions = solutions = fetch_solutions
+    @solutions = fetch_solutions
   end
 
   def fetch_challenge_page
@@ -40,7 +41,7 @@ class Challenge
   def generate_output_files
     lang_parsed_solution_lists.each do |soln|
       soln[:soln_list].each do |lang, lang_solns|
-        file_name = "#{Dir.pwd}/output/#{soln[:name]}#{FILE_TYPES[lang]}"
+        file_name = "#{Dir.pwd}/output/#{format_challenge_name(soln[:name])}#{FILE_TYPES[lang]}"
         File.open(file_name, File::WRONLY|File::CREAT) do |soln_file|
           soln_file.write("# #{@url}\n")
           lang_solns.each.with_index do |soln_code, i|
@@ -64,5 +65,15 @@ class Challenge
 
   def clean_up_solution_code(code)
     code.gsub(/\t/, "  ").split("\n").map(&:rstrip).join("\n") + "\n"
+  end
+
+  def format_challenge_name(challenge_name)
+    challenge_name
+      .downcase
+      .tr("^ a-z", "")[0..25]
+      .strip
+      .gsub(/\s+/, "_")
+      .gsub(/\A_/, "")
+      .gsub(/_\z/, "")
   end
 end
