@@ -67,6 +67,7 @@ class Challenge
     code.gsub(/\t/, "  ").split("\n").map(&:rstrip).join("\n") + "\n"
   end
 
+  # set to snake_case format for file names etc.
   def format_challenge_name(challenge_name)
     challenge_name
       .downcase

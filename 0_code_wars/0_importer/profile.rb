@@ -4,13 +4,13 @@ class Profile
   CW_BASE_URL = "http://www.codewars.com"
   BASE_PROFILE_URL = "http://www.codewars.com/users"
   CHALLENGE_ITEM_CSS = ".item-title > a"
-  USERNAME = ENV["GITHUB_USERNAME"]
 
-  attr_accessor :url, :page
+  attr_accessor :url, :page, :limit
 
-  def initialize(username, mech, page = 1)
-    @url = "#{BASE_PROFILE_URL}/#{USERNAME}.json?page=#{page}"
+  def initialize(username, mech, page = 1, limit = nil)
+    @url = "#{BASE_PROFILE_URL}/#{username}.json?page=#{page}"
     @mech = mech
+    @limit = limit
     @page ||= fetch_profile_page(@mech, page)
   end
 
@@ -25,7 +25,7 @@ class Profile
       begin
         @page.css(CHALLENGE_ITEM_CSS).map do |el|
           {
-            name: format_challenge_name(el.text),
+            name:el.text,
             url: CW_BASE_URL + el["href"]
           }
         end
@@ -39,21 +39,9 @@ class Profile
     katas = page_hash["completed"]
               .map{ |obj| obj["kata"] }
               .map{ |kata| Kata.new(*kata.values) }
+    katas = katas.first(limit) if limit
     katas
   rescue StandardError => e
     puts "Failed to parse katas on profile page\n#{e.inspect}"
-  end
-
-  private
-
-  # set to snake_case format for file names etc.
-  def format_challenge_name(challenge_name)
-    challenge_name
-      .downcase
-      .tr("^ a-z", "")[0..25]
-      .strip
-      .gsub(/\s+/, "_")
-      .gsub(/\A_/, "")
-      .gsub(/_\z/, "")
   end
 end

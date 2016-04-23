@@ -11,16 +11,17 @@ GH_OAUTH_SIGNIN_URL = "https://www.codewars.com/users/preauth/github/signin"
 
 def get_gh_authenticated_connection
   mech = Mechanize.new
-  username = get_username
-  password = get_password
-  gh_signed_in_page = get_gh_signed_in_page(mech, username, password)
+  @username = get_username
+  @password = get_password
+  @limit = get_limit
+  gh_signed_in_page = get_gh_signed_in_page(mech, @username, @password)
   mech.click(gh_signed_in_page.link_with(text: "click here"))
   mech
 end
 
 def get_username
   print "\nEnter your Github username: "
-  username = gets.chomp
+  gets.chomp
 end
 
 def get_password
@@ -46,11 +47,16 @@ def get_gh_signed_in_page(mech, username, password)
   gh_signed_in_page
 end
 
+def get_limit
+  print "Max number of katas to fetch: "
+  gets.chomp.to_i
+end
+
 # authenticate
 print "\nAuthenticating..."
 mech = get_gh_authenticated_connection
 print "."
-profile = Profile.new(@username, mech, 1)
+profile = Profile.new(@username, mech, 1, @limit)
 print "."
 katas = profile.katas
 print ".\n"
@@ -60,7 +66,7 @@ print "Fetching challenges and solutions..."
 begin
   challenges = katas.reduce([]) do |acc, kata|
     print "."
-    sleep(2)
+    sleep(0.5)
     acc << Challenge.new(mech, kata)
   end
   print "\n"
@@ -68,8 +74,6 @@ rescue StandardError => e
   puts "Couldn't fetch all solutions"
   puts e.stacktrace
 end
-
-binding.pry
 
 # parse solutions
 solns = challenges.map(&:lang_parsed_solution_lists)
