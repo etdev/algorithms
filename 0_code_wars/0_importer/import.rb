@@ -13,8 +13,8 @@ def get_gh_authenticated_connection
   mech = Mechanize.new
   @username = get_username
   @password = get_password
-  @limit = get_limit
   gh_signed_in_page = get_gh_signed_in_page(mech, @username, @password)
+  @limit = get_limit
   mech.click(gh_signed_in_page.link_with(text: "click here"))
   mech
 end
@@ -53,8 +53,8 @@ def get_limit
 end
 
 # authenticate
-print "\nAuthenticating..."
 mech = get_gh_authenticated_connection
+print "\nAuthenticating..."
 print "."
 profile = Profile.new(@username, mech, 1, @limit)
 print "."
@@ -77,5 +77,10 @@ end
 
 # parse solutions
 solns = challenges.map(&:lang_parsed_solution_lists)
-challenges.map(&:generate_output_files)
+begin
+  challenges.map(&:generate_output_files)
+  puts "Generated #{katas.count} kata files in output/ directory"
+rescue StandardError => e
+  puts "Failed to generate output fules"
+end
 
