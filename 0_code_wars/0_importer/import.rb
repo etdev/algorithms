@@ -72,7 +72,7 @@ begin
   print "\n"
 rescue StandardError => e
   puts "Couldn't fetch all solutions"
-  puts e.stacktrace
+  puts e.backtrace
 end
 
 # parse solutions
