@@ -814,6 +814,18 @@ hsh.invert
 # => [[1, [1]], [2, [2, 2]], [3, [3]], [4, [4, 4]]]
 ```
 
+### Enumerable#`max_by`
+Use this when you want to get the maximum of an object by e.g. some key, or
+some attribute of that object:
+```ruby
+# get longest string made up of k-length consecutive strings in str_arr:
+str_arr = ["zone", "abigail", "theta", "form", "libe", "zas", "theta", "abigail"]
+k = 2
+str_arr.each_cons(k).map(&:join).max_by(&:length)
+# => "abigailtheta"
+```
+Note that this will return the FIRST object to have that max.
+
 # Rails notes
 When to add an index
 * Add one when the column will appear in `WHERE` and `ORDER BY` (sorting) expressions a lot
@@ -992,7 +1004,6 @@ export default function counter(state = 0, action) {
   }
 }
 ```
-
 
 # Things I want to study more
 ### Ruby
