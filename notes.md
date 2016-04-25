@@ -796,7 +796,7 @@ on `Numeric` to effectively iterate from a higher to lower value.
 ```
 
 ### Hash#`invert`
-When you want to switch a hashe's keys and values
+When you want to switch a hash's keys and values
 
 ```ruby
 hsh = { a: "123", b: "456" }
@@ -825,6 +825,19 @@ str_arr.each_cons(k).map(&:join).max_by(&:length)
 # => "abigailtheta"
 ```
 Note that this will return the FIRST object to have that max.
+
+### Use an array as a stack
+When facing problems where you need to e.g.
+  * Check if the last item in some data structure has some relationship with another item and e.g. remove it if so
+  * Keep track of opening and closing paentheses
+  * etc.
+
+It might be a good idea to use a `stack`.  This kata is a really good example of
+when stacks can come in handy: 
+
+[Directions Reduction](http://www.codewars.com/kata/550f22f4d758534c1100025a/solutions/ruby)
+
+You can simply use an `Array` and then `pop` and `push` items onto/off of it.
 
 # Rails notes
 When to add an index
