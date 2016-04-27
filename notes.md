@@ -839,6 +839,18 @@ when stacks can come in handy:
 
 You can simply use an `Array` and then `pop` and `push` items onto/off of it.
 
+### Iteratively applying a simple operation to simplify something complicated
+For problems like [Double Cola](http://www.codewars.com/kata/551dd1f424b7a4cdae0001f0/solutions/ruby/),
+it's confusing at first because you have a complicated relationship, but if you think about
+what you can do to simplify it little by little, e.g.
+
+```ruby
+  r - names.length
+  r / 2
+```
+
+and then it becomes quite simple.
+
 # Rails notes
 When to add an index
 * Add one when the column will appear in `WHERE` and `ORDER BY` (sorting) expressions a lot
