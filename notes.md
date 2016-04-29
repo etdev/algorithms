@@ -851,6 +851,17 @@ what you can do to simplify it little by little, e.g.
 
 and then it becomes quite simple.
 
+### `join` flattens multi-dimensional arrays
+
+If you have:
+```ruby
+nested_chars = [["a", "b", "c"], ["d", ["e"], "f"]]
+nested_chars.join
+# => "abcdef"
+```
+
+It will join across nested arrays without having to flatten them.
+
 # Rails notes
 When to add an index
 * Add one when the column will appear in `WHERE` and `ORDER BY` (sorting) expressions a lot
