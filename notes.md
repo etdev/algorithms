@@ -941,6 +941,25 @@ date.yday
 # => 338
 ```
 
+### Set#`subset?` and Set#`superset?`
+
+```ruby
+set1 = Set.new([1, 2, 3, 4])
+set2 = Set.new([2, 3])
+
+# check if set1 is a subset of set2 (not the other way around)
+set1.subset?(set2)
+# false
+set2.subset?(set1)
+# true
+
+# check if set1 is a superset of set2
+set1.superset?(set2)
+# true
+set2.superset?(set1)
+# false
+```
+
 # Rails notes
 When to add an index
 * Add one when the column will appear in `WHERE` and `ORDER BY` (sorting) expressions a lot
