@@ -906,6 +906,16 @@ x >> 1
 x << n is basically equivalent to multiplying x by 2 n times.
 x >> n is basically equivalent to dividing x by 2 n times (integer division).
 
+### Finding factors of a number
+
+You only have to loop up to `Math.sqrt(n)` when checking values, since if `i`
+was greater than `Math.sqrt(n)`, n / i would be less than `Math.sqrt(n)`, which
+means you would have already checked that number (I'm assuming you add the
+numbers in pairs, i and n/i).
+
+The way you check for primes is similar, but instead of keeping track of the factors
+you just check if there are any besides 1 or not.
+
 # Rails notes
 When to add an index
 * Add one when the column will appear in `WHERE` and `ORDER BY` (sorting) expressions a lot
