@@ -862,6 +862,20 @@ nested_chars.join
 
 It will join across nested arrays without having to flatten them.
 
+### Fixnum#`bit_length`
+
+You can use this to get the number of bits in the binary representation of a number.
+
+```ruby
+# bad
+5.to_s(2).length
+# => 3
+
+# good
+5.bit_length
+# => 3
+```
+
 # Rails notes
 When to add an index
 * Add one when the column will appear in `WHERE` and `ORDER BY` (sorting) expressions a lot
