@@ -876,6 +876,36 @@ You can use this to get the number of bits in the binary representation of a num
 # => 3
 ```
 
+### Fixnum#`^`
+
+Bitwise XOR operator
+```ruby
+x = 5
+x.to_s(2)
+# => 101
+
+(x ^ 0b100).to_s(2)
+# => 1
+```
+
+### Fixnum#`<<` and Fixnum#`>>`
+
+These are the bitwise shift left and shift right operators, respectively
+
+```ruby
+x = 5
+x.to_s(2)
+# => 101
+x << 1
+# => 10
+
+x >> 1
+# => 2
+```
+
+x << n is basically equivalent to multiplying x by 2 n times.
+x >> n is basically equivalent to dividing x by 2 n times (integer division).
+
 # Rails notes
 When to add an index
 * Add one when the column will appear in `WHERE` and `ORDER BY` (sorting) expressions a lot
