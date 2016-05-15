@@ -916,6 +916,31 @@ numbers in pairs, i and n/i).
 The way you check for primes is similar, but instead of keeping track of the factors
 you just check if there are any besides 1 or not.
 
+### Date class
+
+Checking if a given year is a leap year
+```ruby
+require "date"
+
+# via leap? class method
+Date.leap?(1900)
+# => false
+Date.leap?(1904)
+# => true
+
+# via instance method on a Date object
+date = Date.new(2016, 12, 03)
+date.leap?
+# => true
+```
+
+Getting the number of a given day in a year
+```ruby
+date = Date.new(2016, 12, 03)
+date.yday
+# => 338
+```
+
 # Rails notes
 When to add an index
 * Add one when the column will appear in `WHERE` and `ORDER BY` (sorting) expressions a lot
