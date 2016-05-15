@@ -960,6 +960,15 @@ set2.superset?(set1)
 # false
 ```
 
+### String#`sum`
+
+You can add up the ordinal value of the characters in strings like so
+
+```ruby
+"abc".sum
+# => 294
+```
+
 # Rails notes
 When to add an index
 * Add one when the column will appear in `WHERE` and `ORDER BY` (sorting) expressions a lot
