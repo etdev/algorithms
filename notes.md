@@ -990,6 +990,545 @@ table there's no point, and it could actually be a net detriment.
 
 ### ActiveRecord methods I don't use enough
 
+# Golang notes
+
+* Install remote package: `go get github.com/username/repo`
+* Update remote package + install dependencies: `go get -u ...`
+
+`go get` basically clones the source code to the `$GOPATH/src` path and then 
+exeecutes `go install`.
+
+### Functions
+This:
+
+```go
+func add(x int, y int) int {
+  return x + y
+}
+```
+
+is the same as this:
+```go
+func add(x, y int) int {
+  return x + y
+}
+```
+
+```go
+package main
+
+import(
+  "fmt"
+)
+
+func add(x int, y int) int {
+  return x + y
+}
+
+func main() {
+  fmt.Println(add(42, 13))
+}
+```
+
+* Functions can return any number of results.
+
+```go
+func swap(x, y string) (string, string) {
+  return y, x
+}
+
+func main() {
+  a, b := swap("hello", "world")
+  fmt.Println(a, b)
+}
+```
+
+```go
+a, b := "world", "hello"
+fmt.Println(str_a, str_b)
+// => world hello
+```
+
+This will print str_a + " " + str_b
+
+* The `var` statement declares a list of variables; it can be package or
+function level.
+
+* `var` declarations can include initializers, one per variable:
+
+```go
+var i, j int = 1, 2
+var c, python, java = true, false, "no!"
+fmt.Println(i, j, c, python, java)
+// => 1 2 true false no!
+```
+
+* The `:=` short assignment statement is used in place of a `var` declaration
+with implicit type.
+  * This is ONLY AVAILABLE WITHIN FUNCTIONS.  Outside a function, every statement
+    begins with a keyword like `var`, `func` etc.
+
+Types:
+
+* bool
+* string
+* int, int8, int16, int32, int64
+* uint, uint8, uint16, uint32, uint64, uintptr
+* byte (alias for uint8)
+* rune (alias for int32) (represents a Unicode code point)
+* float32, float64
+* complex64, complex128
+
+`int`, `uint`, and `uintptr` are usually 32 bits wide on 32-bit systems, and
+64 bits wide on 64-bit systems.
+
+Default values:
+
+* numeric => 0
+* boolean => false
+* string => ""
+
+You need to cast variables e.g.
+```go
+  var i int = 42
+  // (aka i := 42)
+  var f float64 = i
+  // ERROR: cannot use (type int) as type float64
+  var f float64 = float64(i)
+  // OK
+```
+
+Constants
+
+* Declared with the `const` keyword
+* Can be character, string, boolean, or numeric vals
+* Start with uppercase value
+
+* `for` is the only looping construct
+```go
+package main
+
+import "fmt"
+
+func main() {
+  sum := 0
+  for i := 0; i < 10; i++ {
+    sum += 1
+  }
+  fmt.Println(sum)
+}
+
+// => 45
+```
+
+* No parentheses around condition
+* Braces are necessary though
+* The init and post statement are optional
+
+```go
+func main() {
+  sum := 1
+  for ; sum < 1000; {
+    sum += sum
+  }
+  fmt.Println(sum)
+}
+
+// => 1024
+```
+
+You can also just drop the semicolons then, so
+```
+  for sum < 1000 {
+    sum += sum
+  }
+```
+
+It's identical to C's `while` loop, but with for instead of while
+
+Infinite loop:
+```
+  for {
+  }
+```
+
+### If statements
+
+* Like for loops, they require no parentheses around the condition but do need
+the brackets around the body
+* They can contain a short statement to execute before the condition
+
+```go
+func pow(x, n, lim float64) float64 {
+  if v := math.Pow(x, n); v < lim {
+    return v
+  }
+  return lim
+}
+```
+
+The v variable is scoped to the body of the if statement.  Although if you declare
+it in an if, it's also available in an else connected to that if.
+
+### Switch cases
+```go
+switch os := runtime.GOOS; os {
+  case "darwin":
+    fmt.Println("OS X.")
+  case "linux":
+    fmt.Println("Linux.")
+  default:
+    fmt.Printf("%s.", os)
+}
+```
+
+Breaks automatically unless it ends with a `fallthrough` statement.
+
+### Defer
+Defers the execution of a function until the surrounding function returns.
+
+```
+func main() {
+  defer fmt.Println("world")
+  fmt.Println("hello")
+}
+```
+
+The deferred call's args are evaluated immediately, but the function call is not
+executed until the surrounding function returns.
+
+* Deferred functions calls are pushed onto a stack.  A given function's
+deferred calls are executed in a last-in-first-out order.
+
+### Pointers
+
+* Pointers hold the memory address of a variable.
+* The type `*T` is a pointer to a `T` value.  Its zero value is `nil`.
+
+```go
+var p *int
+```
+
+`*int` is a pointer to an `int` value.  Its zero value is `nil`.  So `p` is
+a pointer to an int.
+
+* The `&` operator generates a pointer to its operand.
+
+```go
+i := 42
+p = &i
+```
+
+The `*` operator denotes the pointer's underlying value.
+
+```go
+fmt.Println(*p) // read i through the pointer p
+*p = 21         // seti through the pointer p
+```
+
+This is known as `dereferencing` or `indirecting`.
+
+So `&` is basically `get_address_of(val)`
+`*` is get_var_thru_pointer(pointer) // `*p = 21`
+OR
+`pointer_of_type(type)` // `var p *int`
+
+### Structs
+
+* Simply a collection of fields
+```go
+package main
+
+import "fmt"
+
+type Vertex struct {
+  X int
+  Y int
+}
+
+func main() {
+  fmt.Println(Vertex{1, 2})
+}
+```
+
+You can access fields of a struct directly through a pointer to that struct, e.g.
+
+```go
+v := Vertex{1, 2}
+p := &v
+p.X = 1e9
+fmt.Println(v)
+// {1000000000 2}
+```
+
+The special prefix `&` returns a pointer to the struct value
+```go
+v1 = Vertex{1, 2} // Vertex
+v2 = Vertex{X: 1} // Y: 0 is implicit
+v3 = Vertex{} // X: 0, Y: 0
+p = &Vertex{1, 2} // has type *Vertex
+```
+
+### Arrays
+
+`[n]T` is an array of `n` values of type `T`.
+* `[5]int` is an array of 5 ints.
+* `[50]string` is an array of 50 strings.
+
+`var a [10]int` declares a variable `a` as an array of ten integers.
+
+* Arrays can't be resized.
+
+### Slices
+
+A `slice` is a dynamically-sized, flexible view into the elements of an array.
+In practice, slices are much more common than arrays.
+
+The type `[]T` is a slice with elements of type `T`.
+
+To create a slice of the first five elements of the array `a`:
+
+`a[0:5]
+
+```go
+func main() {
+  primes := [6]int{2, 3, 5, 7, 11, 13}
+  var s []int = primes[1:4]
+
+}
+```
+
+Slices are like references to arrays.  They don't store any data; they just
+describe a section of an underlying array.
+
+* Changing the elements of a slice modifies the corresponding elements of its
+underlying array.
+* Other slices that share the same underlying array will see those changes.
+
+Slice Literals
+
+This is an array literal:
+`[3]bool{true, true, false}
+
+And this creates the same array as above, then builds a slice that references it:
+
+`[]bool{true, true, false}`
+
+Slice Defaults
+
+* The default is zero for the low bound and the length of the slice for
+the high bount.
+
+```go
+var a [10]int
+
+a[0:10]
+a[:10]
+a[0:]
+a[:]
+// all equivalent
+```
+
+* The `length` of a slice is the number of elements it contains.
+* The `capacity` of a slice is the number of elements in the underlying array,
+counting from the first element in the slice.
+* The length of a slice `s` is `len(s)`.  The capacity of a slice `s` is `cap(s)`.
+
+You can extend a slice's length by re-slicing it, if it has enough capacity.
+
+* The zero value of a slice is `nil`.  A `nil` slice has a length and capacity
+of `0` and no underlying array.
+
+Dynamic arrays and `make`
+
+* The built-in `make` function is how you create `dynamically-sized arrays.`
+
+```go
+a := make([]int, 5) // len(a) = 5
+b := make([]int, 0, 5) // len(b) = 0, cap(b) = 5
+
+b = b[:cap(b)] // len(b) = 5, cap(b) = 5
+b = b[1:]     // len(b) = 4, cap(b) = 4
+```
+
+* You can have slices of slices.
+
+Appending to a slice
+
+Use the built-in `append` function to append to a slice.
+
+```go
+var s []int
+printSlice(s)
+// []
+
+s = append(s, 0)
+printSlice(s)
+// [0]
+```
+
+### Range
+
+The `range` form of the `for loop` iterates over a slice or map.
+
+When ranging over a slice, two values are returned for each iteration;
+the first is the index, and the second is a copy of the element at that index.
+
+```go
+var pow = []int{1, 2, 4, 8, 16, 32, 64, 128}
+
+func main() {
+  for i, v := range pow {
+    fmt.Printf("2**%d = %d\n", i, v)
+  }
+}
+```
+
+* Skip the index by assigning to `_`
+
+```go
+for _, value := range pow {
+  fmt.Printf("%d\n", value)
+}
+```
+
+* Just drop the `, value` if you only need the index
+
+### Maps
+The zero value of a map is `nil`.
+
+* The `make` function returns a map of the given type, initialized and ready to
+use:
+
+```go
+var m map[string]Vertex
+m = make(map[string]Vertex)
+m["Bell Labs"] = Vertex{
+  40.68433, -74.39967,
+}
+fmt.Println(m["Bell Labs"])
+// {40.68433 -74.39967}
+```
+
+Map Literals
+
+```go
+type Vertex struct {
+  Lat, Long float64
+}
+
+var m = map[string]Vertex{
+  "Bell Labs": Vertex{
+    40.68433, -74.39967,
+  },
+  "Google": Vertex{
+    37.42202, -122.08408,
+  },
+}
+
+func main() {
+  fmt.Println(m)
+}
+```
+
+* If the top-level type is just a type name, you can omit it from the elements
+of the literal:
+
+```go
+type Vertex struct {
+  Lat, Long float64
+}
+
+var m = map[string]Vertex{
+  "Bell Labs": {40.68433, -74.39967},
+  "Google": {37.42202, -122.08408},
+}
+
+func main() {
+  fmt.Println(m)
+}
+```
+
+* If `m` is a map, you delete an element with:
+
+```go
+delete(m, key)
+```
+
+* Test that a key is present with a two-value assignment:
+
+```go
+elem, ok = m[key]
+```
+
+If `key` is in `m`, ok is `true`.  If not, `ok` is `false`.
+
+### Methods
+
+* Go doesn't have classes, but you can define `method`s on `type`s.
+
+```go
+package main
+
+import (
+  "fmt"
+  "math"
+)
+
+type Vertex struct {
+  X, Y float64
+}
+
+func (v Vertex) Abs() float64 {
+  return math.Sqrt(v.X*v.X + v.Y*v.Y)
+}
+```
+
+A `method` is a function with a special `receiver` argument.
+
+* The receiver appears in its own argument list between the `func` keyword and
+the method name.
+
+You can define methods on non-struct types too.  For example,
+
+```go
+type MyFloat float64
+
+func (f MyFloat) Abs() flat64 {
+  if f < 0 {
+    return float64(-f)
+  }
+  return float64(f)
+}
+
+func main() {
+  f := MyFloat(-math.Sqrt2)
+  fmt.Println(f.Abs())
+}
+```
+
+Methods with pointer receivers
+
+* This means the receiver type has the literal syntax `*T` for some type `T`.
+* T cannot itself be a pointer such as `*int`.
+* Methods with pointer receivers can modify the value to which the receiver
+points, so pointer receivers are more common than value receivers.
+
+Reasons to use a pointer receiver:
+1. So the method can modify the value that its receiver points to
+2. To avoid copying the value on each method call.  This can be more efficient
+if the receiver is a large struct, for example.
+
+* Usually all methods on a given type should have either value or pointer
+receivers, but not a mixture of both.
+
+### Interfaces
+
+* No `implements` keyword; interfaces are implemented implicitly by having
+the methods with the correct signatures.
+
+
+
 # SQL notes
 Aggregate Functions
 * MIN
