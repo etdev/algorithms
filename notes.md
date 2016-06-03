@@ -1528,6 +1528,165 @@ receivers, but not a mixture of both.
 the methods with the correct signatures.
 
 
+# API Design notes
+
+### Separate Concerns
+
+* Requests and responses will be made to address a particular resource or collection.
+* Use the path to indicate `identity`
+* Use the body to transfer the `contents`
+* Use the headers to communicate `metadata`
+* Use query params as a means to pass header information in edge cases,
+but headers are preferred as they're more flexible
+
+### Headers
+
+* Require a version to be specified with all requests:
+
+```
+Accept: application/vnd.heroku+json; version=3
+```
+
+* Include an `ETag` header, to helo users cache with `If-None-Match`
+* Include a `Request-Id` header in each API response, populated with a UUID value.
+* A UUID is a 128-bit number used to uniquely identify someobject on the internet.
+* Break up large responses across multiple requests using `Range` headers to specify
+when more data is available and how to retrieve it.
+
+### Requests
+* Accept serialized JSON on `PUT` / `Patch` / `POST` request bodies, either instead
+of or in addition to form-encoded data.
+
+```
+$ curl -X POST https://service.com/apps \
+  -H "Content-Type: application/json" \
+  -d '{"name": "demoapp"}'
+```
+
+```
+{
+  "id": "01234567-89ab-cdef-0123-456789abcdef",
+  "name": "demoapp",
+  "owner": {
+    "email": "username@example.com",
+    "id": "01234567-89ab-cdef-0123-456789abcdef"
+  },
+  ...
+}
+```
+
+* Use plural versions of resource names unless it's a singleton like `status`,
+which refers to the overall status of the system.
+* Prefer endpoint layouts that don't require special actions for individual
+resources, but when they are needed, place them under a standard `actions`
+prefix, to clearly delineate them:
+
+### Path formats
+* Use downcased, kebab-case path names:
+```
+service-api.com/users
+service-api.com/app-setups
+```
+
+* Downcase attributes as well, but use underscore separators so that attr names
+can be typed without quotes in Javascript, e.g:
+```
+service_class: "first"
+```
+
+* Support non-id dereferencing for convenience.  For example, a user may think
+in terms of a Heroku app name, but that app may be identified by a UUID.
+
+```
+curl https://service.com/apps/{app_id_or_name}
+curl https://service.com/apps/97addcf0-c182
+curl https://service.com/apps/www-prod
+```
+
+Don't ONLY accept names to the exclusion of IDs though.
+
+* Avoid deep nesting
+Instead of:
+```
+/orgs/{org_id}/apps/{app_id}/dynos/{dyno_id}
+```
+
+Do this:
+```
+/orgs/{org_id}
+/orgs/{org_id}/apps
+/apps/{app_id}
+/apps/{app_id}/dynos
+/dynos/{dyno_id}
+```
+
+### Responses
+
+Status codes
+* `200` -> Request succeeded for a `GET`, a synchronous `DELETE` or `PATCH`, or a `PUT`
+that synchronously updated an existing resource
+* `201` -> Request succeeded for a synchronous `POST`, or a `PUT` that synchronously
+created a new resource
+* `202` -> Request accepted for an asynchronous `POST`, `PUT`, `DELETE`, or `PATCH`
+* `206` -> Request succeeded on `GET`, but only a partial response returned
+
+* `401 Unauthorized` -> not authenticated so failed
+* `403 Forbidden` -> user does not have authorization to access a specific resource
+
+* `422 Unprocessable Entity` -> Request understood, but contained invalid params
+* `429 Too Many Requests` -> You have been rate-limited, retry later
+* `500 Internal Server Error` -> Something went wrong on the server, check status site and/or
+report the issue
+
+* Provide full resources where available
+* Provide resource (UU)IDs
+```
+"id": "01234567-89ab-cdef-0123-456789abcdef"
+```
+
+* Provide `created_at` and `updated_at` timestamps for resources, by default e.g:
+
+```
+{
+// ...
+  "created_at": "2012-01-01T12:00:00Z",
+  "updated_at": "2012-01-01T13:00:00Z",
+}
+```
+
+* Accept and return times in UTC only; use the ISO8601 format, e.g.:
+```
+"finished_at": "2012-01-01T12:00:00Z"
+```
+
+* Serialize foreign key references with a nested object, e.g.
+```
+{
+"name": "service-production",
+  "owner": {
+    "id": "5d8201b0..."
+  },
+  // ...
+}
+```
+
+Don't just list the e.g. `owner_id`.  The first way lets you inline more
+info about the related resource without having to change the structure of the
+response or introduce more top-level response fields.
+
+* Generate structured errors
+```
+HTTP/1.1 429 Too Many Requests
+```
+```
+{
+  "id": "rate_limit",
+  "message": "Account reached its API rate limit.",
+  "url": "https://docs.service.com/rate-limits"
+}
+```
+
+* Keep JSON responses minified; maybe add `?pretty=true` option
 
 # SQL notes
 Aggregate Functions
