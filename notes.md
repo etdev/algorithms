@@ -1749,8 +1749,45 @@ doSomethingForAWhile()
 <-c // Wait for sort to finish; discard sent value
 ```
 
+Channel basics:
+```
+ch <- v // send v to channel ch
+v := <-ch // receive from ch, and assign value to v
+```
 
+Initialization:
+```
+ch := make(chan int)
+```
 
+Example:
+```
+func sum(s []int, c chan int) {
+  sum := 0
+  for _, v := range s {
+    sum += v
+  }
+  c <- sum
+}
+
+func main() {
+  s := []int{7, 2, 8, -9, 4, 0}
+  c := make(chan int)
+
+  go sum(s[:len(s)/2], c)
+  go sum(s[len(s)/2:], c)
+  x, y := <-c, <-c
+
+  fmt.Println(x, y, x+y)
+}
+```
+
+Buffered Channels
+
+The second method to a channel `make` is the buffer length
+```
+ch := make(chan int, 100)
+```
 
 # API Design notes
 
