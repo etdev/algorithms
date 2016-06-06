@@ -1527,6 +1527,230 @@ receivers, but not a mixture of both.
 * No `implements` keyword; interfaces are implemented implicitly by having
 the methods with the correct signatures.
 
+### FMT package
+
+Printing - The verbs
+
+* `%v` - the value in a default format
+* `%$v` - A Go-syntax representation of the value
+* `%T` - A Go-syntax representation of the type of the value
+* `%%` - a literal percent sign
+
+Boolean
+
+* `%t` - the word true or false
+
+Integer
+
+* `%b` - base 2
+* `%c` - the char represented by the corresponding Unicode code point
+* `%d` - base 10
+* `%o` - base 8
+* `%q` - a single-quoted character literal safely escaped with Go syntax.
+* `%x` - base 16, with lower-case letters for a-f
+* `%X` - base 16, with upper-case letters for A-F
+* `%U` - Unicode format: U+1234; same as "U+%04X"
+
+Floating-point
+
+* `%b` - decimalless scientific notation with exponent a power of 2
+e.g. `-123456p-78`
+
+* `%e` - scientific notation with `e`
+* `%E` - scientific notation with `E`
+* `%f` - decimal point but no exponent, e.g. 123.456
+* `%F` - same as %f
+* `%g` - `%e` for large exponents, `%f` otherwise
+* `%G` - `%E` for large exponents, `%F` otherwise
+
+String and slice of bytes
+
+* `%s` - the uninterpreted bytes of the string or slice
+* `%q` - a double-quoted string safely escaped with Go syntax
+
+### More on Slices
+
+Slices are a data structure describing a contiguous section of an array stored
+separately from the slice variable itself.
+
+A slice literal is declared just like an array literal, except you leave out
+the element count:
+
+```
+letters := []string{"a", "b", "c", "d"}
+```
+```
+
+They can also be created with the built-in function `make`, which has the signature
+```
+func make([]T, len, cap) []T
+```
+
+where `T` is the element type of the slice to be created.  The `make` function takes
+a type, a length, and an optional capacity.  When called, `make` allocates an array
+and returns a slice that refers to that array.
+
+```
+s := make([]byte, 5)
+len(s) == 5
+cap(s) == 5
+```
+
+Basically `make` allocates an array of the given capacity (which will be the length
+when no capacity is specified)
+
+You can also form a slice by "slicing" an existing slice or array.  Slicing is done
+by specifying a half-open range with 2 indices separated by a colon.  For example,
+the expression b[1:4] creates a slice including elements 1 through 3 of b.  The
+indices of the resulting slice will be 0 through 2.
+
+```
+b := []byte{'g', 'o', 'l', 'a', 'n', 'g'}
+// b[1:r] == []byte{'o', 'l', 'a'}, sharing the same storage as b
+```
+
+The start and end indices of a slice expression are optional; they default to 0
+and the slice's length, respectively.
+
+```
+letters := []string{"a", "b", "c", "d", "e"}
+fmt.Println(letters[:3])
+// [a, b, c]
+```
+
+So if you specify `[:3]`, it will return a new slice with indices 0, 1, 2 (i.e
+it's non-inclusive to the max element)
+
+Also, `letters[:] == letters`
+
+And to simply create a slice from an array,
+
+```
+arr := [3]string{"abc", "def", "ghi"}
+slc := arr[:]
+```
+
+Slicing does not copy the slice's data.  It creates a new slice value that
+points to the original array.  This makes slice operations as efficient as manipulating
+array indices.  This also means that modifying the elements of a re-slice modifies
+the elements of the original slice:
+
+```
+d := []byte{"r", "o", "a", "d"}
+e := d[2:]
+// e == []byte{"a", "d"}
+e[1] = 'm'
+// d == []byte{"r", "o", "a", "m"}
+// e == []byte{"a", "m"}
+```
+```
+
+A slice cannot be grown beyond its capacity however.  It will cause a runtime panic,
+just like attempting to access an element not in an array.
+
+### Growing Slices (`copy` and `append`)
+
+To increase the capacity of a slice, one must create a new, larger slice
+and copy the contents of the original slice into it.  This technique is how dynamic
+array implementations from other languages work.  We basically double the capacity
+of `s` by making a new slice, `t`, copying the contents of `s` into `t`, and then
+assigning the slice value `t` to `s`:
+
+```
+t := make([]byte, len(s), (cap(s)+1)*2) // +1 in case cap(s) == 0
+for i := range s {
+  t [i] = s[i]
+}
+s = t
+```
+
+The built-in `copy` function makes the `for` part of this easier, by copying
+data from a source slice to a destination slice.  It returns the number of
+elements copied.
+
+```
+func copy(dst, src []T) int
+```
+
+So to re-write the above using `copy`:
+```
+t := make([]byte, len(s), (cap(s)+1)*2)
+copy(t, s) // destination is first
+s = t
+```
+
+`copy(t, s)` means `copy s into t`
+
+The `append` function
+
+```
+func append(s []T, x ...T) []T
+```
+
+The append function appends the elements `x` to the end of the slice `s`,
+and grows the slice if a greater capacity is needed.
+
+```
+a := make([]int, 1)
+// a == []int{0}
+a = append(a, 1, 2, 3)
+// a == []int{0, 1, 2, 3}
+```
+
+To append one slice to another, use `...` to expand the second argument to
+a list of arguments
+
+```
+a := []string{"John", "Paul"}
+b := []string{"George", "Ringo", "Pete"}
+a = append(a, b...)
+```
+
+// a == []string{"John", "Paul", "George", "Ringo", "Pete"}
+
+### Goroutines
+
+Goroutines are multiplexed onto multiple OS threads so if one should block, such as while waiting for I/O,
+others continue to run.
+
+Prefix a function or method call with the `go` keyword to run the call in a new
+goroutine.  When the call completes, the goroutine exists, silently.
+
+```
+go list.Sort() // run list.Sort concurrently; don't wait for it
+```
+
+In order to signal completion, you need `channels`.
+
+### Channels
+
+Like `map`s, channels are allocated with `make`, and the resulting value acts as a
+reference to an underlying data structure.  If an optional integer param is
+provided, it sets the buffer size for the channel.  The default is 0, for an unbuffered
+or synchronous channel.
+
+```
+ci := make(chan int)    // unbuffered channel of integers
+cj := make(chan int, 0) // unbuffered channel of integers
+cj := make(cha *os.File, 100) // buffered channel of pointers to Files
+```
+
+Unbuffered channels combine communication -- the exchange of a value -- with
+synchronization -- guaranteeing that 2 calculations (goroutines) are in a known state.
+
+```
+c := make(chan int) // Allocate a channel
+// Start the sort in a goroutine; when it completes, signal on the channel
+go func() {
+  list.Sort()
+  c <- 1 // Send a signal; the value doesn't matter
+}()
+doSomethingForAWhile()
+<-c // Wait for sort to finish; discard sent value
+```
+
+
+
 
 # API Design notes
 
