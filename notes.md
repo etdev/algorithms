@@ -1789,6 +1789,53 @@ The second method to a channel `make` is the buffer length
 ch := make(chan int, 100)
 ```
 
+### Golang net/http
+
+Basic web server:
+
+```
+package main
+
+import (
+    "fmt"
+    "net/http"
+)
+
+func handler(w http.ResponseWriter, r *http.Request) {
+    fmt.Fprintf(w, "Hi there, I love %s!", r.URL.Path[1:])
+}
+
+func main() {
+    http.HandleFunc("/", handler)
+    http.ListenAndServe(":8080", nil)
+}
+```
+
+Handle all requests to the web root ("/") with `handler`:
+```
+http.HandleFunc("/", handler)
+```
+
+Specify that the web server should listen on port `8080` on any interface (":8080"):
+```
+http.ListenAndServe(":8080", nil)
+```
+
+This `handler` function is of the type `httttp.HandlerFunc`.  It takes
+* An `http.ResponseWriter`
+* An `http.Request`
+
+as its arguments.
+
+An `http.ResponseWriter` value assembles the HTTP server's response; by writing
+to it, we send data to the HTTP client.
+
+An `http.Request` is a data structure that represents the client HTTP request.
+
+`r.URL.Path` is the path component of the request URL.  The trailing `[1:]` drops
+the leading "/" from the path name.
+
+
 # API Design notes
 
 ### Separate Concerns
