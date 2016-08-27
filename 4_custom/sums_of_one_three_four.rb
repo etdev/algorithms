@@ -18,13 +18,13 @@ class SumsOfOneThreeFour
 
   def test_cases
     [
-      { in: -500, out: 0 },
-      { in: -1, out: 0 },
-      { in: 0, out: 1 },
-      { in: 1, out: 1 },
-      { in: 3, out: 2 },
-      { in: 4, out: 4 },
-      { in: 5, out: 6 }
+      { name: "negative1", in: -500, out: 0 },
+      { name: "negative2", in: -1, out: 0 },
+      { name: "zero", in: 0, out: 1 },
+      { name: "one", in: 1, out: 1 },
+      { name: "three", in: 3, out: 2 },
+      { name: "four", in: 4, out: 4 },
+      { name: "five", in: 5, out: 6 }
     ]
   end
 end
