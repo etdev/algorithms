@@ -6,7 +6,7 @@ class InsertionSort
   def solution(arr)
     return [] unless arr && arr.is_a?(Array)
     return arr unless arr.size > 1
-    1.upto(arr.size-1).each do |i|
+    (1...arr.size).each do|i|
       i.downto(1).each do |j|
         if arr[j] < arr[j-1]
           arr[j], arr[j-1] = arr[j-1], arr[j]
