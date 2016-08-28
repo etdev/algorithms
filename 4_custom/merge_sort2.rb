@@ -8,35 +8,24 @@ class MergeSort
   end
 
   def merge_sort(arr)
-    if !arr || arr.empty? || !arr.is_a?(Array)
-      return []
-    elsif arr.size == 1
-      return arr
-    end
-    mp = arr.length / 2
-    left = merge_sort(arr[0...mp])
-    right = merge_sort(arr[mp..-1])
-    merge(left, right)
+    return [] unless arr && arr.is_a?(Array)
+    return arr unless arr.size > 1
+    mp = arr.size / 2
+    left = arr[0...mp]
+    right = arr[mp...arr.size]
+    merge(merge_sort(left), merge_sort(right))
   end
 
   def merge(left, right)
     merged = []
-    while (!left.empty? || !right.empty?)
-      if left.empty?
-        merged = merged.concat(right)
-        return merged
-      elsif right.empty?
-        merged = merged.concat(left)
-        return merged
+    until left.empty? || right.empty?
+      if left.first < right.first
+        merged << left.shift
       else
-        if left[0] < right[0]
-          merged << left.shift
-        else
-          merged << right.shift
-        end
+        merged << right.shift
       end
     end
-    return merged
+    merged.concat(left).concat(right)
   end
 
   def test_cases

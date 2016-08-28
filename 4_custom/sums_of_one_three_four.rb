@@ -3,7 +3,6 @@ require_relative "./testable"
 # order matters (i.e. [1 + 3 + 1] != [3 + 1 + 1])
 class SumsOfOneThreeFour
   include Testable
-  attr_reader :test_cases
 
   def solution(n)
     return 0 if n < 0
@@ -13,8 +12,6 @@ class SumsOfOneThreeFour
     end
     counts[n]
   end
-
-  private
 
   def test_cases
     [

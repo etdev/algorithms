@@ -2,7 +2,6 @@ require_relative "./testable"
 
 class BubbleSort
   include Testable
-  attr_reader :test_cases
 
   def solution(arr)
     return [] unless (arr && arr.is_a?(Array))
@@ -20,8 +19,6 @@ class BubbleSort
     end
     arr
   end
-
-  private
 
   def test_cases
     puts "Setting up test data..."
