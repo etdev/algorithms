@@ -1,20 +1,20 @@
 require_relative "./testable"
 
-class BubbleSort
+class SelectionSort
   include Testable
 
   def solution(arr)
     return [] unless arr && arr.is_a?(Array)
     return arr unless arr.size > 1
-    loop do
-      swapped = false
-      (1...arr.size).each do |i|
-        if arr[i] < arr[i-1]
-          arr[i-1], arr[i] = arr[i], arr[i-1]
-          swapped = true
+
+    (0..arr.size-2).each do |i|
+      min_idx = i
+      ((i + 1)...arr.size).each do |j|
+        if arr[j] < arr[min_idx]
+          min_idx = j
         end
       end
-      return arr if !swapped
+      arr[i], arr[min_idx] = arr[min_idx], arr[i]
     end
     arr
   end
@@ -50,4 +50,4 @@ class BubbleSort
 
 end
 
-BubbleSort.new.test
+SelectionSort.new.test
