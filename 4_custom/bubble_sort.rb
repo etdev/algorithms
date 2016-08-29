@@ -33,15 +33,15 @@ class BubbleSort
     test_case_10_thousand_sorted = test_case_10_thousand.sort
 
     [
-      { name: "empty array", in: [], out: [] },
-      { name: "nil", in: nil, out: [] },
-      { name: "non-array", in: "invalid", out: [] },
-      { name: "array with single integer", in: [12000], out: [12000] },
-      { name: "array w/ large negative element", in: [5, -20000000000000], out: [-20000000000000, 5] },
-      { name: "simple 6-element array", in: [2, 4, 3, 1, 6, 5], out: [1, 2, 3, 4, 5, 6] },
-      { name: "1 hundred element array", in: test_case_1_hundred, out: test_case_1_hundred_sorted },
-      { name: "1 thousand element array", in: test_case_1_thousand, out: test_case_1_thousand_sorted },
-      { name: "10 thousand element array", in: test_case_10_thousand, out: test_case_10_thousand_sorted }
+      { name: "empty array", in: { a: [] }, out: [] },
+      { name: "nil", in: { a: nil }, out: [] },
+      { name: "non-array", in: { a: "invalid" }, out: [] },
+      { name: "array with single integer", in: { a: [12000] }, out: [12000] },
+      { name: "array w/ large negative element", in: { a: [5, -20000000000000] }, out: [-20000000000000, 5] },
+      { name: "simple 6-element array", in: { a: [2, 4, 3, 1, 6, 5] }, out: [1, 2, 3, 4, 5, 6] },
+      { name: "1 hundred element array", in: { a: test_case_1_hundred }, out: test_case_1_hundred_sorted },
+      { name: "1 thousand element array", in: { a: test_case_1_thousand }, out: test_case_1_thousand_sorted },
+      { name: "10 thousand element array", in: { a: test_case_10_thousand }, out: test_case_10_thousand_sorted }
     ]
   end
 
