@@ -13,7 +13,7 @@ module Testable
         puts passing_text "#{test_name} - OK"
       else
         puts failing_text "#{test_name} - FAILED"
-        puts failing_text "actual result: #{solution(input) || "nil"}" if debug
+        puts failing_text "actual result: #{solution(*input) || "nil"}" if debug
       end
     end
   end
