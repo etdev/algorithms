@@ -5,25 +5,30 @@ require "benchmark"
 module Testable
   def test(debug: false)
     test_cases.each do |test_case|
+      method_name = test_case.fetch(:method_name, :solution)
       input = sanitize_input(test_case.fetch(:in))
       test_name, output = test_case.values_at(:name, :out)
-      puts "Testing that solution(#{input}) == #{output}" if debug
+      if debug
+        puts "Testing that #{method_name}(#{input}) == #{output}"
+      end
 
-      if test_passes?(test_name, input, output)
+      if test_passes?(test_name, method_name, input, output)
         puts passing_text "#{test_name} - OK"
       else
         puts failing_text "#{test_name} - FAILED"
-        puts failing_text "actual result: #{solution(*input) || "nil"}" if debug
+        if debug
+          puts failing_text "actual result: #{send(method_name, *input) || "nil"}"
+        end
       end
     end
   end
 
   private
 
-  def test_passes?(name, input, output)
+  def test_passes?(name, method_name, input, output)
     result = nil
     Benchmark.bm(7) do |bench|
-      bench.report("#{name}")   { result = solution(*input) }
+      bench.report("#{name}")   { result = send(method_name, *input) }
     end
     result == output
   end
