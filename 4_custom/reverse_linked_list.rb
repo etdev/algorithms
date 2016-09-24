@@ -1,0 +1,88 @@
+require_relative "./testable"
+
+class ReverseLinkedList
+  include Testable
+
+  # Definition for singly-linked list.
+  # @param {ListNode} head
+  # @return {ListNode}
+  class ListNode
+    attr_accessor :val, :next
+    def initialize(val)
+        @val = val
+        @next = nil
+    end
+
+    def to_s
+      vals = []
+      n = self
+      until n.nil?
+        vals << n.val
+        n = n.next
+      end
+      "[#{vals.join(",")}]"
+    end
+
+    def ==(other)
+      self.to_s == other.to_s
+    end
+  end
+
+  def reverse_list(head)
+    return nil unless head.is_a?(ListNode)
+    node = head
+    prev = nil
+    # get node
+    until node.nil?
+      # store the node's next element
+      old_next = node.next
+      # set pointer to previous
+      node.next = prev
+      # set previous node to current
+      prev = node
+      # get next node
+      node = old_next
+    end
+    prev
+  end
+
+  def test_cases
+    one_node_list = generate_list([1])
+    one_node_list_rev = generate_list([1])
+
+    two_node_list = generate_list([1, 2])
+    two_node_list_rev = generate_list([2, 1])
+    base = { method_name: "reverse_list" }
+
+    one_thousand_element_arr = [*1..1000].shuffle
+    one_thousand_element_arr_rev = one_thousand_element_arr.reverse
+
+    one_thousand_node_list = generate_list(one_thousand_element_arr)
+    one_thousand_node_list_rev = generate_list(one_thousand_element_arr_rev)
+
+    [
+      { name: "empty array", in: [], out: nil },
+      { name: "nil", in: nil, out: nil },
+      { name: "string", in: "invalid", out: nil },
+      { name: "one node", in: one_node_list, out: one_node_list },
+      { name: "two nodes", in: two_node_list, out: two_node_list_rev },
+      { name: "thousand nodes", in: one_thousand_node_list, out: one_thousand_node_list_rev },
+    ].map{ |h| base.merge(h) }
+  end
+
+  private
+
+  def generate_list(vals)
+    return nil unless vals.is_a?(Array)
+    head = ListNode.new(vals.shift)
+    node = head
+    until vals.empty?
+      old_node = node
+      node = ListNode.new(vals.shift)
+      old_node.next = node
+    end
+    head
+  end
+end
+
+ReverseLinkedList.new.test
