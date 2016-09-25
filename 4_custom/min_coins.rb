@@ -5,15 +5,21 @@ class MinCoins
 
   # val = coin value
   # min_results = memo
-  def solution(val, min_results = [0])
-    return nil unless val.is_a?(Fixnum) && val > 0
-    return min_results[val] if min_results[val]
-    coin_vals = [1, 3, 5].select{ |x| x <= val }
-    min_vals = coin_vals.map do |coin_val|
-      min_results[val - coin_val] || solution(val - coin_val, min_results)
-    end
-    min_results[val] = min_vals.min + 1
-    min_results[val]
+  def solution(total, min_counts=[])
+    return nil unless total.is_a?(Fixnum)
+    min_counts = [0]
+    coin_vals = [1, 3, 5]
+    min_count(coin_vals, total, min_counts)
+  end
+
+  def min_count(coin_vals, total, min_counts)
+    return min_counts[total] if min_counts[total]
+    active_coins = coin_vals.select { |v| total >= v }
+    min = active_coins.map do |coin|
+      min_counts[total - coin] || min_count(coin_vals, total - coin, min_counts)
+    end.min + 1
+    min_counts[total] = min
+    min
   end
 
   def test_cases
@@ -27,7 +33,6 @@ class MinCoins
       { name: "four cents", in: 4, out: 2 }
     ]
   end
-
 end
 
 MinCoins.new.test
