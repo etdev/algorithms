@@ -32,27 +32,33 @@ class ReverseLinkedList
     return nil unless head.is_a?(ListNode)
     node = head
     prev = nil
-    # get node
     until node.nil?
-      # store the node's next element
-      old_next = node.next
-      # set pointer to previous
+      next_node  = node.next
       node.next = prev
-      # set previous node to current
       prev = node
-      # get next node
-      node = old_next
+      node = next_node
     end
     prev
   end
 
+  def reverse_list_recursive(head)
+    return nil unless head.is_a?(ListNode)
+    return head unless head.next
+    rest = reverse_list_recursive(head.next)
+    head.next.next = head
+    head.next = nil
+    rest
+  end
+
   def test_cases
+    # check iterative
     one_node_list = generate_list([1])
     one_node_list_rev = generate_list([1])
 
     two_node_list = generate_list([1, 2])
     two_node_list_rev = generate_list([2, 1])
     base = { method_name: "reverse_list" }
+    base_rec = { method_name: "reverse_list_recursive" }
 
     one_thousand_element_arr = [*1..1000].shuffle
     one_thousand_element_arr_rev = one_thousand_element_arr.reverse
@@ -60,14 +66,17 @@ class ReverseLinkedList
     one_thousand_node_list = generate_list(one_thousand_element_arr)
     one_thousand_node_list_rev = generate_list(one_thousand_element_arr_rev)
 
-    [
+    cases = [
       { name: "empty array", in: [], out: nil },
       { name: "nil", in: nil, out: nil },
       { name: "string", in: "invalid", out: nil },
       { name: "one node", in: one_node_list, out: one_node_list },
       { name: "two nodes", in: two_node_list, out: two_node_list_rev },
       { name: "thousand nodes", in: one_thousand_node_list, out: one_thousand_node_list_rev },
-    ].map{ |h| base.merge(h) }
+    ]
+    #cases.map{ |h| base.merge(h) }
+    # check recursive
+    cases.map{ |h| base_rec.merge(h) }
   end
 
   private
