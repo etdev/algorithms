@@ -94,8 +94,8 @@ def tape_equil(arr)
   min_sum
 end
 
-# https://codility.com/programmers/lessons/4-counting_elements/missing_integer/
 # missing integer
+# https://codility.com/programmers/lessons/4-counting_elements/missing_integer/
 require "set"
 def missing_int(arr)
   set = Set.new(arr)
@@ -105,10 +105,45 @@ def missing_int(arr)
   100_001
 end
 
-# https://codility.com/programmers/lessons/4-counting_elements/perm_check/
 # perm check
+# https://codility.com/programmers/lessons/4-counting_elements/perm_check/
 require "set"
 def perm_check(arr)
   set = Set.new(arr)
   (1..arr.size).all?{ |i| set.include?(i) } ? 1 : 0
+end
+
+# frog river one
+# https://codility.com/programmers/lessons/4-counting_elements/frog_river_one/
+require "set"
+def frog_river_one(x, arr)
+  set = Set.new(1..x)
+  arr.each_index do |i|
+    set.delete(arr[i])
+    return i if set.empty?
+  end
+  -1
+end
+
+# count div
+# https://codility.com/programmers/lessons/5-prefix_sums/count_div/
+def count_div(a, b, k)
+  b / k - (a - 1) / k
+end
+
+# passing cars
+# https://codility.com/programmers/lessons/5-prefix_sums/passing_cars/
+def passing_cars(arr)
+  seen_zeros, passes = 0, 0
+
+  arr.each do |i|
+    if i == 0
+      seen_zeros += 1
+    else
+      passes += seen_zeros
+    end
+    return -1 if passes > 1_000_000_000
+  end
+
+  passes
 end
