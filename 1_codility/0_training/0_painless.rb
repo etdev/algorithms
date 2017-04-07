@@ -189,3 +189,40 @@ def max_of_three(arr)
     [arr[0] * arr[1] * arr[-1], arr.last(3).reduce(:*)].max
   end
 end
+
+# triangle
+# https://codility.com/programmers/lessons/6-sorting/triangle/
+def triangle(arr)
+  return 0 unless arr.size > 2
+  arr.sort!
+
+  (0..(arr.size - 3)).each do |i|
+    return 1 if arr[i] + arr[i + 1] > arr[i + 2]
+  end
+
+  0
+end
+
+# brackets
+# https://codility.com/programmers/lessons/7-stacks_and_queues/brackets/
+def brackets(str)
+  stack = []
+  mappings = {
+    "]" => "[",
+    "}" => "{",
+    ")" => "("
+  }
+
+  close_brackets = mappings.keys
+
+  str.each_char do |bracket|
+    if close_brackets.include?(bracket)
+      return 0 unless stack.last == mappings[bracket]
+      stack.pop
+    else
+      stack.push(bracket)
+    end
+  end
+
+  stack.empty? ? 1 : 0
+end
