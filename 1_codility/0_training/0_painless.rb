@@ -147,3 +147,45 @@ def passing_cars(arr)
 
   passes
 end
+
+# distinct
+# https://codility.com/programmers/lessons/6-sorting/distinct/
+require "set"
+def distinct_a(arr)
+  Set.new(arr).count
+end
+
+def distinct_b(arr)
+return arr.size if arr.size < 2
+
+  arr.sort!
+  count = 1
+
+  (1...arr.size).each do |i|
+    count += 1 if arr[i] != arr[i - 1]
+  end
+
+  count
+end
+
+def distinct_c(arr)
+  return arr.size if arr.size < 2
+  arr.sort!
+
+  (1...arr.size).reduce(1) do |count, i|
+    arr[i] == arr[i - 1] ? count : count + 1
+  end
+end
+
+# max product of three
+# https://codility.com/programmers/lessons/6-sorting/max_product_of_three/
+def max_of_three(arr)
+  arr.sort!
+  neg_count = arr.count{ |i| i < 0 }
+
+  if neg_count < 2
+    arr.last(3).reduce(:*)
+  else
+    [arr[0] * arr[1] * arr[-1], arr.last(3).reduce(:*)].max
+  end
+end
