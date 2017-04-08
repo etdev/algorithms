@@ -226,3 +226,76 @@ def brackets(str)
 
   stack.empty? ? 1 : 0
 end
+
+# fish
+# https://codility.com/programmers/lessons/7-stacks_and_queues/fish/
+def fish(a, b)
+  stack = []
+  dead_count = 0
+
+  a.each_index do |i|
+    if b[i] == 1
+      stack.push(a[i])
+    else
+      while stack.any?
+        dead_count += 1
+        if stack.last < a[i]
+          stack.pop
+        else
+          break
+        end
+      end
+    end
+  end
+
+  a.length - dead_count
+end
+
+# nesting
+# https://codility.com/programmers/lessons/7-stacks_and_queues/nesting/
+def nesting_a(str)
+  open_count = 0
+  str.each_char do |paren|
+    return 0 if open_count < 0
+    if paren == "("
+      open_count += 1
+    else
+      open_count -= 1
+    end
+  end
+  open_count == 0 ? 1 : 0
+end
+
+def nesting_b(str)
+  count = str.each_char.reduce(0) do |open_count, paren|
+    return 0 if open_count < 0
+    open_count + (paren == "(" ? 1 : -1)
+  end
+
+  count == 0 ? 1 : 0
+end
+
+# stone wall
+# https://codility.com/programmers/lessons/7-stacks_and_queues/stone_wall/
+def stone_wall(h)
+  count, current_height, stack = 0, 0, []
+
+  h.each do |i|
+    if current_height < i
+      stack.push(i - current_height)
+      current_height += stack.last
+      count += 1
+    elsif current_height > i
+      until current_height <= i
+        current_height -= stack.pop
+      end
+      if current_height != i
+        stack.push(i - current_height)
+        current_height += stack.last
+        count += 1
+      end
+    end
+  end
+
+  count
+end
