@@ -347,3 +347,65 @@ def dominator(arr)
   return -1 unless stack.any? && arr.count(stack.last) > (arr.length / 2)
   arr.index(stack.last)
 end
+
+# max double slice sum
+# https://codility.com/programmers/lessons/9-maximum_slice_problem/max_double_slice_sum/
+def max_double_slice_a(arr)
+  end_at_maxes = [0] * arr.length
+  (1..(arr.size - 2)).each do |i|
+    max_here = [end_at_maxes[i - 1] + arr[i], 0].max
+    end_at_maxes[i] = max_here
+  end
+
+  start_at_maxes = [0] * arr.length
+  ((arr.size - 2).downto(1)).each do |i|
+    max_here = [start_at_maxes[i + 1] + arr[i], 0].max
+    start_at_maxes[i] = max_here
+  end
+
+  sums = [0] * arr.length
+  (1..(arr.size - 2)).each do |i|
+    sums[i] = end_at_maxes[i - 1] + start_at_maxes[ i + 1]
+  end
+
+  sums.max
+end
+
+def max_double_slice_b(arr)
+  n = arr.size
+  max_ends, max_starts = [0] * n, [0] * n
+
+  (1..(n - 2)).each do |i|
+    max_ends[i] = [max_ends[i - 1] + arr[i], 0].max
+    max_starts[n - 1 - i] = [max_starts[n - i] + arr[n - 1 - i], 0].max
+  end
+
+  (1..(n - 2)).map { |i| max_ends[i - 1] + max_starts[i + 1] }.max
+end
+
+# max slice sum
+# https://codility.com/programmers/lessons/9-maximum_slice_problem/max_slice_sum/
+def max_slice_sum(arr)
+  max_here, max_so_far = arr[0], arr[0]
+
+  arr.drop(1).each do |n|
+    max_here = [max_here + n, n].max
+    max_so_far = [max_so_far, max_here].max
+  end
+
+  max_so_far
+end
+
+# max profit
+# https://codility.com/programmers/lessons/9-maximum_slice_problem/max_profit/
+def max_profit(arr)
+  min_here, min_so_far, max_profit = arr[0], arr[0], 0
+
+  arr.each do |price|
+    min_here = [min_so_far, price].min
+    min_so_far = [min_so_far, min_here].min
+    max_profit = [max_profit, price - min_so_far].max
+  end
+
+  max_profit
+end
