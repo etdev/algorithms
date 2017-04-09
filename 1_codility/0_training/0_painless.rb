@@ -409,3 +409,38 @@ def max_profit(arr)
 
   max_profit
 end
+
+# count factors
+# https://codility.com/programmers/lessons/10-prime_and_composite_numbers/count_factors/
+def count_factors_a(n)
+  (1..(Math.sqrt(n))).reduce(0) do |cnt, i|
+    if i * i == n
+      cnt + 1
+    else
+      n % i == 0 ? cnt + 2 : cnt
+    end
+  end
+end
+
+def count_factors_b(n)
+  factor_count = (1.upto(Math.sqrt(n))).reduce(0) do |cnt, i|
+    n % i == 0 ? cnt + 2 : cnt
+  end
+  factor_count -= 1 if n % (Math.sqrt(n)) == 0
+  factor_count
+end
+
+# min perimeter
+# https://codility.com/programmers/lessons/10-prime_and_composite_numbers/min_perimeter_rectangle
+def min_perim(n)
+  min_so_far = 2 * (1 + n)
+
+  (2.upto(Math.sqrt(n))).each do |i|
+    if n % i == 0
+      a, b = i, n / i
+      min_so_far = [min_so_far, 2 * (a + b)].min
+    end
+  end
+
+  min_so_far
+end
