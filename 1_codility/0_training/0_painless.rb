@@ -299,3 +299,51 @@ def stone_wall(h)
 
   count
 end
+
+# equileader
+# https://codility.com/programmers/lessons/8-leader/equi_leader/
+def equileader(arr)
+  leader, total_leader_count = nil, 0
+  counts = Hash.new(0)
+
+  arr.each do |el|
+    counts[el.to_s] += 1
+    if counts[el.to_s] > arr.length / 2
+      leader = el
+      break
+    end
+  end
+
+  return 0 if leader.nil?
+  total_leader_count = arr.count(leader)
+
+  equileader_count = 0
+  left_count, right_count = 0, total_leader_count
+
+  (0..(arr.length - 2)).each do |i|
+    if arr[i] == leader
+      left_count += 1
+      right_count -= 1
+    end
+    if left_count > ((i + 1) / 2) && right_count > ((arr.length - (i + 1)) / 2)
+      equileader_count += 1
+    end
+  end
+
+  equileader_count
+end
+
+# dominator
+# https://codility.com/programmers/lessons/8-leader/dominator/
+def dominator(arr)
+  stack = []
+  arr.each do |el|
+    stack.push(el)
+    if stack.size >= 2 && stack[-1] != stack[-2]
+      stack.pop(2)
+    end
+  end
+
+  return -1 unless stack.any? && arr.count(stack.last) > (arr.length / 2)
+  arr.index(stack.last)
+end
