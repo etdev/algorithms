@@ -1,4 +1,4 @@
-class MaxHeap
+class MinHeap
   attr_reader :elements
 
   def initialize(elements = [])
@@ -20,7 +20,7 @@ class MaxHeap
     shift_down(0)
   end
 
-  def max
+  def min
     elements.first
   end
 
@@ -34,7 +34,7 @@ class MaxHeap
     # swap with parent if greater than parent
     return if i == 0
     parent = parent_for(i)
-    if elements[i] > elements[parent]
+    if elements[i] < elements[parent]
       elements[i], elements[parent] = elements[parent], elements[i]
       return shift_up(parent)
     end
@@ -42,13 +42,13 @@ class MaxHeap
 
   def shift_down(i)
     return if leaf?(i)
-    if right_child(i).nil? || left_child(i) >= right_child(i)
+    if right_child(i).nil? || left_child(i) < right_child(i)
       larger_child_idx = left_child_idx(i)
     else
       larger_child_idx = right_child_idx(i)
     end
 
-    if elements[larger_child_idx] > elements[i]
+    if elements[larger_child_idx] < elements[i]
       elements[larger_child_idx], elements[i] = elements[i], elements[larger_child_idx]
       shift_down(larger_child_idx)
     end
@@ -84,92 +84,92 @@ require 'minitest/autorun'
 require "minitest/reporters"
 Minitest::Reporters.use!
 
-class MaxHeapTest < Minitest::Test
+class MinHeapTest < Minitest::Test
   def test_blank
     expected = []
-    assert_equal expected, MaxHeap.new.elements
+    assert_equal expected, MinHeap.new.elements
   end
 
   def test_single_element
     expected = [5]
 
-    max_heap = MaxHeap.new
-    max_heap.add(5)
+    min_heap = MinHeap.new
+    min_heap.add(5)
 
-    assert_equal expected, max_heap.elements
+    assert_equal expected, min_heap.elements
   end
 
   def test_add_two_elements_smaller
-    expected = [5, 2]
+    expected = [2, 5]
 
-    max_heap = MaxHeap.new
-    max_heap.add(5)
-    max_heap.add(2)
+    min_heap = MinHeap.new
+    min_heap.add(5)
+    min_heap.add(2)
 
-    assert_equal expected, max_heap.elements
+    assert_equal expected, min_heap.elements
   end
 
   def test_add_two_elements_greater
-    expected = [5, 2]
+    expected = [2, 5]
 
-    max_heap = MaxHeap.new
-    max_heap.add(2)
-    max_heap.add(5)
+    min_heap = MinHeap.new
+    min_heap.add(2)
+    min_heap.add(5)
 
-    assert_equal expected, max_heap.elements
+    assert_equal expected, min_heap.elements
   end
 
   def test_add_in_order_elements
-    expected = [5,4,2,1,3]
+    expected = [1, 2, 3, 4, 5]
 
-    max_heap = MaxHeap.new
-    max_heap.add(1)
-    max_heap.add(2)
-    max_heap.add(3)
-    max_heap.add(4)
-    max_heap.add(5)
+    min_heap = MinHeap.new
+    min_heap.add(1)
+    min_heap.add(2)
+    min_heap.add(3)
+    min_heap.add(4)
+    min_heap.add(5)
 
-    assert_equal expected, max_heap.elements
+    assert_equal expected, min_heap.elements
   end
 
   def test_remove_single
-    expected = [4,3,2,1]
+    expected = [2,3,4,5]
 
-    max_heap = MaxHeap.new([5,4,2,1,3])
-    max_heap.remove
+    min_heap = MinHeap.new([5,4,2,1,3])
+    min_heap.remove
 
-    assert_equal expected, max_heap.elements
+    assert_equal expected, min_heap.elements
   end
 
   def test_remove_multiple
-    expected = [3,1,2]
+    expected = [3,5,4]
 
-    max_heap = MaxHeap.new([5,4,2,1,3])
-    max_heap.remove
-    max_heap.remove
+    min_heap = MinHeap.new([5,4,2,1,3])
+    min_heap.remove
+    min_heap.remove
 
-    assert_equal expected, max_heap.elements
+    assert_equal expected, min_heap.elements
   end
 
   def test_init_array
-    expected = [5,4,2,1,3]
+    expected = [1,2,3,4,5]
 
-    max_heap = MaxHeap.new([1,2,3,4,5])
+    min_heap = MinHeap.new([1,2,3,4,5])
 
-    assert_equal expected, max_heap.elements
+    assert_equal expected, min_heap.elements
   end
 
   def test_remove_to_empty
     expected = []
-    max_heap = MaxHeap.new([5])
-    max_heap.remove
-    assert_equal expected, max_heap.elements
+    min_heap = MinHeap.new([5])
+    min_heap.remove
+    assert_equal expected, min_heap.elements
   end
 
   def test_remove_past_empty
     expected = []
-    max_heap = MaxHeap.new([])
-    max_heap.remove
-    assert_equal expected, max_heap.elements
+    min_heap = MinHeap.new([])
+    min_heap.remove
+    assert_equal expected, min_heap.elements
   end
 end
