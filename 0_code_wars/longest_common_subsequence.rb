@@ -9,4 +9,15 @@ def lcs(a, b)
   end
 end
 
+# memoized DP
+def lcs(x, y)
+  m = Array.new(x.size + 1) { Array.new(y.size + 1) { String.new } }
 
+  (1..x.size).each do |i|
+    (1..y.size).each do |j|
+      m[i][j] = x[i-1] == y[j-1] ? m[i-1][j-1] + x[i - 1] : [m[i-1][j], m[i][j-1]].max_by(&:size)
+    end
+  end
+
+  m[x.size][y.size]
+end
