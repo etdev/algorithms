@@ -60,3 +60,18 @@ def hamming(n)
 
   m
 end
+
+# more elegant solution inspired by TianLanhe
+def hamming(n)
+  seen = [1]
+  i,j,k = 0,0,0
+
+  until seen.size >= n
+     seen << [seen[i] * 2, seen[j] * 3, seen[k] * 5].min
+    i += 1 if seen[i] * 2 == seen.last
+    j += 1 if seen[j] * 3 == seen.last
+    k += 1 if seen[k] * 5 == seen.last
+  end
+
+  seen.last
+end
