@@ -2154,24 +2154,201 @@ export default function counter(state = 0, action) {
 }
 ```
 
-# Things I want to study more
-### Ruby
-* ARGF
-* `autoload`
-* Threads
-* Fibers
-* The Date, Time etc. classes
-* THe Directory, File classes
-* The dollar-sign regex matchers, other global state vars, constants etc.
-* instance_eval, scope gates, module_eval
+## Graphs
+A graph, `G = (V,E)` is defined by a set of vertices and edges.
 
-### Rails
-* ActiveRecord query methods
-* `has_many through` form helpers.  Like `collection_check_boxes` etc.
-* Nested routes, shallow etc.
-* `inverse_of`
+How do you figure out when you have a graph?  How do you know which graph algorithm
+to use for the problem?
 
-### SQL
-* HAVING
-* When to use the different joins
-* EXTRACT
+Edges are either ordered or unordered pairs of vertices, from the total set V.
+
+E.g. vertices = cities; edges = roads between cities.
+
+For road networks, you might want to do:
+* Shortest path (e.g. GPS)
+* Traveling salesman (shortest tour to visit subset of cities)
+* Where can you add an edge to shorten people's trips as much as possible?
+* Mail delivery (shortest path to visit every road and return home)
+
+Electronic circuits can also be modified by graphs.
+
+Design graphs, not algorithms.  You never really need to create new graph algorithms;
+you just need to model the situation the right way so that one of your known algorithms
+applies.
+
+The first thing you need to do with a graph problem is determine which flavor of
+graph it is.
+or De
+### Directed vs. Undirected
+A graph `G = (V,E)` is **undirected** if having an edge x,y implies that y,x is also an edge.
+![image](https://user-images.githubusercontent.com/6726985/34645580-f9ce0368-f394-11e7-9e13-a4c52150e99a.png)
+
+Road networks between cities are undirected.
+Road networks within cities are directed, due to one-way streets.
+Social networks are generally undirected, since edges are relationships between people.
+A graph of gas suppliers and gas users is a directed graph, where an edge goes from a supplier
+to someone using gas.  This can be useful for finding bottlenecks, i.e. how many people
+are relying on one supplier etc.
+Also methods calling other methods can be modeled as a directed graph ("call graph").
+This is good for seeing test coverage, or finding dead code.
+
+### Weighted vs. Unweighted
+We assign a weight to edges. For example in road networks, the weight of an edge
+might be the distance between the vertices it connects.
+
+![image](https://user-images.githubusercontent.com/6726985/34645643-6c05593a-f396-11e7-865c-152135aa4440.png)
+
+Or GPS probably uses travel time as the weights.
+Toll costs could also be a good weight.
+Or maybe the number of houses for a garbage/mail route.
+
+Method call graph would be probably unweighted.
+
+### Simple vs. Non-simple
+
+A Self-loop (`x,x`) is when a vertex has an edge to itself.
+A multi-edge is when there are two edges connecting two vertices.
+
+![image](https://user-images.githubusercontent.com/6726985/34645655-d2f9b7a8-f396-11e7-8355-2ffc65e8d39f.png)
+
+A **simple** graph is one that does not have these two things.
+
+For example, a call graph with recursion would have a self loop.
+Road networks might have multi-edges when there are two ways to go from A to B.
+
+When programming graphs, you need to know if it's simple or not.
+
+In a simple graph, the number of possible edges is O(N^2) because a given edge
+can have vertices between it and N-1 other vertices.
+
+### Sparse vs. Dense
+If N vertices, and M edges
+If M is O(n), that's sparse.
+If M is O(n^2), that's dense.
+
+Graph algorithm runtimes are usually a function of N and M, so M being linear vs. quadratic
+can change the runtime of algorithms / which algorithms are suitable.
+
+Road networks are sparse.
+
+Degree of a vertex = number of edges incident upon it; Intersections usually have a degree of ~4 or around there,
+so this leads to sparse graphs.
+Social networks, circuits, and the internet are all sparse too.
+
+A cellular network, i.e. graph of who can call who else, would be dense.
+Compatibility among men/women where each man has a compatibility score for each woman would be dense.
+
+Sparse graphs tend to be more common.
+
+If you take the complement of a sparse graph, you'll get a dense graph.
+
+### Cyclic vs. Acyclic
+
+![image](https://user-images.githubusercontent.com/6726985/34645759-22ef7d40-f399-11e7-8aa2-36daa4d5e7e9.png)
+Directed Acyclic Graphs are called DAGs.  These arise naturally in scheduling problems,
+where a directed edge x->y indicates that `x` must occur before `y`.
+
+Undirected A-cyclic graphs are also known as **trees**.
+
+Job scheduling or course pre-requisites can be modeled as DAGs.
+
+### Implicit vs. Explicit
+Sometimes graphs are built up as we use them rather than already existing.
+
+![image](https://user-images.githubusercontent.com/6726985/34645786-d994ab1a-f399-11e7-85ee-70b3af988d70.png)
+
+### Embedded vs. Topological
+A graph is embedded if the vertices and edges have been assigned geometric positions.
+
+### Labeled vs. Unlabeled
+Sometimes one edge is like any other; sometimes we need to "label" them.
+
+![image](https://user-images.githubusercontent.com/6726985/34645795-1bef87fa-f39a-11e7-90be-822af695de62.png)
+
+### The friendship graph
+Vertices are people; edges are relationships between them.
+
+Directed/Undirected? Undirected, b/c friends are friends.
+The "heard-of" graph would be directed though since I've heard of many famous people
+who have never heard of me.
+
+### Representing Graphs
+Assume G = (V,E) containns `n` vertices and `m` edges.
+
+### Adjacency Matrix
+We can represent G using a `n by n matrix` M, where elemet M[i,j] is 1, if
+`(i,j)` is an edge of G, and 0 otherwise.
+
+Cons: Uses excessive space for graphs with many vertices and few edges.
+Can we save space if the graph is undirected?  What if it's sparse?
+
+Adjacency Matrixes are better at representing dense graphs.
+
+### Adjacency List
+Consists of an `N x 1` array of pointers, where the `i`th element points to a
+linked list of the edges incident on vertex `i`.
+
+![image](https://user-images.githubusercontent.com/6726985/34645901-10654034-f39d-11e7-816b-29afb7622db6.png)
+
+To test if edge `i,j` is in the graph, we check the list at element `i` to see
+if it contains `j`.  This search takes O(di) where `di` is the degree of the `i`th element.
+
+In the basic representation for an undirected graph, each edge will be represented twice.
+
+### Which is better?
+
+![image](https://user-images.githubusercontent.com/6726985/34645928-b3222efe-f39d-11e7-8544-f2e0a989509d.png)
+
+* Testig if x,y exists => matrix = O(1); list = O(di); **matrix**
+* Find vertex degree => matrix = O(N); list = O(di); **list**
+* Less memory on small graphs? **lists** (m + n vs. n^2)
+* Less memory on big graphs? **matrices** (small win)
+* Edge insertion? **matrices** Since you just set G[i,j] = 1; you eed to traverse a linked list with lists.
+* Faster to traverse the graph? **lists** (m + n vs. n^2)
+* Better for most problems? **lists**
+
+**Lists** are generally better.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+* BFS
+* DFS
+* Djikstra
+* Prim
+* A-star
+
+#### Todo
+* Study graphs
+* Make Anki cards
+* Implement in Ruby
+* Write blog about implementation
+* Leetcode questions
+
+### Trees
+### Recursion
+### Greedy Algorithms
+### Backtracking
+### Dynamic Programming
+### Heap
+### Priority Queue
+### LRU Cache
+### Tries
+### Suffix Arrays/trees
