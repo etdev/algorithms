@@ -1,6 +1,7 @@
 require "rubygems"
 
 require_relative "graph/matrix_graph"
+require_relative "graph/list_graph"
 require_relative "graph/printer"
 require_relative "graph/vertex"
 

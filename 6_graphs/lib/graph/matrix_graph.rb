@@ -1,5 +1,6 @@
 require_relative "matrix_graph/undirected_edge_strategy"
 require_relative "matrix_graph/directed_edge_strategy"
+require_relative "bounds_checking"
 
 # Graph implementation using an adjacency matrix
 
@@ -12,6 +13,8 @@ require_relative "matrix_graph/directed_edge_strategy"
 # [ 30, 31, 32, 33 ]
 
 class MatrixGraph
+  include BoundsChecking
+
   HAS_VERTEX = 1
   NO_VERTEX = 0
 
@@ -55,14 +58,5 @@ class MatrixGraph
 
   def construct_blank_graph
     Array.new(vertex_count) { Array.new(vertex_count, NO_VERTEX) }
-  end
-
-  def with_bounds_check(*indices)
-    indices.each { |i| raise OutOfBoundsError if i >= vertex_count }
-
-    yield
-  end
-
-  class OutOfBoundsError < StandardError
   end
 end
