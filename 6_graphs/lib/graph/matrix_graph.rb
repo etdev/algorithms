@@ -1,7 +1,5 @@
-require_relative "matrix_graph/undirected_matrix_edge_strategy"
-require_relative "matrix_graph/directed_matrix_edge_strategy"
-require_relative "bounds_checking"
 require_relative "factories/edge_strategy_factory"
+require_relative "bounds_checking"
 
 # Graph implementation using an adjacency matrix
 

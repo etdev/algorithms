@@ -1,6 +1,5 @@
 require_relative "list_graph/list_node"
-require_relative "list_graph/undirected_list_edge_strategy"
-require_relative "list_graph/directed_list_edge_strategy"
+require_relative "factories/edge_strategy_factory"
 require_relative "bounds_checking"
 
 # Graph implementation using an adjacency list
