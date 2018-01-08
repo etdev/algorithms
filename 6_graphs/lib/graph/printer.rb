@@ -1,5 +1,4 @@
 require "green_shoes"
-require "set"
 
 class GraphPrinter
   WIDTH = 500
@@ -39,10 +38,8 @@ class GraphPrinter
   def generate_vertices
     vertex_placements.map.with_index do |(x, y), i|
       vertex = Vertex.new(i, x, y)
-      graph.row(i).each.with_index do |el, i|
-        if el == MatrixGraph::HAS_VERTEX
-          vertex.add_edge(i)
-        end
+      graph.incident_vertices(i).each do |j|
+        vertex.add_edge(j)
       end
       vertex
     end
@@ -78,4 +75,3 @@ class GraphPrinter
     (MARGIN..HEIGHT + MARGIN).step(y_distance_unit).to_a
   end
 end
-

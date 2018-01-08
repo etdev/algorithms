@@ -79,4 +79,24 @@ describe ListNode do
       expect(list.contains?(3)).to be true
     end
   end
+
+  describe "to_a" do
+    context "empty list" do
+      it "returns empty array" do
+        list = ListNode.new
+
+        expect(list.to_a).to eq([])
+      end
+    end
+
+    context "multi-element list" do
+      it "returns an array representation of the list defined by node" do
+        list = ListNode.new(1)
+        list.add(2)
+        list.add(3)
+
+        expect(list.to_a).to eq([1,2,3])
+      end
+    end
+  end
 end

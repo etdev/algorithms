@@ -63,4 +63,14 @@ class ListNode
 
     vals.join(" -> ")
   end
+
+  def to_a
+    vals = []
+    node = self
+    until node.nil? || node.val.nil?
+      vals << node.val
+      node = node.next
+    end
+    vals
+  end
 end

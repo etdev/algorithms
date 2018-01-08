@@ -5,6 +5,5 @@ module BoundsChecking
     yield
   end
 
-  class OutOfBoundsError < StandardError
-  end
+  class OutOfBoundsError < StandardError; end
 end

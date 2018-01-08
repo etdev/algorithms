@@ -1,5 +1,5 @@
 # Strategy for adding and removing edges from an undirected MatrixGraph
-class UndirectedEdgeStrategy
+class UndirectedMatrixEdgeStrategy
   def add_edge(graph, i, j)
     graph.elements[i][j] = MatrixGraph::HAS_VERTEX
     graph.elements[j][i] = MatrixGraph::HAS_VERTEX

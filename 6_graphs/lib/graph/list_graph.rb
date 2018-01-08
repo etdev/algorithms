@@ -1,6 +1,6 @@
 require_relative "list_graph/list_node"
-require_relative "list_graph/undirected_edge_strategy"
-require_relative "list_graph/directed_edge_strategy"
+require_relative "list_graph/undirected_list_edge_strategy"
+require_relative "list_graph/directed_list_edge_strategy"
 require_relative "bounds_checking"
 
 # Graph implementation using an adjacency list
@@ -19,7 +19,7 @@ class ListGraph
 
   attr_reader :lists, :vertex_count
 
-  def initialize(vertex_count, edge_strategy: UndirectedEdgeStrategy.new)
+  def initialize(vertex_count, edge_strategy: UndirectedListEdgeStrategy.new)
     @vertex_count = vertex_count
     @lists = construct_blank_graph
     @edge_strategy = edge_strategy
@@ -35,6 +35,10 @@ class ListGraph
 
   def edge?(i, j)
     with_bounds_check(i, j) { lists[i].contains?(j) }
+  end
+
+  def incident_vertices(i)
+    with_bounds_check(i) { lists[i].to_a }
   end
 
   def to_s

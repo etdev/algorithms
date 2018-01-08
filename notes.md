@@ -2478,3 +2478,19 @@ to process the vertices and edges in various ways.
 The parent relation in BFS is interesting; it describes the tree of discovery with
 the initial search node as the root of the tree.  The vertex that discovered vertex `i` is
 stored in `parents[i]`
+
+The tree of discovery radiates from the source node, and goes one hop at a time, which means
+that there can't be a quicker path to a node than the one through the tree of discovery.
+
+**The discovery relation found by BFS defines the shortest unweighted path between two vertices.**
+
+### Applications of Breadth-first search
+
+1. Finding the shortest path between two nodes in an unweighted graph
+2. Finding the length of this path for a given pair of nodes
+
+BFS also just provides an efficient way to visit each node in a graph once, and
+if necessary do some kind of processing on each of them.
+
+So how do you actually find the shortest path?
+

@@ -2,11 +2,18 @@ require "set"
 require_relative "../graph/list_graph"
 
 class BreadthFirstSearch
-  def bfs(graph, source_idx, end_idx)
+  attr_reader :parents, :graph
+
+  def initialize(graph)
+    @parents = Array.new(graph.vertex_count, -1)
+    @graph = graph
+  end
+
+  def run(source_idx, end_idx, &process_block)
     q = [source_idx]
     processed = Array.new(graph.vertex_count, false)
     discovered = Array.new(graph.vertex_count, false)
-    parents = Array.new(graph.vertex_count, -1)
+    discovered[source_idx] = true
 
     loop do
       # return if all nodes have been processed
@@ -17,7 +24,9 @@ class BreadthFirstSearch
 
       # current vertex = oldest from queue
       v = q.shift
-      process_node(v, q)
+
+      # process node
+      process_block.call(v, q) if process_block
       processed[v] = true
 
       # return if goal node found
@@ -34,15 +43,11 @@ class BreadthFirstSearch
       # mark discovered
       children.each do |i|
         discovered[i] = true
-        parents[i] = v
+        @parents[i] = v
       end
 
       # push children onto queue
       q = q.push(*children)
     end
-  end
-
-  def process_node(v, q)
-    puts "Processing #{v}, queue: #{q}"
   end
 end

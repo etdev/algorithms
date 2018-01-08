@@ -56,7 +56,7 @@ describe MatrixGraph do
 
     context "directed" do
       before do
-        @graph = MatrixGraph.new(4, edge_strategy: DirectedEdgeStrategy.new)
+        @graph = MatrixGraph.new(4, edge_type: :directed)
       end
 
       describe "adding edges" do
@@ -78,14 +78,15 @@ describe MatrixGraph do
     end
   end
 
-  describe "row" do
+  describe "incident_vertices" do
     before do
       @graph = MatrixGraph.new(4)
     end
 
-    it "returns the correct row" do
-      @graph.add_edge(0, 1)
-      expect(@graph.row(0)).to eq([0,1,0,0])
+    it "returns an array of vertices incident to the supplied vertex" do
+      @graph.add_edge(1, 2)
+      @graph.add_edge(1, 3)
+      expect(@graph.incident_vertices(1)).to eq([2,3])
     end
   end
 end

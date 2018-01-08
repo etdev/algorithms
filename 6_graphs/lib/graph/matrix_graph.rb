@@ -1,6 +1,7 @@
-require_relative "matrix_graph/undirected_edge_strategy"
-require_relative "matrix_graph/directed_edge_strategy"
+require_relative "matrix_graph/undirected_matrix_edge_strategy"
+require_relative "matrix_graph/directed_matrix_edge_strategy"
 require_relative "bounds_checking"
+require_relative "factories/edge_strategy_factory"
 
 # Graph implementation using an adjacency matrix
 
@@ -20,10 +21,10 @@ class MatrixGraph
 
   attr_reader :elements, :vertex_count, :edge_strategy
 
-  def initialize(vertex_count, edge_strategy: UndirectedEdgeStrategy.new)
+  def initialize(vertex_count, edge_type: :undirected)
     @vertex_count = vertex_count
     @elements = construct_blank_graph
-    @edge_strategy = edge_strategy
+    @edge_strategy = edge_strategy_for(edge_type)
   end
 
   def add_edge(i, j)
@@ -38,16 +39,16 @@ class MatrixGraph
     end
   end
 
-  def element(i, j)
-    with_bounds_check(i, j) { elements[i][j] }
-  end
-
-  def row(i)
-    with_bounds_check(i) { elements[i] }
-  end
-
   def edge?(i, j)
     with_bounds_check(i, j) { elements[i][j] == HAS_VERTEX }
+  end
+
+  def incident_vertices(i)
+    with_bounds_check(i) do
+      (0...elements.size).each_with_object([]) do |j, vertices|
+        vertices << j if edge?(i, j)
+      end
+    end
   end
 
   def to_s
@@ -55,6 +56,10 @@ class MatrixGraph
   end
 
   private
+
+  def edge_strategy_for(edge_type)
+    EdgeStrategyFactory.create(self, edge_type)
+  end
 
   def construct_blank_graph
     Array.new(vertex_count) { Array.new(vertex_count, NO_VERTEX) }

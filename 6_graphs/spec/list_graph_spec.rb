@@ -32,7 +32,7 @@ describe ListGraph do
 
     context "directed" do
       before do
-        @graph = ListGraph.new(4, edge_strategy: DirectedEdgeStrategy.new)
+        @graph = ListGraph.new(4, edge_strategy: DirectedListEdgeStrategy.new)
       end
 
       it "adds edge successfully" do
@@ -72,7 +72,7 @@ describe ListGraph do
 
     context "directed" do
       before do
-        @graph = ListGraph.new(4, edge_strategy: DirectedEdgeStrategy.new)
+        @graph = ListGraph.new(4, edge_strategy: DirectedListEdgeStrategy.new)
       end
 
       it "removes edge successfully" do
@@ -107,6 +107,18 @@ describe ListGraph do
 
     it "throws OutOfBoundsError when called with non-existent vertices" do
       expect { @graph.edge?(1, 5) }.to raise_error(ListGraph::OutOfBoundsError)
+    end
+  end
+
+  describe "incident_vertices" do
+    before do
+      @graph = ListGraph.new(4)
+    end
+
+    it "returns an array of vertices incident to the supplied vertex" do
+      @graph.add_edge(1, 2)
+      @graph.add_edge(1, 3)
+      expect(@graph.incident_vertices(1)).to eq([2,3])
     end
   end
 end
