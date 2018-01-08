@@ -833,7 +833,7 @@ When facing problems where you need to e.g.
   * etc.
 
 It might be a good idea to use a `stack`.  This kata is a really good example of
-when stacks can come in handy: 
+when stacks can come in handy:
 
 [Directions Reduction](http://www.codewars.com/kata/550f22f4d758534c1100025a/solutions/ruby)
 
@@ -995,7 +995,7 @@ table there's no point, and it could actually be a net detriment.
 * Install remote package: `go get github.com/username/repo`
 * Update remote package + install dependencies: `go get -u ...`
 
-`go get` basically clones the source code to the `$GOPATH/src` path and then 
+`go get` basically clones the source code to the `$GOPATH/src` path and then
 exeecutes `go install`.
 
 ### Functions
@@ -2303,52 +2303,178 @@ In the basic representation for an undirected graph, each edge will be represent
 * Find vertex degree => matrix = O(N); list = O(di); **list**
 * Less memory on small graphs? **lists** (m + n vs. n^2)
 * Less memory on big graphs? **matrices** (small win)
-* Edge insertion? **matrices** Since you just set G[i,j] = 1; you eed to traverse a linked list with lists.
+* Edge insertion? **matrices** Since you just set G[i,j] = 1; you need to traverse a linked list with lists.
 * Faster to traverse the graph? **lists** (m + n vs. n^2)
 * Better for most problems? **lists**
 
 **Lists** are generally better.
 
+## Traversing Graphs
+Traversal is basically **visiting every edge and vertex in a graph**.  This is one of the most useful things
+you can do with a graph.
 
+For efficiency, we want to make sure we visit each node at most twice.
+For correcness, we must do it in a systematic way so we don't miss anything.
 
+You can think of this like wandering through a maze, and going to every location.
+Mazes are just graphs:
+* vertices are junctions
+* edges are paths between junctions you can walk to
 
+Getting out of a maze is basically just traversing a graph until you hit the node
+that is the exit of the maze.
 
+Like with dropping breadcrumbs behind you in a maze, we must **mark each vertex** when
+we first visit it, and keep track of what we have not yet completely explored.
 
+If you hit an intersection with three ways to go, A, B, and C, let's say you follow
+A, then you **must remember that you didn't follow B or C yet**.
 
+Vertices have three possible states:
+* Undiscovered - We have never been at this vertex before
+* Discovered - We have been to the vertex, but we haven't followed all of its incident edges yet.
+* Processed - We have visited all of the vertex's edges.
 
+The state of any vertex goes from undiscovered => discovered => processed over the
+course of the traversal.
 
+We need to keep a "to-do list" of all the vertices we've discovered, but not yet fully processed.
 
+Initially, only our start vertex is discovered.  The only difference between DFS and BFS is the
+data structure you use to keep track of this "to-do list" of discovered but not fully explored
+vertices which we must still explore.
 
+To "completely explore" a vertex, we look at each edge going out of it.
+For each edge going to an undiscovered vertex, we mark it discovered and add it to the to-do list.
+For each edge going to an undiscovered vertex, we mark it discovered and add it to the to-do list.
 
+### Breadth First Search
+Use two boolean arrays to maintain our knowledge about each vertex in the graph.
 
+A vertex is **discovered** the first time we visit it.
+A vertex is **processed** when we have traversed all outgoing edges from it.
 
+Once a vertex is discovered, it is placed in a FIFO queue.  This means that oldest vertices
+(closest to the root) are traversed first.
 
+```ruby
+# one element for each vertex in the graph
+processed = Array.new(vertex_count, false)
+discovered = Array.new(vertex_count, false)
+parent = Array.new(vertex_count, 0)
+```
 
+For a given vertex `i`, initially processed[i] is false, and discovered[i] is false.
+When we discover it, we set `discovered[i] = true`, and when we finish processing it
+we set `processed[i] = true`.  This is how we record our state.
 
+Also the `parent`.  Whenever a vertex is discovered, there will be a single other vertex that
+discovered it.  So if when we're following the edges out from a given vertex `i`, we hit an undiscovered vertex, `j`,
+`j`'s parent is then `i`.  The parent is the vertex that **first** discovered a vertex.
 
+A vertex can only be discovered once, so this discovery process creates a tree.
 
+BFS is like pouring a jug of water into the source vertices; it goes through the various
+branches at equal speeds, and if there's some 1000-node long path that we don't care about,
+we won't spend time traversing the whole thing too early.
 
+For example, if we want to go from A to F:
+![image](https://user-images.githubusercontent.com/6726985/34656075-b8259764-f457-11e7-90a7-a276c6f16f48.png)
 
-* BFS
-* DFS
-* Djikstra
-* Prim
-* A-star
+First we add A's direct children to the list:
+![image](https://user-images.githubusercontent.com/6726985/34656080-d3121a2a-f457-11e7-8908-7b42c86d58b1.png)
 
-#### Todo
-* Study graphs
-* Make Anki cards
-* Implement in Ruby
-* Write blog about implementation
-* Leetcode questions
+We add F to our queue but don't process it yet:
+![image](https://user-images.githubusercontent.com/6726985/34656088-0518035e-f458-11e7-9874-b1ab818510a0.png)
 
-### Trees
-### Recursion
-### Greedy Algorithms
-### Backtracking
-### Dynamic Programming
-### Heap
-### Priority Queue
-### LRU Cache
-### Tries
-### Suffix Arrays/trees
+Process C:
+![image](https://user-images.githubusercontent.com/6726985/34656092-18c684f2-f458-11e7-924b-463d281d9978.png)
+
+Process B:
+![image](https://user-images.githubusercontent.com/6726985/34656093-1b8b0bea-f458-11e7-8c5a-a5bca08dab80.png)
+
+Finally get to F:
+![image](https://user-images.githubusercontent.com/6726985/34656096-1fa0b1d0-f458-11e7-960e-6227a34820fa.png)
+
+```ruby
+class BreadthFirstSearch
+  def bfs(graph, source_idx, end_idx)
+    q = [source_idx]
+    processed = Array.new(graph.vertex_count, false)
+    discovered = Array.new(graph.vertex_count, false)
+    parents = Array.new(graph.vertex_count, -1)
+
+    loop do
+      # return if all nodes have been processed
+      if q.empty?
+        puts "Failed to find element"
+        return false
+      end
+
+      # current vertex = oldest from queue
+      v = q.shift
+      process_node(v, q)
+      processed[v] = true
+
+      # return if goal node found
+      if v == end_idx
+        puts "Found element"
+        return true
+      end
+
+      # children = vertices incident to v, that have not yet been processed
+      children = (0...graph.vertex_count)
+        .select { |i| graph.edge?(v, i) }
+        .reject { |i| discovered[i] }
+
+      # mark discovered
+      children.each do |i|
+        discovered[i] = true
+        parents[i] = v
+      end
+
+      # push children onto queue
+      q = q.push(*children)
+    end
+  end
+
+  def process_node(v, q)
+    puts "Processing #{v}, queue: #{q}"
+  end
+end
+```
+
+If we have the following graph, let's do BFS starting at vertex 1:
+![image](https://user-images.githubusercontent.com/6726985/34656741-7c9c4684-f461-11e7-911c-19f43079ec8d.png)
+
+queue: [1]
+processed: []
+discovered: []
+
+- pop 1
+  queue: []
+  discovered: [1]
+  discovered: [1, 2] -> [1, 2,5] -> [1, 2,5,6]
+  queue: [2] -> [5,2] -> [6,5,2]
+- pop 2
+  discovered: [1,2,5,6, 3]
+  queue: [6,5] -> [3,6,5]
+- pop 5
+  discovered: [1,2,5,6,3, 4]
+  queue: [3,6] -> [4,3,6]
+- pop 6
+  discovered: no change
+  queue: [4,3,6] -> [4,3]
+- pop 3
+  discovered: no change
+  queue: [4]
+- pop 4
+  discovered: no change
+  queue: [] => finish
+
+BFS makes exactly one official visit to each edge and vertex, so you can use this fact
+to process the vertices and edges in various ways.
+
+The parent relation in BFS is interesting; it describes the tree of discovery with
+the initial search node as the root of the tree.  The vertex that discovered vertex `i` is
+stored in `parents[i]`
