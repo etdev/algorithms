@@ -17,10 +17,7 @@ class BreadthFirstSearch
 
     loop do
       # return if all nodes have been processed
-      if q.empty?
-        puts "Failed to find element"
-        return false
-      end
+      return false if q.empty?
 
       # current vertex = oldest from queue
       v = q.shift
@@ -30,10 +27,7 @@ class BreadthFirstSearch
       processed[v] = true
 
       # return if goal node found
-      if v == end_idx
-        puts "Found element"
-        return true
-      end
+      return true if v == end_idx
 
       # children = vertices incident to v, that have not yet been processed
       children = (0...graph.vertex_count)

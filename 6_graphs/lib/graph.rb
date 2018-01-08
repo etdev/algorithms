@@ -19,6 +19,7 @@ require_relative "graph/breadth_first_search"
 
 graph = ListGraph.new(5)
 graph.add_edge(0, 1)
+graph.add_edge(1, 2)
 graph.add_edge(1, 3)
 graph.add_edge(3, 4)
 

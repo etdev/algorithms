@@ -26,15 +26,11 @@ class MatrixGraph
   end
 
   def add_edge(i, j)
-    with_bounds_check(i, j) do
-      edge_strategy.add_edge(self, i, j)
-    end
+    with_bounds_check(i, j) { edge_strategy.add_edge(self, i, j) }
   end
 
   def remove_edge(i, j)
-    with_bounds_check(i, j) do
-      edge_strategy.remove_edge(self, i, j)
-    end
+    with_bounds_check(i, j) { edge_strategy.remove_edge(self, i, j) }
   end
 
   def edge?(i, j)
