@@ -17,12 +17,12 @@ require_relative "bounds_checking"
 class ListGraph
   include BoundsChecking
 
-  attr_reader :lists, :vertex_count
+  attr_reader :vertex_count, :elements
 
-  def initialize(vertex_count, edge_strategy: UndirectedListEdgeStrategy.new)
+  def initialize(vertex_count, edge_type: :undirected)
     @vertex_count = vertex_count
-    @lists = construct_blank_graph
-    @edge_strategy = edge_strategy
+    @elements = construct_blank_graph
+    @edge_strategy = edge_strategy_for(edge_type)
   end
 
   def add_edge(i, j)
@@ -34,20 +34,24 @@ class ListGraph
   end
 
   def edge?(i, j)
-    with_bounds_check(i, j) { lists[i].contains?(j) }
+    with_bounds_check(i, j) { elements[i].contains?(j) }
   end
 
   def incident_vertices(i)
-    with_bounds_check(i) { lists[i].to_a }
+    with_bounds_check(i) { elements[i].to_a }
   end
 
   def to_s
-    "[#{lists.map(&:to_s).join(", ")}]"
+    "[#{elements.map(&:to_s).join(", ")}]"
   end
 
   private
 
   attr_reader :edge_strategy
+
+  def edge_strategy_for(edge_type)
+    EdgeStrategyFactory.create(self, edge_type)
+  end
 
   def construct_blank_graph
     Array.new(vertex_count) { ListNode.new }

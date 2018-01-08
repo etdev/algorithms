@@ -19,7 +19,7 @@ class MatrixGraph
   HAS_VERTEX = 1
   NO_VERTEX = 0
 
-  attr_reader :elements, :vertex_count, :edge_strategy
+  attr_reader :vertex_count, :elements
 
   def initialize(vertex_count, edge_type: :undirected)
     @vertex_count = vertex_count
@@ -56,6 +56,8 @@ class MatrixGraph
   end
 
   private
+
+  attr_reader :edge_strategy
 
   def edge_strategy_for(edge_type)
     EdgeStrategyFactory.create(self, edge_type)

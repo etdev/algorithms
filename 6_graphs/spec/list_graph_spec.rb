@@ -32,7 +32,7 @@ describe ListGraph do
 
     context "directed" do
       before do
-        @graph = ListGraph.new(4, edge_strategy: DirectedListEdgeStrategy.new)
+        @graph = ListGraph.new(4, edge_type: :directed)
       end
 
       it "adds edge successfully" do
@@ -72,7 +72,7 @@ describe ListGraph do
 
     context "directed" do
       before do
-        @graph = ListGraph.new(4, edge_strategy: DirectedListEdgeStrategy.new)
+        @graph = ListGraph.new(4, edge_type: :directed)
       end
 
       it "removes edge successfully" do
