@@ -3,7 +3,7 @@ require_relative "../lib/graph/list_graph"
 
 describe BreadthFirstSearch do
   before do
-    @graph = ListGraph.new(5)
+    @graph = Graph.new(5)
     @graph.add_edge(0, 1)
     @graph.add_edge(1, 3)
     @graph.add_edge(3, 4)

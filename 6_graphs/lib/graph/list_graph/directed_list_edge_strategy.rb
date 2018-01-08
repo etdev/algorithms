@@ -1,4 +1,4 @@
-# Strategy for adding and removing edges from an undirected ListGraph
+# Strategy for adding and removing edges from an undirected list graph
 class DirectedListEdgeStrategy
   def add_edge(graph, i, j)
     graph.elements[i].add(j)

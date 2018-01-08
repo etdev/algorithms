@@ -1,58 +1,35 @@
-require_relative "list_graph/list_node"
-require_relative "factories/edge_strategy_factory"
-require_relative "bounds_checking"
+#require_relative "graph"
+#require_relative "list_graph/list_node"
+#require_relative "factories/edge_strategy_factory"
+#class ListGraph < Graph
+  #def edge?(i, j)
+    #storage_strategy.edge?(i, j)
+  #end
 
-# Graph implementation using an adjacency list
+  #def incident_vertices(i)
+    #with_bounds_check(i) { elements[i].to_a }
+    #storage_strategy.incident_vertices?(i)
+  #end
 
-# If graph has an edge at (i, j), linked list i contains a node with value j
-# It not, it does not include this node
+  #private
 
-# [ 00 -> 01 -> 02 -> 03,
-#   10 -> 11 -> 12 -> 13,
-#   20 -> 21 -> 22 -> 23,
-#   30 -> 31 -> 32 -> 33 ]
+  #attr_reader :list_strategy
 
-# This depends on the ListNode class
-class ListGraph
-  include BoundsChecking
+  #def construct_blank_graph
+    #storage_strategy.construct_blank_graph
+  #end
+#end
 
-  attr_reader :vertex_count, :elements
+#class ListStrategy
+  #def edge?(i, j)
+    #with_bounds_check(i, j) { elements[i].contains?(j) }
+  #end
 
-  def initialize(vertex_count, edge_type: :undirected)
-    @vertex_count = vertex_count
-    @elements = construct_blank_graph
-    @edge_strategy = edge_strategy_for(edge_type)
-  end
+  #def incident_vertices(i)
+    #with_bounds_check(i) { elements[i].to_a }
+  #end
 
-  def add_edge(i, j)
-    with_bounds_check(i, j) { edge_strategy.add_edge(self, i, j) }
-  end
-
-  def remove_edge(i, j)
-    with_bounds_check(i, j) { edge_strategy.remove_edge(self, i, j) }
-  end
-
-  def edge?(i, j)
-    with_bounds_check(i, j) { elements[i].contains?(j) }
-  end
-
-  def incident_vertices(i)
-    with_bounds_check(i) { elements[i].to_a }
-  end
-
-  def to_s
-    "[#{elements.map(&:to_s).join(", ")}]"
-  end
-
-  private
-
-  attr_reader :edge_strategy
-
-  def edge_strategy_for(edge_type)
-    EdgeStrategyFactory.create(self, edge_type)
-  end
-
-  def construct_blank_graph
-    Array.new(vertex_count) { ListNode.new }
-  end
-end
+  #def construct_blank_graph
+    #Array.new(vertex_count) { ListNode.new }
+  #end
+#end

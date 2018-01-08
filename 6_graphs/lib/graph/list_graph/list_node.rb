@@ -1,5 +1,5 @@
 # ListNode implementation for creating linked lists
-# Used in ListGraph
+# Used in List Graph
 class ListNode
   attr_accessor :next, :val
 
