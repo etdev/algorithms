@@ -5,7 +5,7 @@ require_relative "factories/storage_strategy_factory"
 class Graph
   include BoundsChecking
 
-  def initialize(vertex_count, storage_type: :list, edge_type: :undirected)
+  def initialize(vertex_count, storage_type: :list, edge_type: :directed)
     @storage_strategy = StorageStrategyFactory.for(storage_type, vertex_count)
     @edge_strategy = EdgeStrategyFactory.for(storage_type, edge_type)
   end

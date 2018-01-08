@@ -14,7 +14,7 @@ describe Graph do
     describe "adding edges" do
       context "undirected" do
         before do
-          @graph = Graph.new(4)
+          @graph = Graph.new(4, edge_type: :undirected)
         end
 
         it "adds edge successfully" do
@@ -22,7 +22,8 @@ describe Graph do
           expect(@graph.edge?(1, 2)).to be true
         end
 
-        it "adds corresponding edge successfully" do       @graph.add_edge(1, 2)
+        it "adds corresponding edge successfully" do
+          @graph.add_edge(1, 2)
           expect(@graph.edge?(2, 1)).to be true
         end
 
@@ -51,7 +52,7 @@ describe Graph do
     describe "removing edges" do
       context "undirected" do
         before do
-          @graph = Graph.new(4)
+          @graph = Graph.new(4, edge_type: :undirected)
         end
 
         it "removes edge successfully" do

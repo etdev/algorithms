@@ -2,8 +2,6 @@ require_relative "../list_graph/undirected_list_edge_strategy"
 require_relative "../list_graph/directed_list_edge_strategy"
 require_relative "../matrix_graph/directed_matrix_edge_strategy"
 require_relative "../matrix_graph/undirected_matrix_edge_strategy"
-require_relative "../graph"
-require_relative "../factories/storage_strategy_factory"
 
 class EdgeStrategyFactory
   class << self

@@ -1,5 +1,4 @@
 require "set"
-require_relative "../graph/list_graph"
 
 class BreadthFirstSearch
   attr_reader :parents, :graph

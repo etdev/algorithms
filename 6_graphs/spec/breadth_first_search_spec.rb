@@ -1,5 +1,4 @@
 require_relative "../lib/graph/breadth_first_search"
-require_relative "../lib/graph/list_graph"
 
 describe BreadthFirstSearch do
   before do
