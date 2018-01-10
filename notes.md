@@ -2170,31 +2170,21 @@ For road networks, you might want to do:
 * Where can you add an edge to shorten people's trips as much as possible?
 * Mail delivery (shortest path to visit every road and return home)
 
-Electronic circuits can also be modified by graphs.
+Electronic circuits can also be represented by graphs.
 
 Design graphs, not algorithms.  You never really need to create new graph algorithms;
-you just need to model the situation the right way so that one of your known algorithms
-applies.
+you just need to model the situation the right way so that one of your known algorithms applies.
 
-The first thing you need to do with a graph problem is determine which flavor of
-graph it is.
-or De
+The first thing you need to do with a graph problem is determine which flavor of graph it is.
+
 ### Directed vs. Undirected
 A graph `G = (V,E)` is **undirected** if having an edge x,y implies that y,x is also an edge.
 ![image](https://user-images.githubusercontent.com/6726985/34645580-f9ce0368-f394-11e7-9e13-a4c52150e99a.png)
 
-Road networks between cities are undirected.
-Road networks within cities are directed, due to one-way streets.
-Social networks are generally undirected, since edges are relationships between people.
-A graph of gas suppliers and gas users is a directed graph, where an edge goes from a supplier
-to someone using gas.  This can be useful for finding bottlenecks, i.e. how many people
-are relying on one supplier etc.
-Also methods calling other methods can be modeled as a directed graph ("call graph").
-This is good for seeing test coverage, or finding dead code.
+Road networks between cities are undirected.  Road networks within cities are directed, due to one-way streets.  Social networks are generally undirected, since edges are relationships between people.  A graph of gas suppliers and gas users is a directed graph, where an edge goes from a supplier to someone using gas.  This can be useful for finding bottlenecks, i.e. how many people are relying on one supplier etc.  Also methods calling other methods can be modeled as a directed graph ("call graph").  This is good for seeing test coverage, or finding dead code.
 
 ### Weighted vs. Unweighted
-We assign a weight to edges. For example in road networks, the weight of an edge
-might be the distance between the vertices it connects.
+We assign a weight to edges. For example in road networks, the weight of an edge might be the distance between the vertices it connects.
 
 ![image](https://user-images.githubusercontent.com/6726985/34645643-6c05593a-f396-11e7-865c-152135aa4440.png)
 
@@ -2205,7 +2195,6 @@ Or maybe the number of houses for a garbage/mail route.
 Method call graph would be probably unweighted.
 
 ### Simple vs. Non-simple
-
 A Self-loop (`x,x`) is when a vertex has an edge to itself.
 A multi-edge is when there are two edges connecting two vertices.
 
@@ -2491,6 +2480,3 @@ that there can't be a quicker path to a node than the one through the tree of di
 
 BFS also just provides an efficient way to visit each node in a graph once, and
 if necessary do some kind of processing on each of them.
-
-So how do you actually find the shortest path?
-

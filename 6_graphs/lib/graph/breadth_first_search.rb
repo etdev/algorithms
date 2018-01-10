@@ -9,6 +9,7 @@ class BreadthFirstSearch
   end
 
   def run(source_idx, end_idx, &process_block)
+    # queue of discovered but not yet processed vertices
     q = [source_idx]
     processed = Array.new(graph.vertex_count, false)
     discovered = Array.new(graph.vertex_count, false)
